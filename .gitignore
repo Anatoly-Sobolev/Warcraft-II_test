@@ -1,0 +1,9 @@
+# Godot 4+ editor cache and imports
+warcraft-ii/.godot/
+warcraft-ii/android/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
