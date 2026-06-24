@@ -5,6 +5,25 @@
 - 🏛 **Архитектура и «почему»:** [`../ARCHITECTURE.md`](../ARCHITECTURE.md) — начни отсюда.
 - 🧭 **Рабочие детали:** [`../ARCHITECTURE_DETAILS.md`](../ARCHITECTURE_DETAILS.md) — куда класть код, папки, этапы.
 
+## Быстрый запуск
+
+1. Открыть [`project.godot`](project.godot) в Godot 4.4.
+2. Запустить main scene проекта.
+3. Если main scene еще не назначена, открыть и запустить `res://app/app.tscn`.
+4. Перед сдачей пройти smoke test из [`docs/testing/test_strategy.md`](docs/testing/test_strategy.md).
+
+## Сдача спринта
+
+Перед пятничной проверкой должны быть актуальны:
+
+- [`../AGENTS.md`](../AGENTS.md) - обязательные правила для ИИ и разработчиков;
+- [`docs/README.md`](docs/README.md) - индекс проектной документации;
+- [`docs/evaluation/season_2026_alignment.md`](docs/evaluation/season_2026_alignment.md) - чеклист требований сезона;
+- [`docs/testing/test_strategy.md`](docs/testing/test_strategy.md) - тест-план и формат тест-кейсов;
+- [`docs/product/user_story_map.md`](docs/product/user_story_map.md) - user stories, которые закрывает демо;
+- [`docs/gameplay/mechanics_matrix.md`](docs/gameplay/mechanics_matrix.md) - источник Warcraft II-механик;
+- [`docs/sprints/sprint_01_report.md`](docs/sprints/sprint_01_report.md) или отчет текущего спринта.
+
 ## Главная идея за 10 секунд
 
 Мир разделён на два слоя: **Simulation** (вся правда об игре — только данные, без
