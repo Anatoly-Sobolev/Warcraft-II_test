@@ -242,7 +242,7 @@ OpenRTS можно использовать только как инженерн
 | AI-003 | Attack forces and waves.                                                                                    | `AiForce`, `AiWaitForce`, `AiAttackWithForce`                                   | `army_planner`, `ai_controller`                     | Attack groups should be reproducible and saveable.                                         | source |
 | AI-004 | Difficulty modifies resource cheats, speed and timing in Wargus.                                            | `AiLoop`, `AiSleep`, `AiForce`                                                  | `difficulty_profiles.tres`, `ai_controller`         | Treat Wargus difficulty behavior as source; verify if exact original behavior is required. | verify |
 | AI-005 | Skirmish AI strategy names.                                                                                 | `DefineAi` wrapper and `scripts/ai/*.lua`                                       | `skirmish_config_builder`, `ai_controller`          | Skirmish AI is separate from campaign mission scripts.                                     | source |
-| AI-006 | Tactical unit behavior: auto attack, attack back, return post, hold.                                        | Wargus combat behavior; OpenRTS `TacticalAI.java` as implementation reference   | `combat_system`, `ai_controller`, `movement_system` | Use source behavior for rules, OpenRTS only as design inspiration.                         | design |
+| AI-006 | Tactical unit behavior: auto attack, attack back, return post, hold.                                        | Wargus combat behavior; OpenRTS `TacticalAI.java` as implementation reference   | `combat_system`, `ai_controller`, `movement_system` | Use Warcraft II/Wargus behavior for rules; OpenRTS can only inform engineering structure.                         | design |
 
 
 ### 13. UI, HUD, menus
@@ -374,4 +374,3 @@ OpenRTS можно использовать только как инженерн
 - Не прятать правила миссий в Godot-сценах; миссии должны быть data-driven.
 - Не давать UI прямой доступ к simulation storage.
 - Не делать юнитов отдельными Godot Node-классами с игровой логикой.
-

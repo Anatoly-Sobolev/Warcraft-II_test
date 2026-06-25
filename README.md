@@ -1,6 +1,6 @@
 # Warcraft II на Godot
 
-Проект 2D RTS в духе Warcraft II на Godot 4.4 с прицелом на слабые ПК и ОС Аврора.
+Проект — порт Warcraft II на Godot 4.4 с прицелом на слабые ПК и ОС Аврора. Механики и игровой процесс воспроизводят Warcraft II; новым будет визуальное оформление.
 
 Основной Godot-проект находится в [`warcraft-ii/`](warcraft-ii/). Архитектурные решения описаны в [`architecture.md`](warcraft-ii/docs/architecture/architecture.md) и [`architecture_details.md`](warcraft-ii/docs/architecture/architecture_details.md).
 

@@ -1,6 +1,6 @@
 # Warcraft II — карта проекта
 
-Одиночная 2D-RTS на Godot 4.4 (GL Compatibility) для ОС «Аврора». Цель — 30 FPS на слабом железе.
+Порт Warcraft II на Godot 4.4 (GL Compatibility) для ОС «Аврора». Механики и игровой процесс воспроизводят Warcraft II; новым будет визуальное оформление. Цель — 30 FPS на слабом железе.
 
 - 🏛 **Архитектура и «почему»:** [`docs/architecture/architecture.md`](docs/architecture/architecture.md) — начни отсюда.
 - 🧭 **Рабочие детали:** [`docs/architecture/architecture_details.md`](docs/architecture/architecture_details.md) — куда класть код, папки, этапы.
