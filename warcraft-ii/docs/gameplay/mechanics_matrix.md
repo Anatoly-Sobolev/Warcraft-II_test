@@ -6,7 +6,7 @@
 
 ## Правила источников
 
-Основной локальный технический источник фактов сейчас: `C:\Users\UZER\Coding\Projects\wargus`.
+Основной технический источник фактов: [Wargus/wargus](https://github.com/Wargus/wargus).
 
 Используем Wargus как справочник по правилам и структуре Warcraft II:
 
