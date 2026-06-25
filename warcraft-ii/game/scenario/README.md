@@ -1,6 +1,6 @@
-﻿# scenario
+# scenario
 
-> ↑ [game](../README.md) · 🏛 [Архитектура](../../../ARCHITECTURE.md)
+> ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md)
 
 **Статус: заглушка.** Модуль ещё не реализован (этап 4). README можно расширить
 вместе с первым реальным кодом модуля.

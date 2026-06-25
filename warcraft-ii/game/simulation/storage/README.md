@@ -1,6 +1,6 @@
-﻿# simulation/storage
+# simulation/storage
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** компонентные данные сущностей в плотных типизированных массивах
 (Structure of Arrays). **Один файл = одно назначение данных.** Общие данные (позиция,

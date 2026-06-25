@@ -1,6 +1,6 @@
-﻿# tests
+# tests
 
-> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../../ARCHITECTURE.md)
+> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../docs/architecture/architecture.md)
 
 **Статус:** тестовая структура заведена, но каждый тестовый файл должен иметь
 реальное тело, команду запуска или ручной аналог в отчете спринта перед тем, как
@@ -8,7 +8,7 @@
 
 **Назначение (кратко):** unit / integration / performance. Ключевая идея —
 `simulation` тестируется без UI и сцен. Общий маршрут проверок описан в
-[рабочих деталях архитектуры](../../ARCHITECTURE_DETAILS.md) и
+[рабочих деталях архитектуры](../docs/architecture/architecture_details.md) и
 [`docs/testing/test_strategy.md`](../docs/testing/test_strategy.md).
 
 ## Правило

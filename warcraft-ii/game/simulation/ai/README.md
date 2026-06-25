@@ -1,6 +1,6 @@
-﻿# simulation/ai
+# simulation/ai
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** планирование сторон под управлением компьютера (до 7).
 AI создаёт **те же `GameCommand`, что и игрок** — не меняет мир напрямую и не читает

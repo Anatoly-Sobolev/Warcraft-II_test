@@ -8,19 +8,35 @@
 | --- | --- |
 | [`../../README.md`](../../README.md) | Входная точка репозитория и быстрый запуск. |
 | [`../../AGENTS.md`](../../AGENTS.md) | Правила для ИИ-агентов и разработчиков. |
-| [`../../ARCHITECTURE.md`](../../ARCHITECTURE.md) | Короткая архитектура проекта. |
-| [`../../ARCHITECTURE_DETAILS.md`](../../ARCHITECTURE_DETAILS.md) | Подробная архитектура и рабочие правила. |
-| [`architecture/architecture.md`](architecture/architecture.md) | Локальный указатель на архитектурные документы. |
+| [`development/onboarding.md`](development/onboarding.md) | Короткий вход для нового разработчика: принципы, модули, ссылки. |
+| [`architecture/architecture.md`](architecture/architecture.md) | Короткая архитектура проекта. |
+| [`architecture/architecture_details.md`](architecture/architecture_details.md) | Подробная архитектура и рабочие правила. |
 
 ## Документы по оценке и спринтам
 
 | Документ | Что закрывает |
 | --- | --- |
+| [`evaluation/grading_rules_2026.md`](evaluation/grading_rules_2026.md) | Исходные правила оценивания сезона 2026, перенесенные в Markdown. |
 | [`evaluation/season_2026_alignment.md`](evaluation/season_2026_alignment.md) | Соответствие требованиям сезона 2026 и чеклист против 0 баллов. |
 | [`testing/test_strategy.md`](testing/test_strategy.md) | Тест-план первого спринта и правила тест-кейсов для спринтов 2-8. |
 | [`product/user_story_map.md`](product/user_story_map.md) | User Story Map для продуктовой оценки. |
+| [`product/eight_week_ai_delivery_plan.md`](product/eight_week_ai_delivery_plan.md) | 8-недельный план задач, USM и оценка рисков для AI-assisted разработки. |
 | [`sprints/sprint_report_template.md`](sprints/sprint_report_template.md) | Шаблон отчета каждого спринта. |
 | [`sprints/sprint_01_report.md`](sprints/sprint_01_report.md) | Стартовый отчет первого спринта. |
+| [`sprints/sprint_02_report.md`](sprints/sprint_02_report.md) - [`sprints/sprint_08_report.md`](sprints/sprint_08_report.md) | Рабочие заготовки отчетов спринтов 2-8. |
+
+## Документы по процессу разработки
+
+| Документ | Что фиксирует |
+| --- | --- |
+| [`development/onboarding.md`](development/onboarding.md) | Быстрый маршрут входа в проект для человека и ИИ. |
+| [`development/workflow.md`](development/workflow.md) | Как брать задачу, работать с ИИ, проверять и сдавать результат. |
+| [`development/prompting_rules.md`](development/prompting_rules.md) | Правила постановки задач ИИ и антипримеры. |
+| [`development/ai_task_template.md`](development/ai_task_template.md) | Шаблон задачи для AI-assisted разработки. |
+| [`development/sprint_task_template.md`](development/sprint_task_template.md) | Шаблон задачи внутри недельного спринта. |
+| [`development/bug_report_template.md`](development/bug_report_template.md) | Шаблон баг-репорта. |
+| [`development/repo_structure.md`](development/repo_structure.md) | Карта репозитория и правила размещения новых файлов. |
+| [`development/markdown_link_check.md`](development/markdown_link_check.md) | Ручная процедура проверки локальных Markdown-ссылок. |
 
 ## Документы по игре
 

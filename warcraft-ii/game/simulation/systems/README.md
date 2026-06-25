@@ -1,6 +1,6 @@
-﻿# simulation/systems
+# simulation/systems
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** пакетная обработка сущностей — вся изменяющая логика мира.
 Системы читают/пишут `../storage/`, используют `../spatial/` и `../navigation/`.

@@ -1,6 +1,6 @@
-﻿# services
+# services
 
-> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../../ARCHITECTURE.md)
+> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../docs/architecture/architecture.md)
 
 **Статус: заглушка.** Реализуется частично (`persistence`, `platform`, `assets`
 нужны уже в вертикальном срезе), остальное — по мере надобности. README можно

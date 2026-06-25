@@ -1,6 +1,6 @@
-﻿# simulation/spatial
+# simulation/spatial
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** пространственные структуры карты — поверхность, проходимость,
 занятость, резервирование, видимость и версии проходимости для проверки кэша путей.

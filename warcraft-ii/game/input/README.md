@@ -1,6 +1,6 @@
-﻿# input
+# input
 
-> ↑ [game](../README.md) · 🏛 [Архитектура](../../../ARCHITECTURE.md)
+> ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md)
 
 **Ответственность:** получить события Godot, распознать жесты, хранить *кого выбрал
 игрок*, и превратить действия в `GameCommand` или `CameraIntent`.

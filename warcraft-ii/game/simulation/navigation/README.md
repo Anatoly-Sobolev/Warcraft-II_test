@@ -1,6 +1,6 @@
-﻿# simulation/navigation
+# simulation/navigation
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** поиск пути по сетке (A*) с очередью запросов, бюджетом на такт
 и кэшем, учитывающим версии регионов карты.

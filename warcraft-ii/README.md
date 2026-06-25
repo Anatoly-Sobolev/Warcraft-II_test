@@ -1,9 +1,9 @@
-﻿# Warcraft II — карта проекта
+# Warcraft II — карта проекта
 
 Одиночная 2D-RTS на Godot 4.4 (GL Compatibility) для ОС «Аврора». Цель — 30 FPS на слабом железе.
 
-- 🏛 **Архитектура и «почему»:** [`../ARCHITECTURE.md`](../ARCHITECTURE.md) — начни отсюда.
-- 🧭 **Рабочие детали:** [`../ARCHITECTURE_DETAILS.md`](../ARCHITECTURE_DETAILS.md) — куда класть код, папки, этапы.
+- 🏛 **Архитектура и «почему»:** [`docs/architecture/architecture.md`](docs/architecture/architecture.md) — начни отсюда.
+- 🧭 **Рабочие детали:** [`docs/architecture/architecture_details.md`](docs/architecture/architecture_details.md) — куда класть код, папки, этапы.
 
 ## Быстрый запуск
 
@@ -57,4 +57,4 @@ Input/AI/Scenario ──GameCommand──► Simulation ──┬── собы
 ```
 
 Где искать состояние: всё авторитетное — в `game/simulation/`. Кто чем владеет —
-в таблице README каждого модуля, в `ARCHITECTURE.md` и в `ARCHITECTURE_DETAILS.md`.
+в таблице README каждого модуля и документах `docs/architecture/`.

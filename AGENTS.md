@@ -6,17 +6,17 @@
 
 Прочитать:
 
-- [`README.md`](README.md);
-- [`ARCHITECTURE.md`](ARCHITECTURE.md);
-- [`ARCHITECTURE_DETAILS.md`](ARCHITECTURE_DETAILS.md);
-- [`warcraft-ii/README.md`](warcraft-ii/README.md);
-- [`warcraft-ii/docs/gameplay/mechanics_matrix.md`](warcraft-ii/docs/gameplay/mechanics_matrix.md);
+- `[README.md](README.md)`;
+- `[warcraft-ii/docs/architecture/architecture.md](warcraft-ii/docs/architecture/architecture.md)`;
+- `[warcraft-ii/docs/architecture/architecture_details.md](warcraft-ii/docs/architecture/architecture_details.md)`;
+- `[warcraft-ii/README.md](warcraft-ii/README.md)`;
+- `[warcraft-ii/docs/gameplay/mechanics_matrix.md](warcraft-ii/docs/gameplay/mechanics_matrix.md)`;
 - README того модуля, который меняется.
 
 Если задача касается сдачи спринта, дополнительно прочитать:
 
-- [`warcraft-ii/docs/evaluation/season_2026_alignment.md`](warcraft-ii/docs/evaluation/season_2026_alignment.md);
-- [`warcraft-ii/docs/testing/test_strategy.md`](warcraft-ii/docs/testing/test_strategy.md);
+- `[warcraft-ii/docs/evaluation/season_2026_alignment.md](warcraft-ii/docs/evaluation/season_2026_alignment.md)`;
+- `[warcraft-ii/docs/testing/test_strategy.md](warcraft-ii/docs/testing/test_strategy.md)`;
 - актуальный отчет спринта в `warcraft-ii/docs/sprints/`.
 
 ## Нельзя
@@ -41,20 +41,22 @@
 
 ## Где размещать изменения
 
-| Тип изменения | Основное место |
-| --- | --- |
-| Запуск приложения, роутинг экранов | `warcraft-ii/app/` |
-| Прогресс кампании | `warcraft-ii/game/campaign/` |
-| Один матч и сборка модулей | `warcraft-ii/game/match/` |
-| Жесты, выбор, команды игрока | `warcraft-ii/game/input/` |
-| Правила RTS, бой, экономика, туман, AI | `warcraft-ii/game/simulation/` |
-| Миссии, цели, триггеры, обучение | `warcraft-ii/game/scenario/` |
-| Отображение мира, камера, звук матча | `warcraft-ii/game/presentation/` |
-| HUD, меню, панели | `warcraft-ii/ui/` |
-| Сохранения, настройки, ресурсы, платформа | `warcraft-ii/services/` |
-| Баланс, каталоги, карты, ассеты | `warcraft-ii/content/` |
-| Тесты | `warcraft-ii/tests/` |
-| Проектные спецификации | `warcraft-ii/docs/` |
+
+| Тип изменения                             | Основное место                   |
+| ----------------------------------------- | -------------------------------- |
+| Запуск приложения, роутинг экранов        | `warcraft-ii/app/`               |
+| Прогресс кампании                         | `warcraft-ii/game/campaign/`     |
+| Один матч и сборка модулей                | `warcraft-ii/game/match/`        |
+| Жесты, выбор, команды игрока              | `warcraft-ii/game/input/`        |
+| Правила RTS, бой, экономика, туман, AI    | `warcraft-ii/game/simulation/`   |
+| Миссии, цели, триггеры, обучение          | `warcraft-ii/game/scenario/`     |
+| Отображение мира, камера, звук матча      | `warcraft-ii/game/presentation/` |
+| HUD, меню, панели                         | `warcraft-ii/ui/`                |
+| Сохранения, настройки, ресурсы, платформа | `warcraft-ii/services/`          |
+| Баланс, каталоги, карты, ассеты           | `warcraft-ii/content/`           |
+| Тесты                                     | `warcraft-ii/tests/`             |
+| Проектные спецификации                    | `warcraft-ii/docs/`              |
+
 
 ## Definition of Done
 
@@ -78,3 +80,4 @@
 4. Проверить, что все ссылки в README и отчете открываются.
 5. Убедиться, что все материалы лежат в GitVerse.
 6. Описать, какие тесты реально запускались и какой результат получили.
+

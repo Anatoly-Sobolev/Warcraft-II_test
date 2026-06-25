@@ -1,6 +1,6 @@
-﻿# simulation/ports
+# simulation/ports
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** **единственные двери** между симуляцией и остальным миром.
 Снаружи модули общаются с `simulation` только через эти типы — никогда напрямую с

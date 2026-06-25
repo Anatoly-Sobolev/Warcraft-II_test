@@ -1,6 +1,6 @@
-﻿# simulation/core
+# simulation/core
 
-> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../../ARCHITECTURE.md)
+> ↑ [simulation](../README.md) · 🏛 [Архитектура](../../../docs/architecture/architecture.md)
 
 **Ответственность:** фундамент симуляции — идентичность сущностей, очередь команд,
 события, случайность, расписание систем.

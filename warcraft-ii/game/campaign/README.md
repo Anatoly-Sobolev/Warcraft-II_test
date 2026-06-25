@@ -1,6 +1,6 @@
-﻿# campaign
+# campaign
 
-> ↑ [game](../README.md) · 🏛 [Архитектура](../../../ARCHITECTURE.md)
+> ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md)
 
 **Статус: заглушка.** Модуль ещё не реализован. README можно расширить вместе
 с первым реальным кодом модуля.

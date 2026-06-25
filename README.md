@@ -2,7 +2,7 @@
 
 Проект 2D RTS в духе Warcraft II на Godot 4.4 с прицелом на слабые ПК и ОС Аврора.
 
-Основной Godot-проект находится в [`warcraft-ii/`](warcraft-ii/). Архитектурные решения описаны в [`ARCHITECTURE.md`](ARCHITECTURE.md) и [`ARCHITECTURE_DETAILS.md`](ARCHITECTURE_DETAILS.md).
+Основной Godot-проект находится в [`warcraft-ii/`](warcraft-ii/). Архитектурные решения описаны в [`architecture.md`](warcraft-ii/docs/architecture/architecture.md) и [`architecture_details.md`](warcraft-ii/docs/architecture/architecture_details.md).
 
 ## Быстрый старт
 
@@ -16,8 +16,9 @@
 | Документ | Зачем нужен |
 | --- | --- |
 | [`AGENTS.md`](AGENTS.md) | Правила для ИИ-агентов и разработчиков перед любыми изменениями. |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Короткое объяснение архитектуры и ключевых запретов. |
-| [`ARCHITECTURE_DETAILS.md`](ARCHITECTURE_DETAILS.md) | Рабочая детализация модулей, папок и подходов. |
+| [`warcraft-ii/docs/development/onboarding.md`](warcraft-ii/docs/development/onboarding.md) | Короткий вход для нового разработчика: принципы, модули, ссылки. |
+| [`warcraft-ii/docs/architecture/architecture.md`](warcraft-ii/docs/architecture/architecture.md) | Короткое объяснение архитектуры и ключевых запретов. |
+| [`warcraft-ii/docs/architecture/architecture_details.md`](warcraft-ii/docs/architecture/architecture_details.md) | Рабочая детализация модулей, папок и подходов. |
 | [`warcraft-ii/README.md`](warcraft-ii/README.md) | Карта Godot-проекта и ссылки на модули. |
 | [`warcraft-ii/docs/README.md`](warcraft-ii/docs/README.md) | Индекс проектной документации. |
 | [`warcraft-ii/docs/gameplay/mechanics_matrix.md`](warcraft-ii/docs/gameplay/mechanics_matrix.md) | Матрица механик Warcraft II и источников. |
