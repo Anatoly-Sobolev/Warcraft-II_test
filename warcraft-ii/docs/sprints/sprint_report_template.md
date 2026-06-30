@@ -36,6 +36,12 @@
 | --- | --- | --- |
 | US-XXX | done/partial/blocked | Ссылка на тест-кейс или шаг демо |
 
+## Лог задач спринта
+
+| Task ID | Исполнитель | Плановый результат | Статус | Промпты план/факт | Риск | TL-review | Проверка/ссылка |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| SXX-P1-001 | P1/P2/P3/P4/D |  | todo/in progress/done/blocked | S 3-5 /  | Low/Medium/High/Critical | R0/R1/R2/R3 | Тест, manual check, PR или commit |
+
 ## Реализованные механики Warcraft II
 
 | Механика | Строка/раздел mechanics_matrix.md | Статус |

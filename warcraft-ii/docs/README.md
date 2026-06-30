@@ -20,7 +20,7 @@
 | [`evaluation/season_2026_alignment.md`](evaluation/season_2026_alignment.md) | Соответствие требованиям сезона 2026 и чеклист против 0 баллов. |
 | [`testing/test_strategy.md`](testing/test_strategy.md) | Тест-план первого спринта и правила тест-кейсов для спринтов 2-8. |
 | [`product/user_story_map.md`](product/user_story_map.md) | User Story Map для продуктовой оценки. |
-| [`product/eight_week_ai_delivery_plan.md`](product/eight_week_ai_delivery_plan.md) | 8-недельный план задач, USM и оценка рисков для AI-assisted разработки. |
+| [`product/eight_week_ai_delivery_plan.md`](product/eight_week_ai_delivery_plan.md) | 8-недельный production-план порта для 4 программистов и дизайнера: задачи по неделям, оценки в промптах, риски и уровни ревью. |
 | [`sprints/sprint_report_template.md`](sprints/sprint_report_template.md) | Шаблон отчета каждого спринта. |
 | [`sprints/sprint_01_report.md`](sprints/sprint_01_report.md) | Стартовый отчет первого спринта. |
 | [`sprints/sprint_02_report.md`](sprints/sprint_02_report.md) - [`sprints/sprint_08_report.md`](sprints/sprint_08_report.md) | Рабочие заготовки отчетов спринтов 2-8. |
@@ -55,6 +55,7 @@
 | [`gameplay/mechanics_matrix.md`](gameplay/mechanics_matrix.md) | Матрица механик Warcraft II, источников, статусов и тестов. |
 | [`gameplay/gameplay_spec.md`](gameplay/gameplay_spec.md) | Будущая игровая спецификация на основе матрицы механик. |
 | [`design/asset_production_system.md`](design/asset_production_system.md) | Полная система производства визуальных, звуковых и видео-ассетов: этапы, состав задач дизайнера, карты через TileMapLayer и performance-правила. |
+| [`design/asset_reference_and_integration.md`](design/asset_reference_and_integration.md) | Reference-first система ассетов: brief дизайнера, существующие папки проекта, форматы, размеры и правила подключения через каталоги, TileSet, sprite/audio banks. |
 | [`design/data_driven_animation_system.md`](design/data_driven_animation_system.md) | Data-driven система анимаций по модели Warcraft II/Wargus: spritesheets, frame sizes, states, markers и правила для дизайнера. |
 | [`design/visual_integration.md`](design/visual_integration.md) | Правила интеграции дизайна, UI, presentation, ассетов и анимаций. |
 | [`design/reference_packs/original_ui_reference_pack.md`](design/reference_packs/original_ui_reference_pack.md) | Минимальный пакет оригинального UI для дизайнера. |
