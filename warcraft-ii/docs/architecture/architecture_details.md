@@ -270,7 +270,12 @@ ai → cleanup
 - `pools/` — переиспользование сцен.
 - `audio/` — выбор звука по событиям матча.
 
-**Нельзя:** считать урон, путь, экономику, видимость.
+**Анимации:** только data-driven через spritesheet/atlas, animation bank и
+markers. Контракт описан в
+[`../design/data_driven_animation_system.md`](../design/data_driven_animation_system.md).
+
+**Нельзя:** считать урон, путь, экономику, видимость; хранить rules анимации в
+отдельных тяжелых сценах вместо content data.
 
 ### `ui/`
 
@@ -380,6 +385,7 @@ ai → cleanup
 | HUD, меню, окно, оверлей | `ui/hud/`, `ui/screens/`, `ui/components/`, `ui/overlays/` |
 | UI motion, hover, press, tooltip animation | Рядом с компонентом или `ui/animation/` для общих правил |
 | Правила интеграции дизайна | `docs/design/visual_integration.md` |
+| Data-driven анимации | `docs/design/data_driven_animation_system.md`, `content/assets/animations/`, `content/schema/presentation/` |
 | Visual ids, sprite/icon/audio banks | `content/schema/presentation/` + `content/catalogs/` |
 | Прогресс между миссиями | `game/campaign/` |
 | Условие победы, триггер, tutorial, диалог | `game/scenario/` |

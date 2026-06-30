@@ -43,8 +43,12 @@
 - Анимации атаки, движения, смерти, заклинаний и эффектов относятся к
   Presentation, но их правила соответствия Warcraft II фиксируются в
   `docs/gameplay/mechanics_matrix.md` (`PRES-001` ... `PRES-003`).
+- Runtime-анимации должны быть data-driven: spritesheet/atlas, frame size,
+  animation states и markers. Подробный контракт: [`../../docs/design/data_driven_animation_system.md`](../../docs/design/data_driven_animation_system.md).
 
 ## Инварианты
 - У `View` нет игрового `_process()`; позиции интерполируются централизованно.
 - Графический профиль не меняет результат симуляции.
 - Presentation не создает UI-кнопки и не обрабатывает команды игрока.
+- `AnimationPlayer` или отдельная сцена допустимы только как тонкая оболочка
+  отображения. Источник states, frames и markers должен быть в content data.

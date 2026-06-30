@@ -7,3 +7,11 @@ warcraft-ii/android/
 Thumbs.db
 *.swp
 *~
+
+# Local proprietary/reference materials.
+# Warcraft II/Wargus extracted assets may be used as private references only.
+external/
+warcraft-ii/docs/design/designer_handoff/**/reference_assets/**
+!warcraft-ii/docs/design/designer_handoff/**/reference_assets/
+!warcraft-ii/docs/design/designer_handoff/**/reference_assets/.gitignore
+!warcraft-ii/docs/design/designer_handoff/**/reference_assets/README.md

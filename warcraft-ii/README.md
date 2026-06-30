@@ -4,6 +4,8 @@
 
 - 🏛 **Архитектура и «почему»:** [`docs/architecture/architecture.md`](docs/architecture/architecture.md) — начни отсюда.
 - 🧭 **Рабочие детали:** [`docs/architecture/architecture_details.md`](docs/architecture/architecture_details.md) — куда класть код, папки, этапы.
+- 🎞 **Анимации:** [`docs/design/data_driven_animation_system.md`](docs/design/data_driven_animation_system.md) — spritesheets, states, markers и правила для дизайнера.
+- 🧩 **Перенос логики:** [`docs/porting/warcraft2_logic_porting_plan.md`](docs/porting/warcraft2_logic_porting_plan.md) — куда переносить mechanics/data из Warcraft II/Wargus и как проверять.
 
 ## Быстрый запуск
 

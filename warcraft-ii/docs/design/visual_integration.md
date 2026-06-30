@@ -23,34 +23,167 @@
 - Оригинальные ассеты Warcraft II нельзя коммитить без прав и отдельного
   asset pipeline.
 
+## Перед задачей дизайнеру
+
+Перед тем как просить дизайнера рисовать новый стиль, нужно подготовить пакет
+референсов оригинального Warcraft II UI. Дизайнер не должен выдумывать новый
+состав интерфейса, новые панели или лишние состояния без отдельной продуктовой
+задачи. Его задача — переработать существующий UI под новый визуальный стиль,
+сохранив состав, иерархию, темп чтения и RTS-функции.
+
+Reference pack должен содержать:
+
+1. Полные скриншоты оригинального игрового экрана.
+2. Крупные crop-изображения отдельных UI-зон.
+3. Таблицу соответствия UI-зон строкам `mechanics_matrix.md`.
+4. Список Wargus-файлов, которые подтверждают кнопки, иконки, хоткеи и layout.
+5. Список локальных ассетов проекта, которые можно использовать как рабочие
+   placeholders или текущие project visuals.
+6. Явную пометку, какие материалы являются reference-only и не должны попадать
+   в runtime/commit как оригинальные Warcraft II assets.
+
+Обязательные кадры оригинального UI для первого пакета:
+
+| Кадр | Что дизайнер должен увидеть | Зачем нужен |
+| --- | --- | --- |
+| Human mission 01, стартовый экран | Общий HUD, карта, ресурсы, миникарта, нижняя панель | Базовая композиция игрового экрана. |
+| Выбран один Peasant | Selection panel, portrait/icon, доступные команды рабочего | Состояние одного юнита. |
+| Выбрана группа юнитов | Group selection panel | Правила плотности и группового выбора. |
+| Выбран Town Hall | Training/production commands, supply/resource context | Состояние здания. |
+| Выбран Barracks | Train Footman и очередь/прогресс, если доступно | Production flow. |
+| Открыто build menu у Peasant | Command panel с уровнем меню строительства | Многоуровневые команды. |
+| Tooltip на command button | Текст, hotkey, стоимость/условия | Поведение подсказок. |
+| Недоступная команда | Disabled state и причина | Error/disabled state. |
+| Миникарта с туманом | Terrain, fog, player colors | Minimap и fog readability. |
+| Pause/options/save menu | Внутриигровые меню | Экранные состояния вне боя. |
+| Briefing/dialogue/objective screen | Миссионные overlay/экраны | Сюжетные и обучающие слои. |
+
+## Где брать визуальные материалы
+
+Материалы делятся на три группы.
+
+### Reference-only оригинал
+
+Это скриншоты и crop-изображения из оригинальной Warcraft II, сделанные из
+легального источника. Они нужны дизайнеру, чтобы понимать, что именно
+перерабатывается: состав HUD, расположение панелей, плотность кнопок, состояние
+tooltip, меню, briefing и миникарта.
+
+Эти материалы нельзя использовать как runtime-ассеты и нельзя коммитить в
+репозиторий, если на это нет прав и отдельного asset pipeline. Если права есть,
+нужно явно записать это в `docs/content/content_pipeline.md` и указать, какие
+файлы разрешено хранить в Git.
+
+Рекомендуемое место для описания пакета:
+
+```text
+docs/design/reference_packs/original_ui_reference_pack.md
+```
+
+Сами бинарные оригинальные изображения можно класть в репозиторий только при
+наличии прав. Если прав нет, в документе хранится manifest: названия кадров,
+сценарий получения, размер, дата снятия и внешний путь/носитель без коммита
+оригинальных файлов.
+
+### Wargus/Stratagus как технический справочник
+
+Для состава UI и mapping-данных использовать строки из `mechanics_matrix.md`:
+
+- `UI-001` — command panel: `Pos`, `Level`, `Icon`, `Action`, `Value`,
+  `Allowed`, `Key`, `Hint`, `ForUnit` из `scripts/*/buttons.lua`.
+- `UI-002` — resource bar: `ResourcesOnUI`, gold, wood, oil, supply.
+- `UI-003` — selection panel и смешанный выбор.
+- `UI-004` — queue panel и cancel/progress.
+- `UI-005` — minimap, terrain/fog/player colors.
+- `UI-006` — menus: help, options, speed, sound, diplomacy, save, load,
+  restart, quit.
+- `UI-007` — hotkeys из button data.
+- `UI-008` — briefing/dialogue/tutorial overlays.
+- `PRES-001` ... `PRES-006` — sprite mappings, animations, effects, sound
+  groups, palette/player colors.
+- `IMP-002` и `IMP-006` — импорт button catalog и visual/audio mappings.
+
+Файлы Wargus, которые нужно указывать в задаче дизайнеру и разработчику:
+
+```text
+scripts/human/buttons.lua
+scripts/orc/buttons.lua
+scripts/buttons.lua
+scripts/icons.lua
+scripts/ui.lua
+scripts/sound.lua
+scripts/human/anim.lua
+scripts/orc/anim.lua
+scripts/anim.lua
+scripts/missiles.lua
+scripts/tilesets/*.lua
+```
+
+Wargus можно использовать как справочник по структуре и mapping-данным, но нельзя
+переносить GPL-код напрямую в Godot без отдельного лицензионного решения.
+
+### Локальные ассеты проекта
+
+Текущие ассеты проекта лежат в `content/assets/`. Они используются как
+разрешенные project visuals или placeholders, пока нет отдельного легального
+pipeline оригинальных ассетов:
+
+```text
+content/assets/textures/ui/ui_atlas.png
+content/assets/textures/portraits/portraits_atlas.png
+content/assets/textures/units/*_units_atlas.png
+content/assets/textures/buildings/*_buildings_atlas.png
+content/assets/textures/effects/*_atlas.png
+content/assets/textures/terrain/*_atlas.png
+content/assets/animations/*_sprite_bank.tres
+content/assets/tilesets/*_tileset.tres
+content/assets/shaders/palette_shader.gdshader
+content/catalogs/sprite_banks.tres
+content/catalogs/unit_visuals.tres
+content/catalogs/building_visuals.tres
+content/catalogs/audio_banks.tres
+```
+
+Дизайнеру можно показывать эти материалы как текущую техническую базу проекта,
+но задача дизайнера — предложить новый визуальный стиль поверх состава
+оригинального UI, а не просто перекрасить placeholder-атласы.
+
 ## Что просить у дизайнера на первой неделе
 
 На первой неделе дизайнер не должен сдавать "один большой экран HUD". Нужен
 маленький компонентный пакет для первого вертикального среза.
 
-Минимальный пакет:
+Минимальный пакет, который выдается дизайнеру вместе с reference pack:
 
-1. Visual direction: 2-3 направления внешнего вида без копирования оригинальных
+1. Анализ оригинального UI: какие зоны есть, какие состояния нужны, какие
+   элементы нельзя убирать.
+2. Visual direction: 2-3 направления внешнего вида без копирования оригинальных
    ассетов Warcraft II.
-2. UI tokens: палитра, шрифты, размеры, отступы, рамки, состояния, иконографика.
-3. HUD components: resource bar, command button, command panel, selection panel,
+3. UI tokens: палитра, шрифты, размеры, отступы, рамки, состояния, иконографика.
+4. HUD components: resource bar, command button, command panel, selection panel,
    minimap panel, tooltip, queue slot.
-4. Component states: normal, hover/focus, pressed, disabled, selected, progress,
+5. Component states: normal, hover/focus, pressed, disabled, selected, progress,
    warning/error.
-5. Layout rules: desktop 16:9, малый экран, минимальные размеры, safe area, что
+6. Layout rules: desktop 16:9, малый экран, минимальные размеры, safe area, что
    фиксировано, что растягивается.
-6. Motion spec: что анимируется, trigger, duration, easing, loop/one-shot,
+7. Motion spec: что анимируется, trigger, duration, easing, loop/one-shot,
    можно ли отключить ради производительности.
-7. Asset list: какие иконки, рамки, шрифты, текстуры и mock placeholders нужны.
+8. Asset list: какие иконки, рамки, шрифты, текстуры и mock placeholders нужны.
 
 Хорошая формулировка задачи дизайнеру:
 
 ```text
-Сделать компонентную спецификацию HUD первого вертикального среза:
-resource bar, command button, command panel, selection panel, minimap panel,
-tooltip, queue slot. Для каждого компонента дать состояния и motion spec.
+На основе reference pack оригинального Warcraft II UI сделать переработку HUD
+первого вертикального среза в новом стиле. Не придумывать новый состав UI и не
+добавлять лишние панели без отдельного согласования.
+
+Обязательные компоненты: resource bar, command button, command panel,
+selection panel, minimap panel, tooltip, queue slot. Для каждого компонента дать
+состояния и motion spec. Отдельно показать, какой crop оригинального UI является
+источником для каждого компонента.
+
 Не собирать HUD как один монолитный экран: каждый элемент должен быть
-самостоятельным компонентом.
+самостоятельным компонентом для последующей реализации в Godot.
 ```
 
 ## Структура файлов
@@ -200,6 +333,11 @@ Still, move, attack, death, spell/action variants, projectile/effect visuals.
 Simulation сообщает состояние и события, Presentation выбирает визуальную
 анимацию. Presentation не решает, нанесен ли урон и закончилась ли атака.
 
+Runtime-формат должен быть data-driven: spritesheet/atlas, frame size, direction
+policy, animation states и event markers. Подробный контракт для разработчика и
+дизайнера лежит в
+[`data_driven_animation_system.md`](data_driven_animation_system.md).
+
 ### Scenario/UI overlays
 
 Briefing, dialogue, tutorial, notifications. Данные принадлежат Scenario и
@@ -242,4 +380,3 @@ Input, Simulation и Presentation.
 - для новой Warcraft II-механики обновлена `mechanics_matrix.md`;
 - для новых ассетов понятно, что они разрешены к коммиту или являются
   placeholders.
-

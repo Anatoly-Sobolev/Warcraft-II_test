@@ -38,14 +38,27 @@
 | [`development/repo_structure.md`](development/repo_structure.md) | Карта репозитория и правила размещения новых файлов. |
 | [`development/markdown_link_check.md`](development/markdown_link_check.md) | Ручная процедура проверки локальных Markdown-ссылок. |
 
+## Документы по портированию
+
+| Документ | Что фиксирует |
+| --- | --- |
+| [`porting/README.md`](porting/README.md) | Вход в документацию по переносу логики Warcraft II. |
+| [`porting/warcraft2_logic_porting_plan.md`](porting/warcraft2_logic_porting_plan.md) | Карта переноса логики: original source, наш модуль, данные и проверка. |
+| [`porting/local_reference_setup.md`](porting/local_reference_setup.md) | Нужно ли участникам иметь Wargus/Warcraft II локально и что нельзя коммитить. |
+
 ## Документы по игре
 
 | Документ | Что фиксирует |
 | --- | --- |
 | [`gameplay/mechanics_matrix.md`](gameplay/mechanics_matrix.md) | Матрица механик Warcraft II, источников, статусов и тестов. |
 | [`gameplay/gameplay_spec.md`](gameplay/gameplay_spec.md) | Будущая игровая спецификация на основе матрицы механик. |
+| [`design/asset_production_system.md`](design/asset_production_system.md) | Полная система производства визуальных, звуковых и видео-ассетов: этапы, состав задач дизайнера, карты через TileMapLayer и performance-правила. |
+| [`design/data_driven_animation_system.md`](design/data_driven_animation_system.md) | Data-driven система анимаций по модели Warcraft II/Wargus: spritesheets, frame sizes, states, markers и правила для дизайнера. |
 | [`design/visual_integration.md`](design/visual_integration.md) | Правила интеграции дизайна, UI, presentation, ассетов и анимаций. |
-| [`content/content_pipeline.md`](content/content_pipeline.md) | Будущий процесс подготовки контента и импорта данных. |
+| [`design/reference_packs/original_ui_reference_pack.md`](design/reference_packs/original_ui_reference_pack.md) | Минимальный пакет оригинального UI для дизайнера. |
+| [`design/reference_packs/wargus_ui_materials.md`](design/reference_packs/wargus_ui_materials.md) | Локальные Wargus-материалы для UI и HUD. |
+| [`design/tasks/designer_task_01_hud_restyle.md`](design/tasks/designer_task_01_hud_restyle.md) | Первое задание дизайнеру по HUD первого вертикального среза. |
+| [`content/content_pipeline.md`](content/content_pipeline.md) | Процесс подготовки контента, runtime-ассетов и reference-only материалов. |
 | [`input/touch_ux_spec.md`](input/touch_ux_spec.md) | Будущая спецификация сенсорного управления. |
 | [`performance/target_device.md`](performance/target_device.md) | Будущее описание целевого слабого устройства. |
 | [`performance/performance_budgets.md`](performance/performance_budgets.md) | Будущие бюджеты FPS, памяти и количества сущностей. |
