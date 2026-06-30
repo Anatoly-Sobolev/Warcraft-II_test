@@ -1,6 +1,6 @@
 # presentation
 
-> ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md)
+> ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md) · 🎨 [Интеграция визуала](../../docs/design/visual_integration.md)
 
 **Ответственность:** показать мир — карта, спрайты сущностей, интерполяция, анимации,
 визуальные снаряды и эффекты, выделение, туман, миникарта, камера, игровой звук.
@@ -31,6 +31,20 @@
 | `minimap/` | `minimap_renderer` (ограниченная частота). |
 | `audio/` | `match_audio_presenter` — выбор звуков по событиям. |
 
+## Визуальные данные и анимации
+
+- Визуальные id, sprite banks, animation banks и audio banks должны приходить из
+  `content/schema/presentation/` и `content/catalogs/`, а не быть захардкожены в
+  Simulation.
+- `views/` содержит сцены отображения сущностей: unit, building, projectile,
+  effect. Эти сцены не являются игровыми объектами и не владеют правилами матча.
+- `render/animation_clock` и renderer-слой выбирают кадры и визуальные состояния
+  по подготовленным данным, событиям и dirty-буферам.
+- Анимации атаки, движения, смерти, заклинаний и эффектов относятся к
+  Presentation, но их правила соответствия Warcraft II фиксируются в
+  `docs/gameplay/mechanics_matrix.md` (`PRES-001` ... `PRES-003`).
+
 ## Инварианты
 - У `View` нет игрового `_process()`; позиции интерполируются централизованно.
 - Графический профиль не меняет результат симуляции.
+- Presentation не создает UI-кнопки и не обрабатывает команды игрока.

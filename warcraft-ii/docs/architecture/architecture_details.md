@@ -285,8 +285,10 @@ ai → cleanup
 - `components/` — кнопка, tooltip, modal, progress, unit icon.
 - `overlays/` — dialogue, tutorial, notifications.
 - `theme/` — тема и константы.
+- `animation/` — общие UI motion tokens и helper-скрипты.
 
-**Нельзя:** хранить правду о мире и читать `simulation/storage/`.
+**Нельзя:** хранить правду о мире, читать `simulation/storage/`, собирать HUD
+как одну монолитную сцену вместо отдельных компонентов.
 
 ### `services/`
 
@@ -357,7 +359,7 @@ ai → cleanup
 **Роль:** подробные спецификации.
 
 **Подпапки:** `gameplay/`, `input/`, `performance/`, `platform/`, `persistence/`,
-`testing/`, `content/`, `architecture/`.
+`testing/`, `content/`, `architecture/`, `design/`.
 
 ---
 
@@ -376,6 +378,9 @@ ai → cleanup
 | Рендер карты, тумана, выделения, анимации | `game/presentation/render/` |
 | Камера | `game/presentation/camera/` |
 | HUD, меню, окно, оверлей | `ui/hud/`, `ui/screens/`, `ui/components/`, `ui/overlays/` |
+| UI motion, hover, press, tooltip animation | Рядом с компонентом или `ui/animation/` для общих правил |
+| Правила интеграции дизайна | `docs/design/visual_integration.md` |
+| Visual ids, sprite/icon/audio banks | `content/schema/presentation/` + `content/catalogs/` |
 | Прогресс между миссиями | `game/campaign/` |
 | Условие победы, триггер, tutorial, диалог | `game/scenario/` |
 | Сохранение, настройки, ресурсы, платформа | `services/` |

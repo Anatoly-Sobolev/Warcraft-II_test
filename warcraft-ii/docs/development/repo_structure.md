@@ -27,7 +27,7 @@
 | `tests/` | Unit, integration, performance и fixtures. |
 | `debug/` | Отладочные overlay и инструменты для разработки. |
 | `tools/` | Инструменты разработки и валидации вне runtime. |
-| `docs/` | Архитектура, планы, оценка, тестирование, спецификации. |
+| `docs/` | Архитектура, дизайн, планы, оценка, тестирование, спецификации. |
 
 ## Главные документы
 
@@ -38,6 +38,7 @@
 | `docs/architecture/architecture_details.md` | Когда нужно понять, куда класть код. |
 | `docs/product/eight_week_ai_delivery_plan.md` | При планировании спринтов и задач. |
 | `docs/product/user_story_map.md` | Когда нужно связать фичу с пользовательской ценностью. |
+| `docs/design/visual_integration.md` | Перед изменениями HUD, UI, presentation, ассетов или анимаций. |
 | `docs/testing/test_strategy.md` | Перед тестированием и фиксацией test cases. |
 | `docs/evaluation/season_2026_alignment.md` | Перед пятничной сдачей. |
 
@@ -46,12 +47,15 @@
 | Нужно добавить | Куда класть |
 | --- | --- |
 | Новую механику RTS | `game/simulation/` + тесты + строка в `mechanics_matrix.md`. |
-| Новый экран или HUD | `ui/` или `app/`, если это routing/экран приложения. |
-| Визуальное отображение мира | `game/presentation/`. |
+| Новый экран или HUD | `ui/screens/`, `ui/hud/`, `ui/components/`, `ui/overlays/`; правила в `docs/design/visual_integration.md`. |
+| UI motion, hover, press, tooltip animation | Рядом с компонентом или в `ui/animation/`, если правило общее. |
+| Визуальное отображение мира | `game/presentation/` + визуальные данные в `content/schema/presentation/` и `content/catalogs/`. |
 | Миссию, цель, briefing | `game/scenario/` и `content/`. |
 | Баланс, юнитов, здания | `content/schema/`, `content/catalogs/`, `content/balance/`. |
+| Визуальные ассеты, placeholders, шрифты, иконки | `content/assets/` с учетом прав и asset pipeline. |
 | Save/load | `services/persistence/` и snapshot-структуры владельцев состояния. |
 | Документ по процессу | `docs/development/`. |
+| Документ по дизайну и визуальной интеграции | `docs/design/`. |
 | Документ по оценке | `docs/evaluation/`. |
 | Отчет спринта | `docs/sprints/`. |
 
@@ -60,4 +64,6 @@
 - Не создавать новые верхнеуровневые папки без причины.
 - Не класть подробные спецификации в корень репозитория.
 - Не добавлять игровые правила в UI, Presentation или Godot scenes.
+- Не собирать HUD или экран как монолитную сцену, если внутри есть независимые
+  компоненты.
 - Не хранить "временные" решения без known issue или задачи на cleanup.

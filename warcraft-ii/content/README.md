@@ -1,6 +1,6 @@
 # content
 
-> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../docs/architecture/architecture.md)
+> ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../docs/architecture/architecture.md) · 🎨 [Интеграция визуала](../docs/design/visual_integration.md)
 
 **Статус: заглушка.** Наполняется данными по мере реализации механик. README
 с описанием схем и каталогов можно расширять по факту.
@@ -12,3 +12,22 @@
 Уже зафиксированы соглашения об именах:
 - [кампании](campaigns/README.md) — `campaign.tres` + `mission_NN` + `maps/`;
 - [карты схватки](skirmish/maps/README.md) — пара `<map_id>_logic.tres` / `<map_id>_visual.tres`.
+
+## Визуальный контент
+
+Визуальная часть хранится как данные, а не как игровая логика:
+
+- `schema/presentation/` — схемы visual ids, sprite banks, icon banks,
+  animation banks, audio banks;
+- `catalogs/` — `.tres`-каталоги визуальных ресурсов;
+- `assets/` — разрешенные ассеты, placeholders, шрифты, текстуры, атласы,
+  иконки и звуки;
+- `localization/` — тексты tooltip, меню, dialogue/tutorial.
+
+Simulation не должна ссылаться на конкретные файлы спрайтов, иконок или звуков.
+Она может отдавать состояние, события и ids. Presentation/UI сопоставляют эти ids
+с каталогами визуальных ресурсов.
+
+Оригинальные ассеты Warcraft II нельзя коммитить без прав и отдельного asset
+pipeline. До появления легального pipeline используются placeholders или
+собственные ассеты.

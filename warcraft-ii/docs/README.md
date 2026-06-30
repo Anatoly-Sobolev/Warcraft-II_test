@@ -44,6 +44,7 @@
 | --- | --- |
 | [`gameplay/mechanics_matrix.md`](gameplay/mechanics_matrix.md) | Матрица механик Warcraft II, источников, статусов и тестов. |
 | [`gameplay/gameplay_spec.md`](gameplay/gameplay_spec.md) | Будущая игровая спецификация на основе матрицы механик. |
+| [`design/visual_integration.md`](design/visual_integration.md) | Правила интеграции дизайна, UI, presentation, ассетов и анимаций. |
 | [`content/content_pipeline.md`](content/content_pipeline.md) | Будущий процесс подготовки контента и импорта данных. |
 | [`input/touch_ux_spec.md`](input/touch_ux_spec.md) | Будущая спецификация сенсорного управления. |
 | [`performance/target_device.md`](performance/target_device.md) | Будущее описание целевого слабого устройства. |

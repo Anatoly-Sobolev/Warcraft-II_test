@@ -33,6 +33,8 @@
 - Не менять Simulation напрямую из UI, Presentation, Scenario или Input.
 - Не обходить `GameCommand` для действий игрока, AI или сценария.
 - Не добавлять Warcraft II-механику без ссылки на `mechanics_matrix.md`.
+- Не просить "сделать HUD/экран целиком" без списка компонентов, ViewData и
+  запрещенных зависимостей.
 - Не обещать в документах то, что не запускается.
 - Не делать широкие рефакторы без отдельной задачи.
 
@@ -61,6 +63,25 @@ docs/architecture/architecture_details.md и game/simulation/README.md.
 
 Такой промпт слишком широкий. ИИ почти наверняка смешает Input, UI, Simulation и
 Presentation, а потом это будет трудно разрезать обратно.
+
+## Пример для визуальной задачи
+
+```text
+Прочитай AGENTS.md, docs/architecture/architecture.md,
+docs/architecture/architecture_details.md, docs/design/visual_integration.md и
+ui/README.md.
+
+Реализуй `ui/hud/resource_bar/` как отдельный компонент:
+- `resource_bar.tscn`;
+- `resource_bar.gd`;
+- входные данные: gold, wood, oil, supply_used, supply_limit;
+- компонент только отображает данные и не читает Simulation;
+- не менять command panel, selection panel и minimap;
+- не создавать GameCommand.
+
+Добавь ручной тест-кейс или demo-сцену компонента и обнови README, если меняешь
+структуру.
+```
 
 ## Когда останавливать ИИ
 
