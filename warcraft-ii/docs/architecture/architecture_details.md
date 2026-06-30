@@ -1,7 +1,9 @@
-# Архитектура: рабочие детали
+# Архитектура: рабочие детали порта
 
-*Вторая часть архитектуры. Читать перед началом конкретной задачи: какие модули
-есть, за что они отвечают и куда класть новый код.*
+*Этот документ отвечает на практический вопрос: куда студенту класть код, если он
+переносит конкретную механику Warcraft II/Wargus в Godot. Проект больше не
+проектируется как новая RTS; он строится как Warcraft II-compatible runtime с
+новыми ассетами и жестким performance budget.*
 
 Первая, короткая часть: [architecture.md](architecture.md).
 
@@ -9,36 +11,40 @@
 
 ## Как читать
 
-Этот файл фиксирует **границы и назначение**, а не алгоритмы. Формулы, бюджеты,
-форматы и UX-правила лежат в `warcraft-ii/docs/`.
+Для любой задачи используем один маршрут:
 
-Для задачи обычно хватает трёх шагов:
+1. Найти строку механики в `docs/gameplay/mechanics_matrix.md`.
+2. Найти Wargus/original source: Lua, SMS/SMP/PUD, installed game data или
+   проверенный ручной reference.
+3. Определить Wargus concept: `UnitType`, `Button`, `Order`, `Spell`, `Trigger`,
+   `AI directive`, `Map`, `Player`.
+4. Положить код в соответствующий модуль `game/warcraft_runtime/`.
+5. Добавить reference report, тест или ручной test case.
 
-1. Найти модуль в каталоге ниже.
-2. Проверить запреты модуля.
-3. Свериться с таблицей «Куда класть новый код».
+Если задача начинается словами «придумать систему», формулировку нужно переписать.
+Правильная формулировка: «перенести concept X из Wargus source Y».
 
 ---
 
 ## Структура папок
 
 ```text
-warcraft-ii/                 (res://)
-├── app/            запуск, экраны, жизненный цикл
+warcraft-ii/                  (res://)
+├── app/                      запуск, экраны, жизненный цикл
 ├── game/
-│   ├── campaign/   прогресс между миссиями
-│   ├── match/      сборка одного матча
-│   ├── input/      жесты, выбор, создание команд
-│   ├── simulation/ вся игровая логика
-│   ├── scenario/   миссии, сюжет, обучение
-│   └── presentation/ отображение игрового мира
-├── ui/             меню, HUD, панели, оверлеи
-├── services/       сохранения, настройки, ресурсы, платформа
-├── content/        схемы, каталоги, баланс, кампании, карты, ассеты
-├── tests/          unit / integration / performance
-├── debug/          отладочные оверлеи
-├── tools/          инструменты вне игры
-└── docs/           подробные спецификации
+│   ├── campaign/             прогресс между миссиями
+│   ├── match/                сборка одного матча
+│   ├── input/                ввод игрока -> WarcraftCommand
+│   ├── warcraft_runtime/     портируемое ядро Warcraft II/Wargus
+│   ├── scenario/             briefing, objectives, tutorial оболочки
+│   └── presentation/         отображение мира
+├── ui/                       HUD, command panel, меню, оверлеи
+├── services/                 сохранения, настройки, платформа, ресурсы
+├── content/                  runtime data, каталоги, новые ассеты
+├── tools/                    import/reference/validation pipeline
+├── tests/                    unit / integration / reference / performance
+├── debug/                    отладочные оверлеи
+└── docs/                     спецификации
 ```
 
 ---
@@ -49,322 +55,310 @@ warcraft-ii/                 (res://)
 
 **Роль:** вход в приложение, крупные экраны, жизненный цикл.
 
-**Ключевые файлы:**
+**Ключевые файлы:** `app.tscn`, `app.gd`, `bootstrap.gd`, `scene_router.gd`,
+`app_lifecycle.gd`, `app_state.gd`.
 
-- `app.tscn`, `app.gd` — корневая сцена приложения.
-- `bootstrap.gd` — начальная настройка.
-- `scene_router.gd` — переключение экранов.
-- `app_lifecycle.gd` — сворачивание, выход, пауза приложения.
-- `app_state.gd` — состояние уровня приложения.
-
-**Нельзя:** считать правила игры, хранить состояние матча.
+**Нельзя:** считать правила Warcraft II, хранить состояние матча.
 
 ### `game/campaign/`
 
-**Роль:** прогресс между миссиями.
+**Роль:** прогресс между миссиями и кампаниями.
 
-**Ключевые файлы:**
+**Ключевые файлы:** `campaign_controller.gd`, `campaign_state.gd`,
+`campaign_progression.gd`, `campaign_view_data.gd`.
 
-- `campaign_controller.gd` — управление кампанией.
-- `campaign_state.gd` — открытые миссии, результаты, сложность.
-- `campaign_progression.gd` — правила открытия миссий.
-- `campaign_view_data.gd` — данные для экранов кампании.
-
-**Нельзя:** грузить игровой мир и менять Simulation напрямую.
+**Нельзя:** исполнять миссию, менять runtime напрямую. Campaign получает
+`match_result` и обновляет доступность миссий.
 
 ### `game/match/`
 
-**Роль:** один игровой сеанс, composition root.
+**Роль:** один игровой сеанс и composition root.
 
 **Ключевые файлы:**
 
 - `match.tscn`, `match.gd` — корень матча.
-- `match_composition.gd` — создаёт и связывает input, simulation, scenario, presentation, ui, services.
-- `match_config.gd` — карта, seed, стороны, сложность.
-- `match_snapshot.gd` — общий снимок матча.
-- `match_result.gd` — итог для кампании.
-- `skirmish_config_builder.gd` — сборка конфигурации схватки.
+- `match_composition.gd` — создает input, `warcraft_runtime`, scenario,
+  presentation, ui, services и соединяет их портами.
+- `match_config.gd` — карта, seed, player slots, race, difficulty.
+- `match_snapshot.gd` — общий снимок runtime + scenario + match shell.
+- `match_result.gd` — итог для campaign.
+- `skirmish_config_builder.gd` — сборка схватки из Warcraft-compatible данных.
 
-**Нельзя:** считать бой, добычу, AI или UI-логику.
+**Нельзя:** считать бой, экономику, pathfinding, AI или UI-логику.
 
 ### `game/input/`
 
-**Роль:** ввод игрока: касания, выбор, команды, намерения камеры.
+**Роль:** перевод кликов, касаний и hotkeys в Warcraft II commands.
 
 **Ключевые файлы:**
 
-- `input_controller.gd` — точка входа событий Godot.
-- `gesture_recognizer.gd` — распознавание жестов.
-- `input_state.gd` — выбранные EntityId и режим команды.
-- `selection_controller.gd` — выбор через `selection_query`.
-- `command_composer.gd` — сборка `GameCommand`.
-- `camera_intent.gd` — намерение сдвинуть/приблизить камеру.
+- `input_controller.gd` — вход событий Godot.
+- `gesture_recognizer.gd` — мобильные жесты.
+- `input_state.gd` — выбранные `UnitHandle`, активный command mode.
+- `selection_controller.gd` — выбор через `warcraft_runtime/ports/selection_query`.
+- `command_composer.gd` — сборка `WarcraftCommand`.
+- `camera_intent.gd` — намерение камеры.
 - `selection_presentation_data.gd` — подсветка выбранного для Presentation.
 
-**Нельзя:** решать, можно ли действие. Это проверяет `simulation`.
+**Нельзя:** решать, доступна ли команда. Это делает `warcraft_runtime`.
 
-### `game/simulation/`
+### `game/warcraft_runtime/`
 
-**Роль:** авторитетный игровой мир.
+**Роль:** авторитетный Warcraft II-compatible runtime. Это самое горячее место
+проекта и главный слой переноса механик.
 
 **Корневые файлы:**
 
-- `simulation_world.gd` — собирает хранилища, системы, сетки, порты.
-- `simulation_runner.gd` — такты, накопление времени, запуск систем.
-- `simulation_config.gd` — частоты, лимиты, настройки симуляции.
-- `simulation_snapshot.gd` — сохраняемое состояние Simulation.
+- `warcraft_runtime.gd` — фасад ядра: состояние, game cycle, ports.
+- `game_cycle_runner.gd` — фиксированный Warcraft `GameCycle`, catch-up лимиты.
+- `runtime_config.gd` — частоты, лимиты, флаги Lua/native режимов.
+- `runtime_snapshot.gd` — сохраняемое состояние match runtime.
 
-**Нельзя:** обращаться к сценам, UI, звуку, файлам, платформе.
+**Контракт:**
 
-#### `game/simulation/core/`
+- принимает `WarcraftCommand`, mission script steps и AI directives;
+- отдает events, dirty buffers, UI snapshots, save snapshot;
+- не зависит от Godot scenes, UI, Presentation, audio и platform services;
+- в горячем цикле не создает лишний мусор и не исполняет тяжелый Lua per-unit.
 
-**Роль:** фундамент симуляции.
+#### `game/warcraft_runtime/model/`
 
-**Файлы:**
-
-- `entity_id.gd` — индекс + поколение.
-- `entity_registry.gd` — создание и освобождение ID.
-- `dense_id_set.gd` — плотный перебор активных компонентов.
-- `entity_factory.gd` — создание сущности из данных контента.
-- `game_command.gd` — намерение игрока, AI или сценария.
-- `command_queue.gd` — очередь команд по тактам.
-- `unit_order.gd` — длительное состояние принятого приказа.
-- `simulation_event.gd`, `event_buffer.gd` — события симуляции.
-- `simulation_random.gd` — сохраняемый RNG.
-- `tick_scheduler.gd` — редкие системы по расписанию.
-
-#### `game/simulation/storage/`
-
-**Роль:** компонентные данные в плотных массивах.
-
-**Группы файлов:**
-
-- База сущности: `identity_storage.gd`, `transform_storage.gd`, `ownership_storage.gd`.
-- Жизнь и бой: `health_storage.gd`, `combat_storage.gd`, `status_effect_storage.gd`.
-- Движение и карта: `movement_storage.gd`, `vision_storage.gd`, `terrain_runtime_storage.gd`.
-- Экономика: `worker_storage.gd`, `resource_node_storage.gd`, `side_storage.gd`.
-- Здания и производство: `building_storage.gd`, `production_storage.gd`.
-- Спецсистемы: `ability_runtime_storage.gd`, `projectile_storage.gd`, `transport_storage.gd`.
-- Статистика: `statistics_storage.gd`.
-
-**Нельзя:** отдавать наружу изменяемые массивы.
-
-#### `game/simulation/systems/`
-
-**Роль:** вся изменяющая логика мира по тактам.
-
-**Порядок систем:**
-
-```text
-command → economy → terrain → construction → production → ability →
-status_effect → movement → transport → combat → projectile → visibility →
-ai → cleanup
-```
-
-**Ключевые файлы:**
-
-- `command_system.gd` — проверка и принятие команд.
-- `economy_system.gd` — добыча, перенос, ресурсы.
-- `terrain_system.gd` — лес, ресурсы, проходимость.
-- `construction_system.gd` — размещение и стройка.
-- `production_system.gd` — очереди юнитов и технологий.
-- `movement_system.gd` — движение по пути.
-- `combat_system.gd` — атака, cooldown, урон.
-- `visibility_system.gd` — туман войны.
-- `cleanup_system.gd` — смерть, освобождение ID и клеток.
-
-**Нельзя:** создавать сцены, читать input/UI, выделять мусор в горячих циклах.
-
-#### `game/simulation/spatial/`
-
-**Роль:** логическая карта, занятость, видимость, быстрый поиск.
+**Роль:** Wargus-compatible понятия и легкие handle-типы.
 
 **Файлы:**
 
-- `map_grid.gd` — клетки карты.
-- `static_occupancy_grid.gd`, `dynamic_occupancy_grid.gd` — статическая и динамическая занятость.
-- `reservation_grid.gd` — резервирование движения.
-- `visibility_grid.gd` — explored/visible.
-- `spatial_index.gd` — быстрый поиск сущностей.
-- `path_region_versions.gd` — версии областей для кэша путей.
+- `unit_handle.gd` — безопасная ссылка на runtime unit: index + generation.
+- `unit_registry.gd` — создание, reuse и освобождение unit slots.
+- `runtime_index.gd` — плотные индексы для быстрых проходов.
+- `unit_factory.gd` — создание unit/building/missile из `UnitType`/catalog data.
+- `warcraft_command.gd` — намерение игрока, AI или mission script.
+- `command_queue.gd` — команды по `GameCycle`.
+- `warcraft_order.gd` — длительный приказ unit: move, attack, harvest, build...
+- `runtime_event.gd`, `event_buffer.gd` — завершившиеся факты runtime.
+- `runtime_random.gd` — сохраняемый RNG.
+- `cycle_scheduler.gd` — редкие проверки по расписанию циклов.
 
-#### `game/simulation/navigation/`
+**Нельзя:** добавлять сюда новую механику без Wargus concept/source.
 
-**Роль:** поиск пути и обслуживание очереди путей.
+#### `game/warcraft_runtime/state/`
 
-**Файлы:**
-
-- `grid_pathfinder.gd` — A* по сетке.
-- `navigation_service.gd` — фасад навигации.
-- `path_request_queue.gd` — очередь запросов.
-- `path_cache.gd` — кэш путей.
-- `group_path_planner.gd` — групповое движение.
-- `stuck_resolver.gd` — выход из застреваний.
-
-#### `game/simulation/ai/`
-
-**Роль:** AI планирует обычные `GameCommand`.
+**Роль:** состояние матча в производительной форме. Названия близки к Warcraft
+concepts, но хранение может быть data-oriented.
 
 **Файлы:**
 
-- `ai_controller.gd` — координация AI.
-- `ai_state_storage.gd` — состояние планирования.
-- `ai_directive.gd` — намерения AI.
-- `economy_planner.gd` — экономика.
-- `army_planner.gd` — армия.
+- `unit_type_state.gd` — runtime refs на `UnitType`, flags, visual ids.
+- `position_state.gd` — tile/subtile position, direction, movement layer.
+- `ownership_state.gd` — owner player, team/diplomacy refs.
+- `unit_vitals_state.gd` — HP, mana, armor, death flags.
+- `order_state.gd` — текущий и saved order, target, phase, timers.
+- `movement_state.gd` — speed, path, stuck state.
+- `combat_state.gd` — attack profile, range, cooldown, target.
+- `worker_state.gd` — carried resource, harvest target, return depot.
+- `building_state.gd` — footprint, construction progress, rally point.
+- `resource_node_state.gd` — gold mine, oil patch, forest/resource counters.
+- `terrain_state.gd` — изменяемые terrain flags и depleted cells.
+- `production_state.gd` — train/research/upgrade queues.
+- `spell_state.gd`, `status_effect_state.gd` — mana, effects, durations.
+- `missile_state.gd` — Warcraft missile/projectile runtime data.
+- `transport_state.gd` — passengers, unload state.
+- `player_state.gd` — до 8 players: race, controller, resources, supply, tech.
+- `vision_state.gd` — sight sources.
+- `score_state.gd` — statistics and result counters.
 
-**Нельзя:** менять хранилища в обход команд.
+**Нельзя:** отдавать изменяемые массивы наружу.
 
-#### `game/simulation/ports/`
+#### `game/warcraft_runtime/orders/`
+
+**Роль:** основное место переноса поведения Warcraft II units. Большинство правил
+должно попадать сюда, потому что Wargus/Stratagus mechanics часто живут в orders.
+
+**Файлы:**
+
+- `command_dispatcher.gd` — проверка команды и назначение initial order.
+- `order_move.gd` — move, stop, patrol movement phase.
+- `order_attack.gd` — attack, attack-ground, return fire, hold/stand behavior.
+- `order_resource.gd` — harvest, return-goods, gold/wood/oil cycle.
+- `order_build.gd` — build placement, construction, cancel-build, repair.
+- `order_train.gd` — train-unit, research, upgrade-to, queue/cancel.
+- `order_spell.gd` — cast-spell, mana, target validation, spell launch.
+- `order_transport.gd` — load/unload/passenger behavior.
+
+**Нельзя:** писать “удобное” поведение без reference. Если Wargus order ведет себя
+странно, фиксируем странность и переносим ее или явно записываем допустимое отличие.
+
+#### `game/warcraft_runtime/rules/`
+
+**Роль:** общие правила, которые обслуживают orders и не принадлежат одному приказу.
+
+**Файлы:**
+
+- `terrain_rules.gd` — passability, forest/rocks, buildable flags.
+- `visibility_rules.gd` — visible/explored/shared vision.
+- `missile_rules.gd` — missile movement and hit resolution.
+- `status_effect_rules.gd` — buff/debuff durations, stacking, expiration.
+- `lifecycle_rules.gd` — death, corpse/removal, cleanup, score events.
+
+**Нельзя:** превращать `rules/` в “новую систему RTS”. Если правило завязано на
+конкретный order, оно живет в `orders/`.
+
+#### `game/warcraft_runtime/map/`
+
+**Роль:** карта, занятость, pathfinding, fog grids.
+
+**Файлы:**
+
+- `warcraft_map.gd` — logical tiles, terrain flags, map dimensions.
+- `static_occupancy.gd`, `unit_occupancy.gd` — buildings/terrain и units.
+- `movement_reservations.gd` — временные reservations.
+- `fog_of_war_grid.gd` — visible/explored.
+- `unit_spatial_index.gd` — быстрый поиск units.
+- `grid_pathfinder.gd`, `path_service.gd`, `path_request_queue.gd`,
+  `path_cache.gd`, `group_move_planner.gd`, `stuck_resolver.gd`.
+- `path_region_versions.gd` — invalidation для path cache.
+
+**Performance note:** pathfinding/fog первыми уходят в native code, если бенчмарк
+не проходит на целевом устройстве.
+
+#### `game/warcraft_runtime/ai/`
+
+**Роль:** AI переносится как Warcraft II/Wargus directives, build orders and waves.
+
+**Файлы:**
+
+- `ai_controller.gd` — координация AI players.
+- `ai_cycle_scheduler.gd` — распределение AI work по `GameCycle`.
+- `ai_state.gd` — plans, cooldowns, known targets.
+- `ai_directive.gd` — переносимые AI calls/directives.
+- `build_order_planner.gd` — `AiNeed`, `AiSet`, worker/resource priorities.
+- `attack_wave_planner.gd` — groups, attack waves, waits.
+
+**Нельзя:** AI не пишет state напрямую, кроме своего планировочного состояния. Для
+мира он создает `WarcraftCommand` или runtime-recognized directive.
+
+#### `game/warcraft_runtime/scripting/`
+
+**Роль:** адаптация Wargus Lua/SMS/campaign scripts. Этот слой нужен, чтобы не
+переписывать mission logic вручную.
+
+**Что сюда добавлять:**
+
+- Lua loader или converter adapters;
+- mission script adapter;
+- trigger/action mapping;
+- safety wrappers для runtime API.
+
+**Performance note:** scripting слой не должен исполняться для каждого unit каждый
+cycle. Он запускает mission/AI decisions, а массовые операции выполняет runtime.
+
+#### `game/warcraft_runtime/native/`
+
+**Роль:** будущие C++/GDExtension реализации горячих участков.
+
+**Кандидаты:**
+
+- pathfinding;
+- fog/visibility;
+- mass unit order update;
+- missile/combat batch;
+- save/load serialization hot path.
+
+Нельзя переносить сюда “на всякий случай”. Сначала бенчмарк, потом native.
+
+#### `game/warcraft_runtime/ports/`
 
 **Роль:** единственные двери наружу.
 
-**Вход:** `command_sink.gd`.
+**Вход:** `warcraft_command_sink.gd`.
 
-**Запросы:** `selection_query.gd`, `command_query.gd`, `scenario_query.gd`,
-`simulation_ui_query.gd`, `simulation_event_reader.gd`.
+**Запросы:** `selection_query.gd`, `warcraft_command_query.gd`, `mission_query.gd`,
+`runtime_ui_query.gd`, `runtime_event_reader.gd`.
 
-**Данные наружу:** `selection_view_data.gd`, `simulation_ui_data.gd`,
+**Данные наружу:** `selection_view_data.gd`, `runtime_ui_data.gd`,
 `render_change_buffer.gd`, `terrain_change_buffer.gd`, `fog_change_buffer.gd`,
 `minimap_change_buffer.gd`.
 
-**Нельзя:** возвращать внутренние массивы `storage/`.
+**Нельзя:** возвращать изменяемые массивы `state/` или map grids.
 
 ### `game/scenario/`
 
-**Роль:** миссия внутри матча: цели, триггеры, волны, диалоги, обучение.
+**Роль:** тонкая оболочка над mission runtime: objectives, briefing, tutorial,
+dialogue, UI-facing mission state.
 
-**Корневые файлы:**
+Если миссионная логика уже есть в Wargus `.sms`/Lua, сначала делается adapter в
+`warcraft_runtime/scripting/`, а `scenario/` показывает цели и диалоги.
 
-- `scenario_controller.gd` — координация сценария.
-- `scenario_state.gd` — состояние сценария.
-- `scenario_snapshot.gd` — сохранение сценария.
-- `scenario_view_data.gd` — данные для UI.
-- `scenario_presentation_port.gd` — запросы к Presentation.
-
-**Подпапки:**
-
-- `mission/` — `mission_runtime.gd`, `condition_evaluator.gd`, `action_executor.gd`.
-- `narrative/` — `sequence_runner.gd`, `dialogue_runtime.gd`.
-- `tutorial/` — `tutorial_runner.gd`, `tutorial_input_rules.gd`.
-
-**Нельзя:** править `simulation/storage/` напрямую.
+**Нельзя:** править `warcraft_runtime/state/` напрямую.
 
 ### `game/presentation/`
 
-**Роль:** показать игровой мир.
+**Роль:** показать игровой мир и звук матча по snapshots/events.
 
-**Корневые файлы:**
+**Ключевые файлы:** `world_view.tscn`, `world_view.gd`,
+`presentation_controller.gd`, `render_sync.gd`, `camera_control_port.gd`,
+`camera_snapshot.gd`.
 
-- `world_view.tscn`, `world_view.gd` — сцена мира.
-- `presentation_controller.gd` — координация кадра.
-- `render_sync.gd` — связь `EntityId -> View`.
-- `camera_control_port.gd`, `camera_snapshot.gd` — камера.
-
-**Подпапки:**
-
-- `views/` — `unit_view`, `building_view`, `projectile_view`, `effect_view`.
-- `render/` — entity/map/fog/selection renderers, `animation_clock`, `view_culling`.
-- `camera/` — состояние, контроллер, границы.
-- `minimap/` — отрисовка миникарты.
-- `pools/` — переиспользование сцен.
-- `audio/` — выбор звука по событиям матча.
-
-**Анимации:** только data-driven через spritesheet/atlas, animation bank и
-markers. Контракт описан в
-[`../design/data_driven_animation_system.md`](../design/data_driven_animation_system.md).
-
-**Нельзя:** считать урон, путь, экономику, видимость; хранить rules анимации в
-отдельных тяжелых сценах вместо content data.
+**Нельзя:** считать урон, путь, экономику, видимость или доступность команд.
 
 ### `ui/`
 
-**Роль:** интерфейс поверх игры и отдельные экраны.
+**Роль:** HUD, command panel, selection panel, minimap panel, menus, overlays.
 
-**Корень:** `ui_root.tscn`, `ui_root.gd`.
-
-**Подпапки:**
-
-- `hud/` — `hud`, `resource_bar`, `command_panel`, `selection_panel`, `minimap_panel`.
-- `screens/` — main menu, campaign select, mission select, skirmish setup, settings, loading, pause, result.
-- `components/` — кнопка, tooltip, modal, progress, unit icon.
-- `overlays/` — dialogue, tutorial, notifications.
-- `theme/` — тема и константы.
-- `animation/` — общие UI motion tokens и helper-скрипты.
-
-**Нельзя:** хранить правду о мире, читать `simulation/storage/`, собирать HUD
-как одну монолитную сцену вместо отдельных компонентов.
+UI берет данные из runtime ports и content catalogs. UI не хранит правду о мире.
 
 ### `services/`
 
-**Роль:** инфраструктура и фасады к платформе.
+**Роль:** инфраструктура: persistence, settings, assets, audio, localization,
+platform, diagnostics, jobs.
 
-**Подпапки:**
-
-- `persistence/` — сохранения, миграции, autosave.
-- `settings/` — настройки.
-- `assets/` — загрузка ресурсов, manifest, cache.
-- `audio/` — общий audio service и пул игроков.
-- `localization/` — локализация.
-- `platform/` — платформа и адаптер «Авроры».
-- `diagnostics/` — логгер, performance monitor, content validator.
-- `jobs/` — фоновые задачи.
-
-**Нельзя:** принимать игровые решения. Если логика про урон, добычу, миссии или AI —
-это не services.
+Services не принимают игровых решений.
 
 ### `content/`
 
-**Роль:** данные игры.
+**Роль:** runtime data и новые ассеты.
 
-**Подпапки:**
+Ключевые папки:
 
-- `schema/gameplay/` — схемы юнитов, зданий, атак, способностей, карты, фракций.
-- `schema/presentation/` — визуальные схемы, банки спрайтов и звуков.
-- `schema/scenario/` — миссии, цели, условия, действия, tutorial, диалоги.
-- `schema/campaign/` — кампания.
-- `catalogs/` — `.tres` каталоги.
-- `balance/` — правила баланса.
-- `campaigns/`, `skirmish/maps/`, `tutorial/` — игровые наборы данных.
-- `assets/` — текстуры, атласы, шейдеры, звуки, тайлсеты, шрифты.
-- `localization/` — CSV локализации.
-
-**Нельзя:** добавлять новый класс юнита вместо записи в данных.
-
-### `tests/`
-
-**Роль:** проверка логики и связок.
-
-**Подпапки:**
-
-- `unit/` — отдельные классы и системы.
-- `integration/` — связки модулей: match, save/load, input flow, scenario.
-- `performance/` — бенчмарки.
-- `fixtures/` — тестовые данные.
-
-### `debug/`
-
-**Роль:** инструменты разработки поверх игры.
-
-**Файлы:** `performance_overlay`, `world_debug_overlay`, `path_debugger`,
-`visibility_debugger`, `terrain_debugger`, `event_log`, `debug_controller`.
-
-**Нельзя:** делать debug обязательной runtime-зависимостью release-сборки.
+- `schema/gameplay/` — UnitType, attacks, abilities, tech, map logic.
+- `schema/presentation/` — visual/audio mappings.
+- `schema/scenario/` — mission/objective/trigger/dialogue definitions.
+- `catalogs/` — `.tres` catalogs.
+- `imported/` — reference reports from Wargus/original install.
+- `assets/` — новые или разрешенные runtime assets.
 
 ### `tools/`
 
-**Роль:** инструменты вне игры.
+**Роль:** перенос и проверка reference data.
 
-**Файлы:** `content_validation_tool.gd`, `atlas_validation_tool.gd`, `map_baker.gd`.
+Нужные подпапки/инструменты:
 
-**Нельзя:** тянуть tools в runtime матча.
+- `tools/import/` — readers/converters for Wargus Lua, SMS/SMP/PUD, installed data.
+- `content_validation_tool.gd` — проверка catalogs и source metadata.
+- `atlas_validation_tool.gd` — проверка новых visual assets.
+- `map_baker.gd` — bake maps into runtime-friendly resources.
 
-### `docs/`
+---
 
-**Роль:** подробные спецификации.
+## Wargus concept -> проект
 
-**Подпапки:** `gameplay/`, `input/`, `performance/`, `platform/`, `persistence/`,
-`testing/`, `content/`, `architecture/`, `design/`.
+| Wargus/Warcraft concept | Основное место |
+| --- | --- |
+| `DefineUnitType`, unit/building stats | `content/schema/gameplay/`, `content/catalogs/`, `warcraft_runtime/model/unit_factory.gd` |
+| Unit runtime object | `warcraft_runtime/state/*`, `model/unit_handle.gd`, `model/unit_registry.gd` |
+| Player/side/resources/supply | `warcraft_runtime/state/player_state.gd` |
+| Button action/hotkey | `content/catalogs/`, `input/command_composer.gd`, `ports/warcraft_command_query.gd` |
+| Player/AI/mission command | `model/warcraft_command.gd`, `ports/warcraft_command_sink.gd` |
+| Unit order | `model/warcraft_order.gd`, `orders/order_*.gd` |
+| Movement/pathfinding | `orders/order_move.gd`, `map/path_service.gd` |
+| Combat/attack response | `orders/order_attack.gd`, `rules/missile_rules.gd`, `rules/lifecycle_rules.gd` |
+| Harvest/return/repair/build | `orders/order_resource.gd`, `orders/order_build.gd` |
+| Train/research/upgrade | `orders/order_train.gd`, `state/production_state.gd` |
+| Spell/status | `orders/order_spell.gd`, `rules/status_effect_rules.gd` |
+| Fog/shared vision/minimap | `rules/visibility_rules.gd`, `map/fog_of_war_grid.gd`, `ports/*fog*`, `ports/*minimap*` |
+| Campaign trigger/SMS action | `scripting/`, then `scenario/` for UI-facing state |
+| AI build orders/waves | `ai/`, `model/warcraft_command.gd` |
+| Save/load | `runtime_snapshot.gd`, `services/persistence/` |
+| Hot path optimization | `warcraft_runtime/native/` after benchmark |
 
 ---
 
@@ -372,54 +366,37 @@ markers. Контракт описан в
 
 | Что добавляем | Куда класть |
 | --- | --- |
-| Новый тип юнита, здания, способности, технологии | `content/schema/gameplay/` + `content/catalogs/` |
-| Баланс: HP, урон, скорость, стоимость | `content/balance/` или `content/catalogs/` |
-| Новая характеристика сущности в матче | `game/simulation/storage/` |
-| Новое правило игры | `game/simulation/systems/` |
-| Новая команда игрока, AI или сценария | `game/simulation/core/game_command.gd`, проверка в `systems/command_system.gd` |
-| Данные для HUD | `game/simulation/ports/*ui*` или `selection_view_data.gd` |
-| Данные для отрисовки мира | `game/simulation/ports/*change_buffer.gd` |
-| Игровой объект на карте | `game/presentation/views/` |
-| Рендер карты, тумана, выделения, анимации | `game/presentation/render/` |
-| Камера | `game/presentation/camera/` |
-| HUD, меню, окно, оверлей | `ui/hud/`, `ui/screens/`, `ui/components/`, `ui/overlays/` |
-| UI motion, hover, press, tooltip animation | Рядом с компонентом или `ui/animation/` для общих правил |
-| Правила интеграции дизайна | `docs/design/visual_integration.md` |
-| Data-driven анимации | `docs/design/data_driven_animation_system.md`, `content/assets/animations/`, `content/schema/presentation/` |
-| Visual ids, sprite/icon/audio banks | `content/schema/presentation/` + `content/catalogs/` |
-| Прогресс между миссиями | `game/campaign/` |
-| Условие победы, триггер, tutorial, диалог | `game/scenario/` |
-| Сохранение, настройки, ресурсы, платформа | `services/` |
-| Кампания, карта, локализация, ассеты | `content/` |
-| Unit-тест | `tests/unit/` |
-| Интеграционный тест | `tests/integration/` |
-| Бенчмарк | `tests/performance/` |
-| Инструмент вне игры | `tools/` |
-
----
-
-## Спорные границы
-
-**`presentation/` или `ui/`:** мир, камера, спрайты, туман и миникарта как картинка
-мира — `presentation/`. Кнопки, панели, меню и оверлеи — `ui/`.
-
-**`campaign/`, `scenario/` или `match/`:** прогресс между миссиями — `campaign/`;
-условия текущей миссии — `scenario/`; сборка игрового сеанса — `match/`.
-
-**`services/` или `game/`:** платформа, файлы, настройки, ресурсы — `services/`;
-урон, добыча, строительство, AI, миссии — `game/`.
+| Поле из Wargus `UnitType` | `content/schema/gameplay/` + `content/catalogs/` |
+| Runtime состояние этого поля | `game/warcraft_runtime/state/` |
+| Новый Warcraft command | `model/warcraft_command.gd`, `ports/warcraft_command_sink.gd`, `orders/command_dispatcher.gd` |
+| Новый unit order | `model/warcraft_order.gd`, `orders/order_*.gd` |
+| Общая функция rules, не принадлежащая одному order | `warcraft_runtime/rules/` |
+| Карта, passability, pathfinding, fog grid | `warcraft_runtime/map/` |
+| AI directive/build order/wave | `warcraft_runtime/ai/` |
+| Mission trigger/script adapter | `warcraft_runtime/scripting/` |
+| Данные для HUD/command panel | `warcraft_runtime/ports/*ui*`, `ports/warcraft_command_query.gd` |
+| Данные для рендера мира | `warcraft_runtime/ports/*change_buffer.gd` |
+| Сцена/спрайт/камера/миникарта | `game/presentation/` |
+| HUD/menu/overlay | `ui/` |
+| Новый visual/audio mapping | `content/schema/presentation/`, `content/catalogs/` |
+| Новый runtime asset | `content/assets/` |
+| Reference report/importer | `tools/import/`, `content/imported/` |
+| Unit/reference test | `tests/unit/` или `tests/integration/` |
+| Performance benchmark | `tests/performance/` |
 
 ---
 
 ## Как строить проект
 
-1. **Платформенный прототип:** пустой проект под «Аврору», ввод, звук, запись файла,
-   FPS-оверлей.
-2. **Вертикальный срез:** карта, две стороны, рабочий, ресурс, здание, боец,
-   движение, бой, туман, сохранение.
-3. **Полная симуляция:** стройка, производство, море/воздух, способности, AI.
-4. **Сценарии и кампании:** цели, триггеры, диалоги, обучение, прогресс.
-5. **Контент и оптимизация:** наполнение, баланс, бенчмарки.
+1. **Reference pipeline:** научиться получать reports по units/buttons/map/mission
+   из локального Wargus и установленной игры.
+2. **Runtime skeleton:** `UnitHandle`, `UnitType`, `Player`, `WarcraftCommand`,
+   `WarcraftOrder`, `GameCycle`, snapshot.
+3. **Первый playable slice:** Human mission 01: peasant, farm, town hall, barracks,
+   footman, gold/wood, build/train/move/attack, objectives.
+4. **Расширение orders:** repair, patrol, attack-ground, transport, oil, spells.
+5. **Campaign/AI:** mission scripts, AI build orders, attack waves, difficulty.
+6. **Performance pass:** benchmark, native candidates, memory/FPS budget.
 
-Дальше следующего этапа не идём, пока текущий не запускается и не даёт понятный
-результат на целевом устройстве.
+Дальше следующего этапа не идем, пока текущий не запускается, не имеет test/reference
+case и не описан в sprint/report docs.

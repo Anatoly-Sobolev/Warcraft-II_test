@@ -2,28 +2,37 @@
 
 > ↑ [game](../README.md) · 🏛 [Архитектура](../../docs/architecture/architecture.md)
 
-**Ответственность:** получить события Godot, распознать жесты, хранить *кого выбрал
-игрок*, и превратить действия в `GameCommand` или `CameraIntent`.
-**Владелец состояния:** список выбранных `EntityId`, основной выбранный объект, активный режим команды, временное состояние жестов.
+**Ответственность:** получить события Godot, распознать жесты/hotkeys, хранить
+выбор игрока и превратить действия в `WarcraftCommand` или `CameraIntent`.
+
+**Владелец состояния:** выбранные `UnitHandle`, основной выбранный объект, активный
+режим команды, временное состояние жестов.
 
 ## Контракт
-- **Принимает:** события ввода Godot, `TutorialInputRules` (ограничения от `scenario/tutorial`).
-- **Отдаёт:** `GameCommand` в `simulation/ports/command_sink`; `CameraIntent` в `presentation`; `SelectionPresentationData` (только подсветка) в `presentation`; `InputActionSummary` в tutorial.
-- **Запрещено:** принимать окончательное решение о допустимости действия (это делает `simulation`), хранить положение камеры.
+
+- **Принимает:** события ввода Godot, `TutorialInputRules`, UI button requests.
+- **Отдает:** `WarcraftCommand` в `warcraft_runtime/ports/warcraft_command_sink`;
+  `CameraIntent` в `presentation`; `SelectionPresentationData` для подсветки;
+  `InputActionSummary` в tutorial.
+- **Запрещено:** решать, доступна ли команда. Это делает `warcraft_runtime`.
 
 ## Зависит от
-- `simulation/ports` (`command_sink`, `selection_query`, `command_query`), `presentation` (`camera_control_port`).
-- **НЕ зависит от:** внутренних хранилищ `simulation`.
+
+- `warcraft_runtime/ports`: `warcraft_command_sink`, `selection_query`,
+  `warcraft_command_query`.
+- `presentation`: `camera_control_port`.
+- **Не зависит от:** `warcraft_runtime/state`.
 
 ## Файлы
+
 | Файл | Назначение |
 |---|---|
-| `input_controller.gd` | Единственная точка приёма событий Godot. |
+| `input_controller.gd` | Единственная точка приема событий Godot. |
 | `input_state.gd` | Выбор, режим команды, временные жесты. |
-| `input_snapshot.gd` | Устойчивое сериализуемое состояние (без активных жестов). |
-| `gesture_recognizer.gd` | Распознавание касаний/перетаскиваний/pinch/long-press. |
+| `input_snapshot.gd` | Устойчивое сериализуемое состояние input. |
+| `gesture_recognizer.gd` | Касания, drag, pinch, long-press. |
 | `selection_controller.gd` | Применение результатов `selection_query`. |
-| `command_composer.gd` | Сборка компактного `GameCommand`. |
+| `command_composer.gd` | Сборка compact `WarcraftCommand` из UI/input. |
 | `camera_intent.gd` | Намерение сдвинуть/масштабировать камеру. |
-| `input_action_summary.gd` | Описание действия для tutorial (не команда). |
-| `selection_presentation_data.gd` | `EntityId` + версия для подсветки в presentation. |
+| `input_action_summary.gd` | Описание действия для tutorial. |
+| `selection_presentation_data.gd` | `UnitHandle` + version для подсветки. |

@@ -1,4 +1,4 @@
-# Структура репозитория
+﻿# Структура репозитория
 
 Документ помогает быстро понять, где лежат основные материалы и куда добавлять
 новые файлы.
@@ -20,7 +20,7 @@
 | Путь | Что хранит |
 | --- | --- |
 | `app/` | Запуск приложения, экраны, жизненный цикл. |
-| `game/` | Игровые модули: match, input, simulation, scenario, presentation, campaign. |
+| `game/` | Игровые модули: match, input, warcraft runtime, scenario, presentation, campaign. |
 | `ui/` | HUD, меню, панели, overlay. |
 | `services/` | Сохранения, настройки, ресурсы, платформа, диагностика. |
 | `content/` | Схемы, каталоги, карты, кампании, игровые данные. |
@@ -46,7 +46,7 @@
 
 | Нужно добавить | Куда класть |
 | --- | --- |
-| Новую механику RTS | `game/simulation/` + тесты + строка в `mechanics_matrix.md`. |
+| Новую механику RTS | `game/warcraft_runtime/` + тесты + строка в `mechanics_matrix.md`. |
 | Новый экран или HUD | `ui/screens/`, `ui/hud/`, `ui/components/`, `ui/overlays/`; правила в `docs/design/visual_integration.md`. |
 | UI motion, hover, press, tooltip animation | Рядом с компонентом или в `ui/animation/`, если правило общее. |
 | Визуальное отображение мира | `game/presentation/` + визуальные данные в `content/schema/presentation/` и `content/catalogs/`. |

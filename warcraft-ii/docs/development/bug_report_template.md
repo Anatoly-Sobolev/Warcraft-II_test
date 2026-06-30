@@ -1,4 +1,4 @@
-# Bug Report Template
+﻿# Bug Report Template
 
 Использовать для дефектов, найденных в демо, тестах, документации или review.
 
@@ -36,7 +36,7 @@
 
 - `app`
 - `game/input`
-- `game/simulation`
+- `game/warcraft_runtime`
 - `game/scenario`
 - `game/presentation`
 - `ui`

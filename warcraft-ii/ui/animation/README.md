@@ -1,4 +1,4 @@
-# ui/animation
+﻿# ui/animation
 
 Папка для общих UI motion tokens и helper-скриптов.
 
@@ -11,6 +11,6 @@ press для `command_button` находятся в `ui/hud/command_panel/comman
 - общие helpers для запуска UI-анимаций;
 - тестовые motion presets.
 
-UI-анимация не должна менять Simulation, создавать `GameCommand` или хранить
+UI-анимация не должна менять Warcraft Runtime, создавать `WarcraftCommand` или хранить
 авторитетное состояние матча.
 

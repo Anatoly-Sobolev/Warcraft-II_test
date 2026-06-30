@@ -42,7 +42,7 @@
 
 | Marker | State | Frame | Meaning |
 | --- | --- | --- | --- |
-| hit | attack |  | Visual sync only; Simulation owns damage. |
+| hit | attack |  | Visual sync only; Warcraft Runtime owns damage. |
 | sound |  |  | Audio group/id. |
 | projectile |  |  | Spawn projectile/effect presentation. |
 | work |  |  | Harvest/repair visual sync. |
@@ -65,5 +65,5 @@
 - [ ] Animation data added to `content/assets/animations/*_sprite_bank.tres`.
 - [ ] Visual catalog references visual id.
 - [ ] Presentation view plays states through data-driven animation system.
-- [ ] No Simulation logic added to View.
+- [ ] No Warcraft Runtime logic added to View.
 - [ ] Manual demo/test map check completed.

@@ -1,4 +1,4 @@
-# Asset production system
+﻿# Asset production system
 
 Документ фиксирует, какие визуальные, звуковые и видео-материалы нужно
 создать для проекта, в каком порядке их делать и как они попадут в Godot.
@@ -102,7 +102,7 @@ MapRoot
   EntityPresentationRoot
 ```
 
-Simulation знает только grid, passability, resources и entity positions.
+Warcraft Runtime знает только grid, passability, resources и unit positions.
 Presentation выбирает визуальные tiles/props через catalogs.
 
 ### Что нужно создать дизайнеру для карты
@@ -167,7 +167,7 @@ C:\Users\UZER\Coding\Projects\wargus\scripts\orc\anim.lua
 
 ## Здания
 
-Здания не являются игровыми Node в Simulation. В Simulation это entity data, а
+Здания не являются игровыми Node в Warcraft Runtime. В Warcraft Runtime это entity data, а
 Presentation показывает состояние.
 
 Дизайнер создает:

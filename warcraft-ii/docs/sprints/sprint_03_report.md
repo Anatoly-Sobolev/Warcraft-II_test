@@ -1,4 +1,4 @@
-# Sprint 03 Report
+﻿# Sprint 03 Report
 
 Период: 2026-07-20 - 2026-07-24  
 Дата последней проверки: не заполнено  
@@ -7,7 +7,7 @@
 ## Короткий итог
 
 Цель спринта - дать игроку первый настоящий RTS-контроль: карта, камера, выбор
-юнита и команда движения через Simulation.
+юнита и команда движения через Warcraft Runtime.
 
 ## Ссылка на запуск
 
@@ -30,7 +30,7 @@
 
 - камера управляется;
 - выбранный юнит отображается в HUD или подсветке;
-- позиция юнита меняется через Simulation.
+- позиция юнита меняется через Warcraft Runtime.
 
 ## Реализованные user stories
 
@@ -57,7 +57,7 @@
 | --- | --- | --- | --- | --- |
 | S3-SMOKE-001 | manual | Запуск матча | not run | Выполнить перед сдачей. |
 | S3-MANUAL-001 | manual | Камера, выбор, move | not run | Основной демо-путь. |
-| S3-INTEGRATION-001 | integration | Input -> GameCommand -> Simulation -> Presentation | not run | Добавить, если реализовано. |
+| S3-INTEGRATION-001 | integration | Input -> WarcraftCommand -> Warcraft Runtime -> Presentation | not run | Добавить, если реализовано. |
 
 ## Результат smoke test
 

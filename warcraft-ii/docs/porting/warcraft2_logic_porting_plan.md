@@ -1,104 +1,115 @@
 # Warcraft II logic porting plan
 
-Документ фиксирует, какие части логики Warcraft II переносятся, откуда брать
-reference information, куда класть реализацию в проекте и чем проверять
-соответствие. Цель - не byte-perfect копия, а gameplay-equivalent порт с
-архитектурой, пригодной для слабого железа.
+Документ фиксирует, как переносить логику Warcraft II/Wargus в текущий проект.
+Цель - gameplay-equivalent порт с новыми ассетами, простой для студентов и
+достаточно быстрый для ОС «Аврора».
 
 ## Главный принцип
 
-Не создаем отдельный модуль `warcraft_logic`. Логика раскладывается по уже
-существующим слоям проекта:
+Не строим новую RTS-архитектуру поверх Godot. Строим Warcraft II-compatible runtime:
 
 ```text
-reference source -> content data -> Simulation systems -> ports -> Presentation/UI
+reference source -> runtime concept -> order/rule/adapter -> test/reference case
 ```
 
-Wargus Lua/C++ и извлеченные Warcraft II материалы нельзя переносить напрямую в
-кодовую базу без отдельного лицензионного решения. Их можно использовать как
-справочник, после чего записывать наши схемы, каталоги, тесты и документацию.
+Где:
+
+- **reference source** — Wargus Lua/C++/SMS/SMP/PUD, локально установленная игра,
+  проверенный ручной reference;
+- **runtime concept** — `UnitType`, `Unit`, `Player`, `Order`, `Map`, `GameCycle`,
+  `Trigger`, `AI directive`;
+- **order/rule/adapter** — код в `game/warcraft_runtime/`;
+- **test/reference case** — unit/integration/performance/manual проверка.
+
+Если GPL-перенос допустим для проекта, Wargus-код может использоваться прямее, но
+его нужно помещать в понятный compatibility слой, указывать source metadata и не
+смешивать с оригинальными proprietary assets.
 
 ## Где лежит runtime-логика
 
 | Область | Основное место | Что туда попадает |
 | --- | --- | --- |
-| Entity ids, commands, orders, events | `game/simulation/core/` | Универсальные команды, события, приказы, очередь команд. |
-| Компонентные данные | `game/simulation/storage/` | Health, movement, ownership, worker, production, projectile, terrain runtime. |
-| Правила матча | `game/simulation/systems/` | Движение, бой, экономика, строительство, производство, видимость, cleanup. |
-| Карта, занятость, видимость | `game/simulation/spatial/` | Grid, occupancy, reservations, visibility, spatial index. |
-| Поиск пути | `game/simulation/navigation/` | A*, path requests, group movement, path cache. |
-| Миссии и триггеры | `game/scenario/` | Условия победы, briefing, tutorial, mission actions. |
-| AI | `game/simulation/ai/` и `game/simulation/systems/ai_system.gd` | Директивы, экономика, армия, атаки. |
-| Runtime data | `content/schema/gameplay/`, `content/catalogs/`, `content/balance/` | Юниты, здания, атаки, технологии, карты, фракции. |
+| Unit, Player, Command, Order, Event | `game/warcraft_runtime/model/` | Warcraft-compatible concepts and handles. |
+| Runtime state | `game/warcraft_runtime/state/` | Units, players, orders, combat, worker, production, spells, missiles. |
+| Unit behavior | `game/warcraft_runtime/orders/` | Move, attack, harvest, build, train, spell, transport behavior. |
+| Shared rules | `game/warcraft_runtime/rules/` | Terrain, visibility, missiles, status effects, lifecycle. |
+| Map/path/fog | `game/warcraft_runtime/map/` | Logical map, occupancy, pathfinding, fog grids. |
+| AI | `game/warcraft_runtime/ai/` | Wargus-style AI directives, build orders, attack waves. |
+| Lua/SMS adapters | `game/warcraft_runtime/scripting/` | Mission trigger/action mapping, script adapters. |
+| Native hot paths | `game/warcraft_runtime/native/` | GDExtension/C++ only after benchmark. |
+| Runtime ports | `game/warcraft_runtime/ports/` | Input/UI/Presentation/Scenario boundary. |
+| UI-facing mission shell | `game/scenario/` | Objectives, briefing, dialogue, tutorial overlays. |
+| Runtime data | `content/schema/gameplay/`, `content/catalogs/` | UnitType, buildings, attacks, technologies, maps, factions. |
 | Visual/audio mapping | `content/schema/presentation/`, `content/catalogs/` | Visual ids, sprite banks, animation banks, audio banks. |
-| Import/validation tools | `tools/import/`, `tools/*validation*`, `tools/map_baker.gd` | Reference readers, reports, validation, baking. |
+| Import/validation | `tools/import/`, `content/imported/` | Reference readers, converted reports, validation. |
 
 ## Портинговая таблица
 
 | Warcraft II область | Reference source | Наши данные | Runtime module | Проверка |
 | --- | --- | --- | --- | --- |
-| Match/session, игроки, команды, расы | `scripts/wc2.lua`, map `.sms/.smp` | `match_config`, `factions.tres`, map definitions | `game/match/`, `side_storage` | Создать матч с теми же player slots, race, resources. |
-| Карта, terrain, start view | `.sms/.smp`, `scripts/tilesets/*.lua` | `map_logic_definition.gd`, `map_visual_definition.gd`, baked arrays | `spatial/map_grid`, `terrain_runtime_storage`, `map_renderer` | Размер карты, tiles, passability, start views совпадают с reference report. |
-| Passability и строительство | tileset flags: `land`, `water`, `forest`, `rock`, `unpassable`, `no-building` | terrain flags, placement rules | `terrain_system`, `construction_system`, occupancy grids | Юнит не проходит через forest/rocks/water; здание нельзя поставить на forbidden tiles. |
-| Юниты и здания | `scripts/*/units.lua`, `scripts/units.lua` | `units.tres`, `buildings.tres`, `attacks.tres` | `entity_factory`, storages, systems | Создание сущности дает правильные компоненты и footprint. |
-| Команды игрока | `scripts/commands.lua`, buttons/icons metadata | command definitions, button ids | `input/command_composer`, `command_system` | UI/input не меняют Simulation напрямую; все идет через `GameCommand`. |
-| Движение | unit speed fields, map passability | movement definition, speed, movement class | `movement_system`, `navigation_service` | Юнит строит путь по grid и не проходит через blocked occupancy. |
-| Бой | unit attack fields, missiles, armor/damage data | `attack_definition.gd`, projectile definitions | `combat_system`, `projectile_system`, `health_storage` | Cooldown, target filters, projectile/hit events работают через Simulation. |
-| Добыча и ресурсы | worker commands, resources, gold mine/oil/wood metadata | worker/resource definitions | `economy_system`, `worker_storage`, `resource_node_storage` | Worker harvest/carry/return cycle меняет ресурсы стороны. |
-| Строительство | building definitions, requirements, costs | building definitions, construction data | `construction_system`, `production_system` | Placement, cost, progress, completion, cancel rules. |
-| Производство и технологии | train/research/upgrade metadata | production queues, technologies | `production_system`, `technology_definition.gd` | Queue progresses by tick and unlocks units/upgrades. |
-| Fog/visibility | view range, map visibility behavior | vision definitions | `visibility_system`, `visibility_grid` | Explored/visible buffers меняются по движениям units/buildings. |
-| AI | `scripts/ai/*`, campaign `_c.sms` AI calls | AI directives, plans, difficulty profiles | `ai/`, `ai_system` | AI создает обычные `GameCommand`, не меняет storages напрямую. |
-| Scenario/triggers | campaign `.sms`, briefing steps, trigger calls | mission/condition/action definitions | `game/scenario/` | Victory/defeat/objectives проверяются scenario-owned логикой. |
-| Animation mapping | `scripts/*/anim.lua`, unit `Image` fields | animation banks, visual definitions | `game/presentation/render/animation_clock.gd` | Presentation проигрывает states по data-driven system, Simulation не знает PNG. |
-| Sound groups | `scripts/sound.lua` | `audio_banks.tres` | `match_audio_presenter`, `services/audio` | Simulation events приводят к правильным sound groups. |
+| Match/session, players, teams, races | `scripts/wc2.lua`, map `.sms/.smp` | `match_config`, `factions.tres`, map definitions | `game/match/`, `state/player_state.gd` | Same player slots, race, resources, diplomacy. |
+| Map, terrain, start view | `.sms/.smp/.pud`, `scripts/tilesets/*.lua` | `map_logic_definition.gd`, baked arrays | `map/warcraft_map.gd`, `map/*occupancy*` | Same size, passability, start positions. |
+| Unit/building definitions | `scripts/*/units.lua`, `scripts/units.lua` | `units.tres`, `buildings.tres`, `attacks.tres` | `model/unit_factory.gd`, `state/*` | Created unit has expected runtime fields and footprint. |
+| Command buttons | `scripts/*/buttons.lua`, `scripts/buttons.lua` | button/action catalog | `input/command_composer`, `ports/warcraft_command_query.gd` | Same available commands/hotkeys for selection. |
+| Move/stop/patrol | Wargus order behavior, unit speed, map passability | movement definitions | `orders/order_move.gd`, `map/path_service.gd` | Unit path and blocked tiles match reference scenario. |
+| Attack/attack-ground/response | unit attack fields, missiles, armor/damage | attacks, projectiles | `orders/order_attack.gd`, `rules/missile_rules.gd` | Cooldown, target filters, hit/death events. |
+| Harvest/return resources | worker commands, resource metadata | worker/resource definitions | `orders/order_resource.gd`, `state/worker_state.gd` | Worker cycle changes player resources. |
+| Build/repair/cancel-build | building definitions, requirements, costs | building definitions | `orders/order_build.gd`, `rules/terrain_rules.gd` | Placement, cost, progress, completion, cancel. |
+| Train/research/upgrade | train/research/upgrade buttons and tech data | production queues, technologies | `orders/order_train.gd`, `state/production_state.gd` | Queue progresses by GameCycle and unlocks content. |
+| Spells/status effects | `scripts/spells.lua` | abilities, status effects | `orders/order_spell.gd`, `rules/status_effect_rules.gd` | Mana, target, duration, effect behavior. |
+| Transport/naval/oil | unit scripts, buttons, campaign maps | transport/oil data | `orders/order_transport.gd`, `orders/order_resource.gd`, `map/` | Load/unload, oil tanker cycle, naval pathing. |
+| Fog/visibility/minimap | view range, fog behavior | vision definitions | `rules/visibility_rules.gd`, `map/fog_of_war_grid.gd` | Visible/explored buffers change correctly. |
+| AI | `scripts/ai/*`, campaign `_c.sms` AI calls | AI directives, difficulty profiles | `ai/` | AI emits commands/directives and respects budgets. |
+| Scenario/triggers | campaign `.sms`, briefing steps, trigger calls | mission/action/condition definitions | `scripting/`, then `scenario/` | Victory/defeat/objectives match mission source. |
+| Animation mapping | `scripts/*/anim.lua`, unit `Image` fields | animation banks, visual definitions | `presentation/render/animation_clock.gd` | Presentation follows runtime state/events. |
+| Sound groups | `scripts/sound.lua` | `audio_banks.tres` | `presentation/audio`, `services/audio` | Runtime events map to correct sound groups. |
 
 ## Этапы переноса
 
-1. Выбрать маленький vertical slice: одна карта, Human worker, melee unit,
-   town hall, ресурс, базовая атака.
-2. Создать reference report в `content/imported/` без оригинальных ассетов.
-3. Заполнить/уточнить gameplay schemas и catalogs.
-4. Реализовать недостающие storage/system функции в Simulation.
-5. Добавить presentation mapping только после того, как Simulation state/events
-   понятны.
-6. Добавить тест: unit/integration/manual smoke.
-7. Обновить `mechanics_matrix.md`: источник, статус, тест.
+1. **Reference reports:** units, buttons, map, mission 01. Никакой ручной перенос
+   “по памяти”.
+2. **Runtime concepts:** `UnitHandle`, `Player`, `WarcraftCommand`,
+   `WarcraftOrder`, `GameCycle`, `runtime_snapshot`.
+3. **Human mission 01 slice:** peasant, farm, town hall, barracks, footman,
+   gold/wood, move/harvest/build/train/attack, objectives.
+4. **Order expansion:** patrol, repair, attack-ground, transport, oil, spells.
+5. **Campaign/AI:** mission script adapters, AI build orders, attack waves.
+6. **Performance pass:** benchmark hot paths, move selected parts to native if
+   needed.
 
 ## Что добавлять в структуру
 
-Нужны не новые runtime-модули, а портинговая инфраструктура:
-
 ```text
-docs/porting/
+docs/porting/wargus_runtime_mapping.md
 tools/import/
 content/imported/
+game/warcraft_runtime/scripting/
+game/warcraft_runtime/native/
 ```
 
-`docs/porting/` объясняет процесс. `tools/import/` читает локальные reference
-sources и генерирует отчеты/черновики. `content/imported/` хранит наши
-промежуточные отчеты и таблицы, которые можно коммитить, если они не содержат
-оригинальных ассетов или GPL-кода.
+`tools/import/` читает локальные sources и генерирует reports/converted drafts.
+`content/imported/` хранит коммитируемые reports. `scripting/` содержит adapters,
+если выгоднее исполнять/адаптировать старые script concepts. `native/` остается
+для горячих участков после измерений.
 
 ## Запрещено
 
-- Копировать GPL-код Wargus в Godot runtime.
 - Коммитить оригинальные Warcraft II PNG/WAV/SMK/SMS/PUD/extracted assets без
   отдельного права.
-- Встраивать правила Simulation в UI, Presentation или Godot Node.
-- Делать импорт так, чтобы для запуска проекта требовалась локальная купленная
-  игра.
-- Хранить gameplay data только в дизайнерских картинках или Godot-сценах.
+- Встраивать gameplay rules в UI, Presentation или Godot Node.
+- Делать импорт так, чтобы release-сборке требовался локальный путь к купленной игре.
+- Придумывать behavior без source/reference, если source существует.
+- Переносить Lua/script behavior в hot per-unit loop без benchmark.
 
 ## Definition of Done для переноса механики
 
 Механика считается перенесенной, если:
 
 - есть строка или источник в `mechanics_matrix.md`;
-- runtime data лежит в `content/schema/*` и `content/catalogs/*`;
-- логика реализована в правильной системе Simulation/Scenario;
-- вход идет через `GameCommand`, если это действие игрока/AI/scenario;
-- выход идет через events, dirty buffers или ViewData;
-- есть тест или ручной тест-кейс;
-- reference-only материалы не попали в коммит;
-- ограничения записаны явно.
+- есть source metadata или reference report;
+- runtime data лежит в `content/schema/*` и `content/catalogs/*`, если это data;
+- behavior реализован в правильном `warcraft_runtime` order/rule/adapter;
+- вход идет через `WarcraftCommand`/order/script API;
+- выход идет через events, dirty buffers или snapshots;
+- есть test/reference/manual case;
+- ограничения и отличия от Wargus/original записаны явно.

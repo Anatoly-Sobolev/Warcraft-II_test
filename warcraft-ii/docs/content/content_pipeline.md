@@ -1,4 +1,4 @@
-# Content pipeline
+﻿# Content pipeline
 
 Документ фиксирует, как проект работает с игровыми данными, визуальными
 материалами и reference-only ассетами.
@@ -8,7 +8,7 @@
 | Тип | Где хранится | Можно ли использовать в runtime | Правило |
 | --- | --- | --- | --- |
 | Gameplay data | `content/schema/gameplay/`, `content/catalogs/`, `content/balance/` | Да | Данные должны ссылаться на `mechanics_matrix.md`. |
-| Presentation data | `content/schema/presentation/`, `content/catalogs/` | Да | Хранит visual ids, sprite/icon/audio banks, но не правила Simulation. |
+| Presentation data | `content/schema/presentation/`, `content/catalogs/` | Да | Хранит visual ids, sprite/icon/audio banks, но не правила Warcraft Runtime. |
 | Project visuals/placeholders | `content/assets/` | Да | Только разрешенные к коммиту материалы. |
 | Imported reference reports | `content/imported/` | Нет напрямую | Наши Markdown/CSV/JSON отчеты без оригинальных ассетов; используются для переноса в schemas/catalogs. |
 | Original Warcraft II references | `docs/design/reference_packs/` manifest или внешний носитель | Нет | Reference-only, если нет отдельного права и asset pipeline. |
@@ -66,7 +66,7 @@ content/catalogs/building_visuals.tres
 content/catalogs/audio_banks.tres
 ```
 
-Simulation не должна ссылаться на конкретные файлы ассетов. Она отдает состояние,
+Warcraft Runtime не должна ссылаться на конкретные файлы ассетов. Она отдает состояние,
 events и ids, а Presentation/UI выбирают визуалы через каталоги.
 
 ## Импорт и reference reports

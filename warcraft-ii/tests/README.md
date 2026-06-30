@@ -2,19 +2,21 @@
 
 > ↑ [Корень проекта](../README.md) · 🏛 [Архитектура](../docs/architecture/architecture.md)
 
-**Статус:** тестовая структура заведена, но каждый тестовый файл должен иметь
-реальное тело, команду запуска или ручной аналог в отчете спринта перед тем, как
-на него можно ссылаться при сдаче.
-
-**Назначение (кратко):** unit / integration / performance. Ключевая идея —
-`simulation` тестируется без UI и сцен. Общий маршрут проверок описан в
-[рабочих деталях архитектуры](../docs/architecture/architecture_details.md) и
-[`docs/testing/test_strategy.md`](../docs/testing/test_strategy.md).
+**Назначение:** unit, integration, reference and performance checks. Главная идея:
+`warcraft_runtime` тестируется без UI и сцен, а каждая перенесенная механика имеет
+source/reference proof.
 
 ## Правило
 
 Новая механика или исправление регрессии должны добавлять один из вариантов:
 
-- unit/integration/performance тест в этой папке;
-- ручной тест-кейс в отчете спринта;
-- явное объяснение, почему проверка отложена, и какой риск остается.
+- unit/integration/reference/performance тест в этой папке;
+- ручной test case в отчете спринта;
+- явное объяснение, почему проверка отложена и какой риск остается.
+
+## Приоритеты
+
+- `tests/unit/` — отдельные runtime orders/rules/adapters.
+- `tests/integration/` — input -> runtime -> presentation/ui/save flows.
+- `tests/performance/` — pathfinding, fog, mass orders, combat, render sync.
+- `tests/fixtures/` — small catalogs/maps/reference snapshots.

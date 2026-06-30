@@ -1,4 +1,4 @@
-# Data-driven animation system
+﻿# Data-driven animation system
 
 Документ фиксирует, как переносить подход Warcraft II/Wargus к анимациям в этот
 Godot-проект. Цель: сохранить производительность RTS и не превращать каждого
@@ -23,7 +23,7 @@ Godot-сцена `unit_view`, `building_view`, `projectile_view` или `effect_
 строительства или AI.
 
 Запрещено делать по отдельной большой сцене на каждую анимацию юнита. Это плохо
-масштабируется, усложняет поддержку и ломает архитектурное правило: Simulation
+масштабируется, усложняет поддержку и ломает архитектурное правило: Warcraft Runtime
 считает матч, Presentation только показывает состояние.
 
 ## Как это работает в оригинальной модели
@@ -68,8 +68,8 @@ DefineAnimations("animations-footman", {
 | --- | --- |
 | `frame N` | Показать frame id из spritesheet/atlas. |
 | `wait N` | Держать кадр несколько animation ticks. |
-| `move N` | Визуально продвинуть юнита в рамках движения. В Godot это должно синхронизироваться с интерполяцией позиции из Simulation. |
-| `attack` | Marker удара. В нашем проекте Simulation владеет уроном, а Presentation использует marker для визуального совпадения удара, звука и эффекта. |
+| `move N` | Визуально продвинуть юнита в рамках движения. В Godot это должно синхронизироваться с интерполяцией позиции из Warcraft Runtime. |
+| `attack` | Marker удара. В нашем проекте Warcraft Runtime владеет уроном, а Presentation использует marker для визуального совпадения удара, звука и эффекта. |
 | `sound X` | Marker звука. Presentation отправляет событие в audio presenter. |
 | `unbreakable begin/end` | Анимацию нельзя резко перебить. В порте это флаг state lock или minimum playback time. |
 | `label/goto/if-var` | Условная анимация. В порте допускается только как данные/условия visual state, не как произвольный скрипт. |
@@ -96,7 +96,7 @@ content/catalogs/projectiles.tres
 `content/assets/textures/*` хранит разрешенные PNG/WebP atlases и spritesheets.
 `content/assets/animations/*_sprite_bank.tres` хранит frame rectangles,
 animation states и markers. `content/catalogs/*` связывает gameplay ids с visual
-ids. Simulation не должна ссылаться на конкретный PNG.
+ids. Warcraft Runtime не должна ссылаться на конкретный PNG.
 
 ## Минимальная схема animation bank
 
@@ -123,7 +123,7 @@ ids. Simulation не должна ссылаться на конкретный P
 ## Runtime pipeline
 
 ```text
-Simulation state/events
+Warcraft Runtime state/events
   -> render change buffer / view data
   -> render_sync
   -> visual id lookup
@@ -132,7 +132,7 @@ Simulation state/events
   -> texture frame + marker dispatch
 ```
 
-Simulation владеет:
+Warcraft Runtime владеет:
 
 - текущим приказом и состоянием сущности;
 - позицией, направлением, скоростью;
@@ -141,14 +141,14 @@ Simulation владеет:
 
 Presentation владеет:
 
-- выбором visual state по simulation state/events;
+- выбором visual state по runtime state/events;
 - проигрыванием frame sequence;
-- интерполяцией между simulation ticks;
+- интерполяцией между warcraft runtime ticks;
 - dispatch визуальных markers: звук, вспышка, след, impact sprite;
 - culling, pooling, batching.
 
 Важно: marker `hit` не должен сам наносить урон. Он нужен, чтобы визуальный удар,
-звук и эффект совпали с событием Simulation.
+звук и эффект совпали с событием Warcraft Runtime.
 
 ## Формат ассетов для дизайнера
 
@@ -335,6 +335,6 @@ hit_frame/sound_frame для attack и work_frame для harvest/repair.
 - runtime atlas/spritesheet импортирован в разрешенную папку `content/assets/`;
 - animation bank ссылается на ассет через visual id;
 - unit/building/projectile visual catalog ссылается на animation bank;
-- Presentation проигрывает animation states без логики Simulation внутри View;
+- Presentation проигрывает animation states без логики Warcraft Runtime внутри View;
 - есть ручная проверка в demo scene или test map;
 - ограничения записаны явно.

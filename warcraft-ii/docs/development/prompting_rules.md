@@ -1,4 +1,4 @@
-# Правила постановки задач ИИ
+﻿# Правила постановки задач ИИ
 
 В этом проекте ИИ пишет код, но ответственность за архитектуру остается на команде.
 Промпт должен быть достаточно конкретным, чтобы ИИ не додумывал границы системы.
@@ -30,8 +30,8 @@
 ## Обязательные запреты в промптах
 
 - Не хранить игровую логику в UI, Presentation, Godot Node или сцене.
-- Не менять Simulation напрямую из UI, Presentation, Scenario или Input.
-- Не обходить `GameCommand` для действий игрока, AI или сценария.
+- Не менять Warcraft Runtime напрямую из UI, Presentation, Scenario или Input.
+- Не обходить `WarcraftCommand` для действий игрока, AI или сценария.
 - Не добавлять Warcraft II-механику без ссылки на `mechanics_matrix.md`.
 - Не просить "сделать HUD/экран целиком" без списка компонентов, ViewData и
   запрещенных зависимостей.
@@ -42,12 +42,12 @@
 
 ```text
 Прочитай AGENTS.md, docs/architecture/architecture.md,
-docs/architecture/architecture_details.md и game/simulation/README.md.
+docs/architecture/architecture_details.md и game/warcraft_runtime/README.md.
 
-В game/simulation реализуй MVP очереди GameCommand по тикам:
+В game/warcraft_runtime реализуй MVP очереди WarcraftCommand по тикам:
 - входные команды добавляются через command_sink;
-- команда хранит tick, actor EntityId, type и payload;
-- SimulationRunner забирает команды только для текущего тика;
+- команда хранит tick, actor UnitHandle, type и payload;
+- Warcraft RuntimeRunner забирает команды только для текущего тика;
 - UI и Presentation не получают доступ к очереди напрямую.
 
 Добавь unit-тест на порядок команд и команду из будущего тика.
@@ -61,7 +61,7 @@ docs/architecture/architecture_details.md и game/simulation/README.md.
 Сделай управление юнитами как в Warcraft II.
 ```
 
-Такой промпт слишком широкий. ИИ почти наверняка смешает Input, UI, Simulation и
+Такой промпт слишком широкий. ИИ почти наверняка смешает Input, UI, Warcraft Runtime и
 Presentation, а потом это будет трудно разрезать обратно.
 
 ## Пример для визуальной задачи
@@ -76,9 +76,9 @@ docs/design/reference_packs/original_ui_reference_pack.md и ui/README.md.
 - `resource_bar.gd`;
 - входные данные: gold, wood, oil, supply_used, supply_limit;
 - визуальная структура должна соответствовать reference pack оригинального UI;
-- компонент только отображает данные и не читает Simulation;
+- компонент только отображает данные и не читает Warcraft Runtime;
 - не менять command panel, selection panel и minimap;
-- не создавать GameCommand.
+- не создавать WarcraftCommand.
 
 Добавь ручной тест-кейс или demo-сцену компонента и обнови README, если меняешь
 структуру.

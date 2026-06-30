@@ -9,8 +9,8 @@
 | [`../../README.md`](../../README.md) | Входная точка репозитория и быстрый запуск. |
 | [`../../AGENTS.md`](../../AGENTS.md) | Правила для ИИ-агентов и разработчиков. |
 | [`development/onboarding.md`](development/onboarding.md) | Короткий вход для нового разработчика: принципы, модули, ссылки. |
-| [`architecture/architecture.md`](architecture/architecture.md) | Короткая архитектура проекта. |
-| [`architecture/architecture_details.md`](architecture/architecture_details.md) | Подробная архитектура и рабочие правила. |
+| [`architecture/architecture.md`](architecture/architecture.md) | Короткая архитектура порта Warcraft II. |
+| [`architecture/architecture_details.md`](architecture/architecture_details.md) | Подробная структура `warcraft_runtime` и рабочие правила. |
 
 ## Документы по оценке и спринтам
 
@@ -43,7 +43,9 @@
 | Документ | Что фиксирует |
 | --- | --- |
 | [`porting/README.md`](porting/README.md) | Вход в документацию по переносу логики Warcraft II. |
-| [`porting/warcraft2_logic_porting_plan.md`](porting/warcraft2_logic_porting_plan.md) | Карта переноса логики: original source, наш модуль, данные и проверка. |
+| [`porting/pre_start_checklist.md`](porting/pre_start_checklist.md) | Чеклист подготовки перед первой задачей по переносу механик. |
+| [`porting/warcraft2_logic_porting_plan.md`](porting/warcraft2_logic_porting_plan.md) | Карта переноса логики: source, runtime concept, модуль и проверка. |
+| [`porting/wargus_runtime_mapping.md`](porting/wargus_runtime_mapping.md) | Соответствие Wargus/Stratagus concepts структуре `game/warcraft_runtime/`. |
 | [`porting/local_reference_setup.md`](porting/local_reference_setup.md) | Нужно ли участникам иметь Wargus/Warcraft II локально и что нельзя коммитить. |
 
 ## Документы по игре

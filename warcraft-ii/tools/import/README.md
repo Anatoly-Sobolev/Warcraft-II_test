@@ -1,25 +1,32 @@
 # import tools
 
-Папка для инструментов, которые читают локальные Warcraft II/Wargus
-reference-only материалы и создают наши отчеты, черновые каталоги или проверки.
+Папка для инструментов, которые читают локальные Warcraft II/Wargus sources и
+создают наши reports, converted data или compatibility adapters.
 
-Эти инструменты запускаются вне игры. Они не должны быть зависимостью runtime.
+Эти инструменты запускаются вне игры. Runtime может использовать результат
+конвертации, но не должен требовать локальный путь к установленной игре в release.
 
 ## Разрешенные задачи
 
 | Инструмент | Назначение |
 | --- | --- |
-| `pud_sms_map_importer.gd` | Будущий importer карт: читает локальные `.sms/.smp/.pud` reference data и создает наши map reports/черновики. |
-| `animation_reference_report.gd` | Будущий отчет по spritesheet sizes, states, frames и markers из Wargus metadata. |
-| `sound_reference_report.gd` | Будущий отчет по sound groups и source ids. |
-| `wargus_reference_reader.gd` | Общий helper для чтения локальных reference paths, если понадобится. |
+| `wargus_units_importer.gd` | Читает `DefineUnitType` и создает UnitType/building reports. |
+| `wargus_buttons_importer.gd` | Читает button Action/Allowed/Key/Hint data. |
+| `wargus_spells_importer.gd` | Читает spells/status/targeting parameters. |
+| `wargus_upgrades_importer.gd` | Читает technologies, upgrades and dependencies. |
+| `pud_sms_map_importer.gd` | Читает `.sms/.smp/.pud` reference data and creates map reports/drafts. |
+| `wargus_campaign_importer.gd` | Читает campaign scripts, mission order, briefing and triggers. |
+| `animation_reference_report.gd` | Reports for spritesheet sizes, states, frames and markers. |
+| `sound_reference_report.gd` | Reports for sound groups and source ids. |
+| `wargus_reference_reader.gd` | Общий helper для локальных reference paths. |
 
 ## Правила
 
 - Не копировать оригинальные assets в `content/assets/`.
-- Не переносить GPL Lua/C++ код Wargus в runtime.
-- Вывод инструментов должен быть нашим report/data format, а не копией source.
+- Если переносится GPL Wargus logic, фиксировать source metadata and license note.
+- Вывод инструментов должен быть нашим report/data format или adapter, а не
+  случайной копией source без структуры.
 - Absolute paths допускаются только как локальные параметры запуска.
-- Результаты, которые можно коммитить, складывать в `content/imported/`.
+- Коммитируемые результаты складывать в `content/imported/`.
 
 Подробные правила: [`../../docs/porting/local_reference_setup.md`](../../docs/porting/local_reference_setup.md).

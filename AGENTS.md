@@ -22,22 +22,23 @@
 ## Нельзя
 
 - Нельзя добавлять механику Warcraft II без строки или источника в `mechanics_matrix.md`.
-- Нельзя переносить GPL-код Wargus напрямую в кодовую базу без отдельного лицензионного решения.
 - Нельзя коммитить оригинальные ассеты Warcraft II, если на них нет прав.
 - Нельзя хранить игровую логику в Godot Node, UI или Presentation.
-- Нельзя менять состояние Simulation напрямую из UI, Presentation, Scenario или Input.
-- Нельзя обходить `GameCommand` для действий игрока, AI или сценария.
+- Нельзя менять состояние `Warcraft Runtime` напрямую из UI, Presentation, Scenario или Input.
+- Нельзя обходить `WarcraftCommand` или runtime order/script API для действий игрока, AI или сценария.
+- Нельзя придумывать новую RTS-механику, если есть Warcraft II/Wargus reference.
 - Нельзя обещать в отчете спринта то, что не запускается в текущей версии проекта.
 
 ## Архитектурные правила
 
-- `game/simulation/` - единственный источник правды о матче.
+- `game/warcraft_runtime/` - единственный источник правды о матче.
 - `game/presentation/` и `ui/` только показывают подготовленное состояние.
-- Вход в Simulation идет через команды.
-- Выход из Simulation идет через события, dirty-буферы и ViewData.
-- Юнит или здание в логике - это `EntityId` и данные в хранилищах, а не отдельный Node с игровой логикой.
-- Новый контент добавляется через схемы, каталоги и `.tres`, если для него не нужна новая общая механика.
-- Сначала измерение и тест, потом оптимизация.
+- Вход в runtime идет через `WarcraftCommand`, runtime order или адаптированный mission/AI script step.
+- Выход из runtime идет через события, dirty-буферы и UI/render snapshots.
+- Юнит или здание в логике - это `UnitHandle` и runtime state, а не отдельный Node с игровой логикой.
+- Runtime-модель намеренно близка к Wargus/Stratagus: `UnitType`, `Unit`, `Player`, `Order`, `Map`, `GameCycle`.
+- Новый контент добавляется через схемы, каталоги, reference reports и `.tres`, если для него не нужна новая runtime-механика.
+- Сначала reference/source, тест и измерение, потом реализация и оптимизация.
 
 ## Где размещать изменения
 
@@ -48,7 +49,7 @@
 | Прогресс кампании                         | `warcraft-ii/game/campaign/`     |
 | Один матч и сборка модулей                | `warcraft-ii/game/match/`        |
 | Жесты, выбор, команды игрока              | `warcraft-ii/game/input/`        |
-| Правила RTS, бой, экономика, туман, AI    | `warcraft-ii/game/simulation/`   |
+| Warcraft II runtime, orders, бой, экономика, туман, AI | `warcraft-ii/game/warcraft_runtime/` |
 | Миссии, цели, триггеры, обучение          | `warcraft-ii/game/scenario/`     |
 | Отображение мира, камера, звук матча      | `warcraft-ii/game/presentation/` |
 | HUD, меню, панели                         | `warcraft-ii/ui/`                |
@@ -80,4 +81,3 @@
 4. Проверить, что все ссылки в README и отчете открываются.
 5. Убедиться, что все материалы лежат в GitVerse.
 6. Описать, какие тесты реально запускались и какой результат получили.
-

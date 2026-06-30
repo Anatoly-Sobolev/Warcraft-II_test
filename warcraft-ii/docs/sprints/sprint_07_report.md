@@ -1,4 +1,4 @@
-# Sprint 07 Report
+﻿# Sprint 07 Report
 
 Период: 2026-08-17 - 2026-08-21  
 Дата последней проверки: не заполнено  
@@ -31,7 +31,7 @@
 
 - цель миссии понятна игроку;
 - save/load восстанавливает MVP-состояние;
-- AI действует через `GameCommand`;
+- AI действует через `WarcraftCommand`;
 - итог миссии отображается.
 
 ## Реализованные user stories
@@ -60,7 +60,7 @@
 | --- | --- | --- | --- | --- |
 | S7-SMOKE-001 | manual | Запуск миссии и цель | not run | Выполнить перед сдачей. |
 | S7-INTEGRATION-001 | integration | Save/load MVP state | not run | Добавить, если реализовано. |
-| S7-INTEGRATION-002 | integration | AI через `GameCommand` | not run | Добавить, если реализовано. |
+| S7-INTEGRATION-002 | integration | AI через `WarcraftCommand` | not run | Добавить, если реализовано. |
 
 ## Результат smoke test
 

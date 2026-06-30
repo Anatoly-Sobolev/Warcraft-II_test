@@ -17,7 +17,7 @@ source checkout, купленная игра и extracted assets нужны то
 - проверкой соответствия Warcraft II по исходным материалам.
 
 Проект не должен требовать локальную Warcraft II installation для запуска,
-тестов обычных модулей или работы UI/Simulation.
+тестов обычных модулей или работы UI/Warcraft Runtime.
 
 ## Что можно хранить локально
 
@@ -50,7 +50,7 @@ C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted
 - оригинальные Warcraft II assets: PNG, WAV, MID/OGG, SMK, PUD, extracted
   sprites, tilesets, videos;
 - распакованные файлы купленной игры;
-- Wargus GPL source code, скопированный в runtime проекта;
+- локальные экспериментальные копии Wargus source/runtime adapters, если команда не приняла отдельное решение хранить их в репозитории;
 - generated boards, если внутри них лежат копии оригинальных изображений, а не
   только ссылки/описания;
 - локальные абсолютные пути как единственный способ работы команды.
