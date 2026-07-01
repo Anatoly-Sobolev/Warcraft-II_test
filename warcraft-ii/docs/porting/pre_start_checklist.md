@@ -6,12 +6,53 @@
 
 ## 1. Reference environment
 
-- [ ] Зафиксирован локальный путь к Wargus checkout у ответственного за анализ.
-- [ ] Зафиксирован локальный путь к установленной Warcraft II BNE/GOG версии у
-  ответственного за проверку оригинала.
+- [ ] Открывается upstream Wargus repository:
+  [Wargus/wargus](https://github.com/Wargus/wargus). Ответственный за анализ
+  клонирует его локально или скачивает архив исходников.
+- [ ] Открывается командная папка с установочными файлами Warcraft II:
+  [Warcraft II / Облако Mail](https://cloud.mail.ru/public/U1db/ujYBepiMq).
+  Ссылка проверяется вручную в браузере, потому что облако может требовать
+  JavaScript или авторизацию.
+- [ ] У ответственного за анализ есть Wargus checkout; абсолютный путь записан
+  только в приватном `docs/local_reference_paths.local.md` или локальном
+  окружении.
+- [ ] У ответственного за проверку оригинала есть установленная Warcraft II
+  BNE/GOG версия; абсолютный путь не попадает в tracked-документы.
+- [ ] Установочные архивы и распакованная игра лежат вне Git: например в
+  `external/installers/`, `external/warcraft_ii_install/` или личной папке
+  участника. В репозиторий не добавляются EXE/ZIP/ISO/MPQ/SMK/WAV/PNG и другие
+  оригинальные файлы игры.
 - [ ] `external/` остается локальной рабочей зоной и не становится обязательной
   runtime-зависимостью релизной сборки.
 - [ ] В Git попадают только reference reports, схемы, каталоги и новые ассеты.
+
+### Что сделать с reference-файлами перед началом работы
+
+1. Склонировать Wargus:
+
+   ```powershell
+   git clone https://github.com/Wargus/wargus.git <local Wargus checkout>
+   ```
+
+2. Скачать установочные файлы Warcraft II из командной папки Mail Cloud и
+   сохранить их в локальную неотслеживаемую папку, например:
+
+   ```text
+   <repo root>/external/installers/
+   ```
+
+3. Установить Warcraft II локально или распаковать материалы в личную
+   неотслеживаемую папку. Если используется `external/`, оставить ее только как
+   private reference workspace.
+4. Создать приватный файл `warcraft-ii/docs/local_reference_paths.local.md` и
+   записать туда реальные пути к Wargus checkout, установленной игре и
+   extracted/reference материалам. Этот файл игнорируется Git.
+5. Проверить, что проект Godot запускается без Wargus, без установленной игры и
+   без `external/`. Эти материалы нужны только для анализа, дизайна, reports и
+   reference parity checks.
+6. Если из игры или Wargus получены размеры, ids, states, карты, звуковые группы
+   или animation data, записать результат как Markdown/CSV/JSON reference report
+   в `content/imported/` или `docs/design/`, без копирования оригинальных assets.
 
 ## 2. Mechanics source of truth
 

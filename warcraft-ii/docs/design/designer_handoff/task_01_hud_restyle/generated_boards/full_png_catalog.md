@@ -1,6 +1,6 @@
-﻿# Full PNG Catalog
+# Full PNG Catalog
 
-Generated from: `C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted`
+Generated from: `external\wargus_extracted`
 
 PNG count: 464
 

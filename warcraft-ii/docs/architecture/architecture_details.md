@@ -18,11 +18,37 @@
    проверенный ручной reference.
 3. Определить Wargus concept: `UnitType`, `Button`, `Order`, `Spell`, `Trigger`,
    `AI directive`, `Map`, `Player`.
-4. Положить код в соответствующий модуль `game/warcraft_runtime/`.
+4. Положить код в соответствующий модуль. Gameplay rules и runtime state идут в
+   `game/warcraft_runtime/`; UI, Presentation, Scenario, Content, Services и
+   Tools остаются в своих слоях и не меняют runtime state напрямую.
 5. Добавить reference report, тест или ручной test case.
 
 Если задача начинается словами «придумать систему», формулировку нужно переписать.
 Правильная формулировка: «перенести concept X из Wargus source Y».
+
+## Минимальный путь переноса механики
+
+Архитектура полная, но реализация идет через минимальный вертикальный путь. Не
+нужно заполнять все папки заранее.
+
+```text
+mechanics_matrix row
+  -> Wargus/Warcraft source
+  -> WarcraftCommand или runtime script step
+  -> order/rule в game/warcraft_runtime/
+  -> runtime state change
+  -> test/manual reference check
+  -> UI/Presentation hook только если нужен для демо
+```
+
+Если задача требует больше слоев, сначала дробим ее. Например, не берем
+«сделать экономику»; берем «перенести harvest gold для Peasant из source X».
+Не берем «сделать боевую систему»; берем «Footman attack target: cooldown,
+damage, death check».
+
+Reserved/future зоны (`native/`, полноценный Lua/SMS runtime в `scripting/`,
+широкий AI, универсальный import pipeline, расширенные dirty buffers) включаются
+только под конкретную механику, benchmark или demo need.
 
 ---
 
@@ -306,12 +332,39 @@ dialogue, UI-facing mission state.
 
 UI берет данные из runtime ports и content catalogs. UI не хранит правду о мире.
 
+Ключевые папки:
+
+- `ui_root.tscn`, `ui_root.gd` — корень UI-слоя матча/приложения.
+- `screens/` — main menu, campaign/mission select, skirmish setup, settings,
+  pause, loading, result screens.
+- `hud/` — HUD матча: resources, selection, command panel, minimap, queue,
+  objectives.
+- `components/` — переиспользуемые UI-компоненты: icon button, tooltip, modal,
+  progress, unit icon.
+- `overlays/` — dialogue, tutorial, notifications.
+- `theme/` — Godot theme resources and constants.
+- `animation/` — UI animation notes/resources.
+
+**Нельзя:** кнопка UI не создает gameplay result напрямую. Она может инициировать
+input flow, который собирает `WarcraftCommand`.
+
 ### `services/`
 
 **Роль:** инфраструктура: persistence, settings, assets, audio, localization,
 platform, diagnostics, jobs.
 
 Services не принимают игровых решений.
+
+Ключевые папки:
+
+- `assets/` — loading/cache/manifest для ресурсов проекта.
+- `audio/` — audio service and player pools.
+- `diagnostics/` — logging, content validation, performance monitoring.
+- `jobs/` — фоновые/распределенные задачи вне gameplay decisions.
+- `localization/` — runtime access to translated text.
+- `persistence/` — save/load, headers, migrations, autosave policy.
+- `platform/` — platform abstraction, including Aurora-specific service.
+- `settings/` — пользовательские настройки.
 
 ### `content/`
 
@@ -322,9 +375,17 @@ Services не принимают игровых решений.
 - `schema/gameplay/` — UnitType, attacks, abilities, tech, map logic.
 - `schema/presentation/` — visual/audio mappings.
 - `schema/scenario/` — mission/objective/trigger/dialogue definitions.
+- `schema/campaign/` — campaign progression definitions.
 - `catalogs/` — `.tres` catalogs.
+- `balance/` — общие balance/rules resources.
+- `campaigns/`, `skirmish/`, `tutorial/` — mission/map data для режимов.
 - `imported/` — reference reports from Wargus/original install.
 - `assets/` — новые или разрешенные runtime assets.
+- `localization/` — строки UI, briefing, tutorial и подсказок.
+
+**Нельзя:** хранить здесь оригинальные Warcraft II assets без прав. `external/`
+и установленная игра являются локальными reference sources, а не частью runtime
+content.
 
 ### `tools/`
 
@@ -336,6 +397,34 @@ Services не принимают игровых решений.
 - `content_validation_tool.gd` — проверка catalogs и source metadata.
 - `atlas_validation_tool.gd` — проверка новых visual assets.
 - `map_baker.gd` — bake maps into runtime-friendly resources.
+
+### `tests/`
+
+**Роль:** unit, integration, reference and performance checks.
+
+Ключевые папки:
+
+- `unit/` — отдельные runtime orders/rules/adapters and pure services.
+- `integration/` — flow между input, match, runtime, scenario, presentation,
+  UI and persistence.
+- `performance/` — benchmarks для pathfinding, fog, mass orders, combat, render
+  sync, save/load.
+- `fixtures/` — small catalogs, maps, missions and snapshots for tests.
+
+### `debug/`
+
+**Роль:** отладочные overlay и диагностические контроллеры для разработки.
+
+Ключевые файлы и зоны:
+
+- `world_debug_overlay.tscn`, `world_debug_overlay.gd` — overlay мира.
+- `performance_overlay.tscn`, `performance_overlay.gd` — FPS/tick/debug metrics.
+- `path_debugger.gd`, `terrain_debugger.gd`, `visibility_debugger.gd` — проверка
+  карты, путей и видимости.
+- `event_log.gd`, `debug_controller.gd` — developer-facing diagnostics.
+
+**Нельзя:** debug layer не должен становиться gameplay dependency или условием
+работы release build.
 
 ---
 
@@ -383,6 +472,8 @@ Services не принимают игровых решений.
 | Reference report/importer | `tools/import/`, `content/imported/` |
 | Unit/reference test | `tests/unit/` или `tests/integration/` |
 | Performance benchmark | `tests/performance/` |
+| Test fixture/snapshot | `tests/fixtures/` |
+| Debug overlay/diagnostics | `debug/` |
 
 ---
 

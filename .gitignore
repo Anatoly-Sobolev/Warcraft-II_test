@@ -11,6 +11,7 @@ Thumbs.db
 # Local proprietary/reference materials.
 # Warcraft II/Wargus extracted assets may be used as private references only.
 external/
+*.local.md
 warcraft-ii/docs/design/designer_handoff/**/reference_assets/**
 !warcraft-ii/docs/design/designer_handoff/**/reference_assets/
 !warcraft-ii/docs/design/designer_handoff/**/reference_assets/.gitignore

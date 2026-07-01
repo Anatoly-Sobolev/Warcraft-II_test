@@ -51,9 +51,9 @@ PNG сам по себе не говорит, какие кадры являют
 
 | Что нужно понять | Wargus source |
 | --- | --- |
-| Какой PNG и размер кадра у юнита | `C:\Users\UZER\Coding\Projects\wargus\scripts\human\units.lua`, `scripts/orc/units.lua` |
-| Какие кадры входят в idle/move/attack/death/repair/harvest | `C:\Users\UZER\Coding\Projects\wargus\scripts\human\anim.lua`, `scripts/orc/anim.lua`, `scripts/anim.lua` |
-| Звуки selected/ready/attack/acknowledge | `C:\Users\UZER\Coding\Projects\wargus\scripts\sound.lua` |
+| Какой PNG и размер кадра у юнита | `<local Wargus checkout>\scripts\human\units.lua`, `scripts/orc/units.lua` |
+| Какие кадры входят в idle/move/attack/death/repair/harvest | `<local Wargus checkout>\scripts\human\anim.lua`, `scripts/orc/anim.lua`, `scripts/anim.lua` |
+| Звуки selected/ready/attack/acknowledge | `<local Wargus checkout>\scripts\sound.lua` |
 | Кнопки команд и иконки | `scripts/human/buttons.lua`, `scripts/orc/buttons.lua`, `scripts/icons.lua` |
 
 Пример связи:

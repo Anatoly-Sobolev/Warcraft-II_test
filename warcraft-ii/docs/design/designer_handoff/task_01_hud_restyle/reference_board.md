@@ -6,25 +6,25 @@
 Исходник:
 
 ```text
-C:\Users\UZER\Saved Games\warcraft_2_battlenet_edition
+<local Warcraft II install>
 ```
 
 Результат extraction:
 
 ```text
-C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted
+external\wargus_extracted
 ```
 
 Для обновления короткой доски выполнить:
 
 ```powershell
-.\collect_reference_assets.ps1 -ExtractedRoot "C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted"
+.\collect_reference_assets.ps1 -ExtractedRoot "external\wargus_extracted"
 ```
 
 Для обновления полного каталога выполнить:
 
 ```powershell
-.\build_designer_asset_catalog.ps1 -ExtractedRoot "C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted"
+.\build_designer_asset_catalog.ps1 -ExtractedRoot "external\wargus_extracted"
 ```
 
 Полные доски:
@@ -36,7 +36,7 @@ C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted
 
 ## Available now from local Wargus checkout
 
-Эти PNG реально найдены в `C:\Users\UZER\Coding\Projects\wargus\contrib` и
+Эти PNG реально найдены в `<local Wargus checkout>\contrib` и
 скопированы в ignored-папку `reference_assets/wargus_contrib/`.
 
 Они не являются полным оригинальным HUD. Это только доступные сейчас Wargus

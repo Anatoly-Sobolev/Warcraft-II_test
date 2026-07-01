@@ -20,7 +20,7 @@
 | [`evaluation/season_2026_alignment.md`](evaluation/season_2026_alignment.md) | Соответствие требованиям сезона 2026 и чеклист против 0 баллов. |
 | [`testing/test_strategy.md`](testing/test_strategy.md) | Тест-план первого спринта и правила тест-кейсов для спринтов 2-8. |
 | [`product/user_story_map.md`](product/user_story_map.md) | User Story Map для продуктовой оценки. |
-| [`product/eight_week_ai_delivery_plan.md`](product/eight_week_ai_delivery_plan.md) | 8-недельный production-план порта для 4 программистов и дизайнера: задачи по неделям, оценки в промптах, риски и уровни ревью. |
+| [`product/eight_week_ai_delivery_plan.md`](product/eight_week_ai_delivery_plan.md) | Предложение для менеджера и 8-недельный production-план порта: задачи для программистов, дизайнера, тестировщика и менеджера, приемка по неделям, риски и уровни ревью. |
 | [`sprints/sprint_report_template.md`](sprints/sprint_report_template.md) | Шаблон отчета каждого спринта. |
 | [`sprints/sprint_01_report.md`](sprints/sprint_01_report.md) | Стартовый отчет первого спринта. |
 | [`sprints/sprint_02_report.md`](sprints/sprint_02_report.md) - [`sprints/sprint_08_report.md`](sprints/sprint_08_report.md) | Рабочие заготовки отчетов спринтов 2-8. |
@@ -43,10 +43,10 @@
 | Документ | Что фиксирует |
 | --- | --- |
 | [`porting/README.md`](porting/README.md) | Вход в документацию по переносу логики Warcraft II. |
-| [`porting/pre_start_checklist.md`](porting/pre_start_checklist.md) | Чеклист подготовки перед первой задачей по переносу механик. |
+| [`porting/pre_start_checklist.md`](porting/pre_start_checklist.md) | Чеклист подготовки перед первой задачей: где взять Wargus, установочные файлы Warcraft II, как разложить reference-файлы и что нельзя коммитить. |
 | [`porting/warcraft2_logic_porting_plan.md`](porting/warcraft2_logic_porting_plan.md) | Карта переноса логики: source, runtime concept, модуль и проверка. |
 | [`porting/wargus_runtime_mapping.md`](porting/wargus_runtime_mapping.md) | Соответствие Wargus/Stratagus concepts структуре `game/warcraft_runtime/`. |
-| [`porting/local_reference_setup.md`](porting/local_reference_setup.md) | Нужно ли участникам иметь Wargus/Warcraft II локально и что нельзя коммитить. |
+| [`porting/local_reference_setup.md`](porting/local_reference_setup.md) | Кому нужно скачать Wargus/Warcraft II/reference pack локально, как использовать `external/` и что нельзя коммитить. |
 
 ## Документы по игре
 

@@ -1,6 +1,6 @@
-﻿# Generated Boards
+# Generated Boards
 
-Generated from: `C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted`
+Generated from: `external\wargus_extracted`
 
 | Board | PNG count |
 | --- | --- |

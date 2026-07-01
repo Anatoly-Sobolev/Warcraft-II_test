@@ -35,7 +35,7 @@ warcraft-ii/docs/design/designer_handoff/task_01_hud_restyle/
 Локальный Wargus checkout:
 
 ```text
-C:\Users\UZER\Coding\Projects\wargus
+<local Wargus checkout>
 ```
 
 Главные Wargus-файлы для проверки:

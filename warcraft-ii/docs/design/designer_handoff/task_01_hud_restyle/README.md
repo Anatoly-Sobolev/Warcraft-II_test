@@ -35,7 +35,7 @@ reference_assets/
 Извлечение делает Wargus tool `wartool` или GUI-скрипт Wargus `scripts/extract.lua`. Локальный checkout Wargus:
 
 ```text
-C:\Users\UZER\Coding\Projects\wargus
+<local Wargus checkout>
 ```
 
 На этой машине готовый `wartool.exe` в checkout не найден. Значит, нужно либо собрать Wargus/wartool, либо взять готовую сборку Wargus, где уже есть `wartool.exe`.
@@ -46,7 +46,7 @@ C:\Users\UZER\Coding\Projects\wargus
 2. Извлечь ассеты через Wargus `wartool` в локальную папку вне Git, например:
 
 ```text
-C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted
+external\wargus_extracted
 ```
 
 3. Проверить, что внутри результата есть PNG-файлы вроде:
@@ -62,13 +62,13 @@ campaigns\human\interface\introscreen1.png
 4. Скопировать нужные файлы в `reference_assets/` командой:
 
 ```powershell
-.\collect_reference_assets.ps1 -ExtractedRoot "C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted"
+.\collect_reference_assets.ps1 -ExtractedRoot "external\wargus_extracted"
 ```
 
 5. Для полного дизайнерского каталога PNG выполнить:
 
 ```powershell
-.\build_designer_asset_catalog.ps1 -ExtractedRoot "C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted"
+.\build_designer_asset_catalog.ps1 -ExtractedRoot "external\wargus_extracted"
 ```
 
 6. Открыть:

@@ -1,4 +1,4 @@
-﻿# Asset production system
+# Asset production system
 
 Документ фиксирует, какие визуальные, звуковые и видео-материалы нужно
 создать для проекта, в каком порядке их делать и как они попадут в Godot.
@@ -141,10 +141,10 @@ graphics/orc/units/grunt.png
 Frame size и animation id задаются в:
 
 ```text
-C:\Users\UZER\Coding\Projects\wargus\scripts\human\units.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\human\anim.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\orc\units.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\orc\anim.lua
+<local Wargus checkout>\scripts\human\units.lua
+<local Wargus checkout>\scripts\human\anim.lua
+<local Wargus checkout>\scripts\orc\units.lua
+<local Wargus checkout>\scripts\orc\anim.lua
 ```
 
 Новые ассеты нужно делать так же системно. Полный runtime-контракт,

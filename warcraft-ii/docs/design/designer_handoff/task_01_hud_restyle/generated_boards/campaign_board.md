@@ -1,6 +1,6 @@
-﻿# Campaign And Briefing Board
+# Campaign And Briefing Board
 
-Generated from: `C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted`
+Generated from: `external\wargus_extracted`
 
 PNG count: 26
 

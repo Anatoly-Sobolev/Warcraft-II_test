@@ -1,5 +1,5 @@
 param(
-    [string]$ExtractedRoot = "C:\Users\UZER\Coding\Projects\Warcraft II\external\wargus_extracted",
+    [string]$ExtractedRoot = "external\wargus_extracted",
     [string]$ReferenceRoot = "$PSScriptRoot\reference_assets",
     [string]$BoardsRoot = "$PSScriptRoot\generated_boards"
 )

@@ -1,6 +1,13 @@
 # 8-недельный production-план порта Warcraft II
 
-Документ заменяет общий план AI-assisted разработки на рабочий план производства порта. Цель проекта - сделать полноценный порт игрового поведения Warcraft II на новую архитектуру Godot-проекта, но с новыми ассетами и без разработки "новой RTS с похожими правилами".
+Документ является предложением для менеджера и рабочим планом команды на 8
+недель. Он заменяет общий план AI-assisted разработки на production-план порта:
+что команда обещает показать каждую неделю, кто отвечает за результат, какие
+reference-источники нужны и по каким проверкам менеджер принимает спринт.
+
+Цель проекта - сделать вертикальный срез порта игрового поведения Warcraft II на
+новую архитектуру Godot-проекта, но с новыми ассетами и без разработки "новой
+RTS с похожими правилами".
 
 Ключевые приоритеты:
 
@@ -10,16 +17,40 @@
 4. Держать производительность как обязательный критерий Definition of Done.
 5. Давать студентам маленькие задачи с понятным входом, ожидаемым результатом, оценкой сложности в промптах и уровнем проверки тимлидом.
 6. Давать дизайнеру задания только от референсов: каждый графический, звуковой или видео-элемент должен иметь источник, crop/reference board и точку внедрения.
+7. Давать тестировщику отдельный недельный объем: smoke, regression, reference
+   checks, баг-репорты и подтверждение исправлений.
+8. Давать менеджеру короткую картину принятия: демо-сценарий недели, риски,
+   blockers, фактические проверки и переносы scope.
+
+## Как менеджеру читать и принимать план
+
+Менеджер рассматривает этот документ как предложение по scope, а не как
+безусловное обещание "сделать всю Warcraft II". Для каждой недели нужно
+согласовать:
+
+- демо-сценарий, который команда покажет в пятницу;
+- список карточек, которые входят в обязательный минимум недели;
+- reference-источники, без которых нельзя начинать механику или ассет;
+- QA-проверки, которые тестировщик реально успеет выполнить;
+- риски и решения: оставить в scope, упростить или перенести.
+
+Принятие спринта менеджером происходит по sprint report: что запустилось, какие
+проверки прошли, какие ограничения записаны и какие хвосты перенесены в
+следующую неделю.
 
 ## Команда и роли
 
-| Роль | Зона ответственности | Основные папки |
-| --- | --- | --- |
-| P1, Runtime | Правила Warcraft II, order handlers, economy, combat, fog, AI, детерминированные тесты. | `warcraft-ii/game/warcraft_runtime/`, `warcraft-ii/tests/warcraft_runtime/`, `warcraft-ii/docs/gameplay/` |
-| P2, Presentation/Input | Камера, выбор, карта, render sync, эффекты матча, адаптация под сенсорное управление. | `warcraft-ii/game/presentation/`, `warcraft-ii/game/input/`, `warcraft-ii/docs/input/` |
-| P3, UI/Scenario/Campaign | HUD, меню, briefing, objectives, сценарные события, прогресс кампании. | `warcraft-ii/ui/`, `warcraft-ii/game/scenario/`, `warcraft-ii/game/campaign/` |
-| P4, Content/Tools/Services/QA | Каталоги, import reports, валидация контента, сохранения, настройки, performance checks, sprint reports. | `warcraft-ii/content/`, `warcraft-ii/tools/`, `warcraft-ii/services/`, `warcraft-ii/docs/sprints/` |
-| D, Designer | Референсы, новые ассеты, HUD/components, tilesets, spritesheets, icons, effects, audio/video briefs. | `warcraft-ii/docs/design/`, `warcraft-ii/content/assets/`, `warcraft-ii/content/catalogs/` |
+
+| Роль                          | Зона ответственности                                                                                     | Основные папки                                                                                            |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| P1, Runtime                   | Правила Warcraft II, order handlers, economy, combat, fog, AI, детерминированные тесты.                  | `warcraft-ii/game/warcraft_runtime/`, `warcraft-ii/tests/warcraft_runtime/`, `warcraft-ii/docs/gameplay/` |
+| P2, Presentation/Input        | Камера, выбор, карта, render sync, эффекты матча, адаптация под сенсорное управление.                    | `warcraft-ii/game/presentation/`, `warcraft-ii/game/input/`, `warcraft-ii/docs/input/`                    |
+| P3, UI/Scenario/Campaign      | HUD, меню, briefing, objectives, сценарные события, прогресс кампании.                                   | `warcraft-ii/ui/`, `warcraft-ii/game/scenario/`, `warcraft-ii/game/campaign/`                             |
+| P4, Content/Tools/Services    | Каталоги, import reports, валидация контента, сохранения, настройки, performance checks, sprint reports. | `warcraft-ii/content/`, `warcraft-ii/tools/`, `warcraft-ii/services/`, `warcraft-ii/docs/sprints/`        |
+| D, Designer                   | Референсы, новые ассеты, HUD/components, tilesets, spritesheets, icons, effects, audio/video briefs.     | `warcraft-ii/docs/design/`, `warcraft-ii/content/assets/`, `warcraft-ii/content/catalogs/`                |
+| Q, Tester                     | Тест-план, smoke/regression/reference cases, баг-репорты, проверка исправлений, сбор evidence для отчета. | `warcraft-ii/tests/`, `warcraft-ii/docs/testing/`, `warcraft-ii/docs/sprints/`, `warcraft-ii/docs/development/bug_report_template.md` |
+| M, Manager                    | Приоритизация scope, приемка недельного демо, контроль рисков, решений по переносам и готовности к оценке. | `warcraft-ii/docs/product/`, `warcraft-ii/docs/sprints/`, `warcraft-ii/docs/evaluation/`                 |
+
 
 Один из программистов каждую неделю выполняет роль технического ревьюера по своей зоне. Ревью не означает переписывание за автора: тимлид проверяет, что задача не ломает архитектуру порта, не обходит `WarcraftCommand`, не кладет игровую логику в UI/Presentation и не создает лишнюю систему вместо переноса механики.
 
@@ -27,27 +58,33 @@
 
 Оценка в промптах нужна не для красоты, а чтобы студент понимал реальный размер AI-assisted задачи. Один промпт - это один осмысленный цикл: постановка ИИ, чтение результата, локальная правка или проверка. Если задача требует больше 18 промптов, ее нужно делить.
 
-| Размер | Промптов | Когда применять |
-| --- | ---: | --- |
-| XS | 1-2 | Малый документ, правка каталога, один тест-кейс, один UI state. |
-| S | 3-5 | Небольшой модуль, один обработчик команды, один компонент HUD, один ассет-пак. |
-| M | 6-10 | Вертикальная функция из runtime + tests + presentation hook. |
-| L | 11-18 | Несколько связанных модулей, например build/train или fog + minimap. |
-| XL | 19+ | Нельзя брать как одну задачу. Делить на несколько карточек. |
 
-| Review | Значение |
-| --- | --- |
-| R0 | Тимлид не нужен, достаточно самопроверки и peer check. |
-| R1 | Быстрое ревью тимлида после реализации. |
-| R2 | Обязательное ревью до merge, потому что задача касается архитектуры, runtime state, производительности или импорта ассетов. |
-| R3 | Пошаговое ревью: сначала интерфейс/контракт, потом реализация, потом тесты. Задачу нужно дробить, если она распухает. |
+| Размер | Промптов | Когда применять                                                                |
+| ------ | -------- | ------------------------------------------------------------------------------ |
+| XS     | 1-2      | Малый документ, правка каталога, один тест-кейс, один UI state.                |
+| S      | 3-5      | Небольшой модуль, один обработчик команды, один компонент HUD, один ассет-пак. |
+| M      | 6-10     | Вертикальная функция из runtime + tests + presentation hook.                   |
+| L      | 11-18    | Несколько связанных модулей, например build/train или fog + minimap.           |
+| XL     | 19+      | Нельзя брать как одну задачу. Делить на несколько карточек.                    |
 
-| Риск | Значение |
-| --- | --- |
-| Low | Изолированная задача, мало связей. |
-| Medium | Есть интеграция с соседним слоем или каталогами. |
-| High | Может сломать core loop, производительность, сохранения или сценарии. |
+
+
+| Review | Значение                                                                                                                    |
+| ------ | --------------------------------------------------------------------------------------------------------------------------- |
+| R0     | Тимлид не нужен, достаточно самопроверки и peer check.                                                                      |
+| R1     | Быстрое ревью тимлида после реализации.                                                                                     |
+| R2     | Обязательное ревью до merge, потому что задача касается архитектуры, runtime state, производительности или импорта ассетов. |
+| R3     | Пошаговое ревью: сначала интерфейс/контракт, потом реализация, потом тесты. Задачу нужно дробить, если она распухает.       |
+
+
+
+| Риск     | Значение                                                               |
+| -------- | ---------------------------------------------------------------------- |
+| Low      | Изолированная задача, мало связей.                                     |
+| Medium   | Есть интеграция с соседним слоем или каталогами.                       |
+| High     | Может сломать core loop, производительность, сохранения или сценарии.  |
 | Critical | Нельзя делать без предварительного дизайна решения и отдельного ревью. |
+
 
 ## Что считаем портом за 8 недель
 
@@ -78,6 +115,8 @@
 
 - `S01-P1-001` - sprint 01, programmer 1, первая задача;
 - `S04-D-002` - sprint 04, designer, вторая задача;
+- `S06-Q-001` - sprint 06, tester, первая QA-задача;
+- `S08-M-001` - sprint 08, manager, приемка финального scope;
 - `S08-P4-003` - sprint 08, programmer 4, третья задача.
 
 Для каждой карточки фиксируются:
@@ -95,25 +134,31 @@
 
 ## Еженедельный ритм
 
-| День | Что происходит |
-| --- | --- |
-| Понедельник | Команда берет карточки недели, уточняет acceptance criteria, дизайнер собирает reference board. |
-| Вторник-среда | Основная реализация. Для задач R2/R3 сначала согласуется контракт, затем код. |
-| Четверг | Интеграция, smoke test, обновление docs, performance spot checks. |
-| Пятница | Демо, обновление sprint report, фиксация ограничений и перенос хвостов. |
+
+| День          | Что происходит                                                                                  |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| Понедельник   | Менеджер утверждает scope недели; команда берет карточки; QA уточняет проверки; дизайнер собирает reference board. |
+| Вторник-среда | Основная реализация и ассеты. Для задач R2/R3 сначала согласуется контракт, затем код; QA готовит test cases.       |
+| Четверг       | Интеграция, smoke test, обновление docs, performance spot checks, первичная проверка багов.                         |
+| Пятница       | Демо менеджеру, sprint report, QA evidence, фиксация ограничений и перенос хвостов.                                  |
+
 
 ## Sprint 01 - каркас порта и правила работы
 
 Цель недели: проект запускается, есть пустой матч на fixed-step runtime loop, понятна вертикальная структура порта, дизайнер выдает первый референсный пакет HUD и ассетов первого среза.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S01-P1-001 | P1 | Собрать минимальный `WarcraftRuntime` с fixed-step tick, command queue и пустым `RuntimeSnapshot`. | Runtime тикает без Godot Node-логики, тест фиксирует стабильный tick. | `architecture/architecture.md`, `mechanics_matrix.md` SYS rows | 6-10 | High | R2 |
-| S01-P2-001 | P2 | Подключить пустую карту, камеру, render shell и placeholder layer для сущностей. | Demo match показывает карту-заглушку и камеру без игровой логики в Presentation. | `visual_integration.md`, `input/touch_ux_spec.md` | 6-10 | Medium | R1 |
-| S01-P3-001 | P3 | Собрать маршрут App -> Main Menu -> Demo Match -> HUD shell. | Можно открыть демо-сценарий из меню, HUD пока показывает пустые панели. | `warcraft-ii/README.md`, UI docs | 6-10 | Medium | R1 |
-| S01-P4-001 | P4 | Подготовить content skeleton, import report template и smoke-test checklist. | Есть папки каталогов, шаблон отчета импорта и ручной smoke test для недели. | `content/content_pipeline.md`, `testing/test_strategy.md` | 6-10 | Medium | R2 |
-| S01-D-001 | D | Собрать reference board первого HUD: viewport, minimap, command panel, resource bar, selection panel. | В design handoff лежат screenshots/crops и список target elements. | `design/reference_packs/`, локальная Warcraft II/Wargus reference-only база | 3-5 | Medium | R1 |
-| S01-D-002 | D | Сформировать asset inventory вертикального среза. | Таблица: UI, icons, terrain, units, buildings, effects, audio, briefing screens. | `asset_reference_and_integration.md` | 3-5 | Low | R1 |
+
+| ID         | Исполнитель | Задача                                                                                                | Результат                                                                        | Источник                                                                    | Промпты | Риск   | TL  |
+| ---------- | ----------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------- | ------ | --- |
+| S01-P1-001 | P1          | Собрать минимальный `WarcraftRuntime` с fixed-step tick, command queue и пустым `RuntimeSnapshot`.    | Runtime тикает без Godot Node-логики, тест фиксирует стабильный tick.            | `architecture/architecture.md`, `mechanics_matrix.md` SYS rows              | 6-10    | High   | R2  |
+| S01-P2-001 | P2          | Подключить пустую карту, камеру, render shell и placeholder layer для сущностей.                      | Demo match показывает карту-заглушку и камеру без игровой логики в Presentation. | `visual_integration.md`, `input/touch_ux_spec.md`                           | 6-10    | Medium | R1  |
+| S01-P3-001 | P3          | Собрать маршрут App -> Main Menu -> Demo Match -> HUD shell.                                          | Можно открыть демо-сценарий из меню, HUD пока показывает пустые панели.          | `warcraft-ii/README.md`, UI docs                                            | 6-10    | Medium | R1  |
+| S01-P4-001 | P4          | Подготовить content skeleton, import report template и smoke-test checklist.                          | Есть папки каталогов, шаблон отчета импорта и ручной smoke test для недели.      | `content/content_pipeline.md`, `testing/test_strategy.md`                   | 6-10    | Medium | R2  |
+| S01-D-001  | D           | Собрать reference board первого HUD: viewport, minimap, command panel, resource bar, selection panel. | В design handoff лежат screenshots/crops и список target elements.               | `design/reference_packs/`, локальная Warcraft II/Wargus reference-only база | 3-5     | Medium | R1  |
+| S01-D-002  | D           | Сформировать asset inventory вертикального среза.                                                     | Таблица: UI, icons, terrain, units, buildings, effects, audio, briefing screens. | `asset_reference_and_integration.md`                                        | 3-5     | Low    | R1  |
+| S01-Q-001  | Q           | Подготовить QA acceptance checklist для запуска, README-ссылок, smoke route и sprint report.          | Тестировщик знает, что проверять в пятницу, и фиксирует результат в отчете.      | `testing/test_strategy.md`, `development/bug_report_template.md`            | 3-5     | Medium | R1  |
+| S01-M-001  | M           | Утвердить вертикальный срез, роли, reference setup и критерии приемки первого демо.                   | Scope недели принят, blockers и обязательные материалы вынесены в sprint report. | `season_2026_alignment.md`, этот план                                       | 1-2     | Medium | R1  |
+
 
 Definition of Done:
 
@@ -127,14 +172,18 @@ Definition of Done:
 
 Цель недели: в runtime появляется базовая модель сущностей и команд, а UI и Presentation получают данные только через snapshot/view data.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S02-P1-001 | P1 | Ввести `EntityId`, unit/building/resource storages, `WarcraftCommand` и command validation. | Сущности живут в data stores, команды не меняют состояние напрямую из UI. | `architecture_details.md`, `mechanics_matrix.md` CMD/UNIT rows | 8-12 | High | R2 |
-| S02-P2-001 | P2 | Сделать selection intent, click/touch adapter и синхронизацию выделения через snapshot. | Игрок может выделить placeholder entity, Presentation не хранит gameplay state. | `input/touch_ux_spec.md`, `visual_integration.md` | 6-10 | Medium | R1 |
-| S02-P3-001 | P3 | Собрать HUD data binding: resources, selected unit, command buttons как ViewData. | HUD умеет показывать пустые/disabled states по данным runtime. | `visual_integration.md` | 6-10 | Medium | R1 |
-| S02-P4-001 | P4 | Создать первые catalogs и validation script для unit/building/button definitions. | Неверный catalog ломается в проверке, а не в рантайме. | `content/content_pipeline.md`, Wargus metadata | 6-10 | Medium | R2 |
-| S02-D-001 | D | Отрисовать HUD component kit по референсам: panels, slots, button states, tooltip frame. | Экспортированы новые PNG/WebP UI-компоненты и спецификация размеров. | `asset_reference_and_integration.md`, S01-D-001 | 6-10 | Medium | R1 |
-| S02-D-002 | D | Подготовить command icon style sheet. | Есть 6-10 тестовых иконок states: normal/hover/pressed/disabled. | Warcraft II button refs, Wargus button names | 3-5 | Low | R1 |
+
+| ID         | Исполнитель | Задача                                                                                      | Результат                                                                       | Источник                                                       | Промпты | Риск   | TL  |
+| ---------- | ----------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------- | ------ | --- |
+| S02-P1-001 | P1          | Ввести `EntityId`, unit/building/resource storages, `WarcraftCommand` и command validation. | Сущности живут в data stores, команды не меняют состояние напрямую из UI.       | `architecture_details.md`, `mechanics_matrix.md` CMD/UNIT rows | 8-12    | High   | R2  |
+| S02-P2-001 | P2          | Сделать selection intent, click/touch adapter и синхронизацию выделения через snapshot.     | Игрок может выделить placeholder entity, Presentation не хранит gameplay state. | `input/touch_ux_spec.md`, `visual_integration.md`              | 6-10    | Medium | R1  |
+| S02-P3-001 | P3          | Собрать HUD data binding: resources, selected unit, command buttons как ViewData.           | HUD умеет показывать пустые/disabled states по данным runtime.                  | `visual_integration.md`                                        | 6-10    | Medium | R1  |
+| S02-P4-001 | P4          | Создать первые catalogs и validation script для unit/building/button definitions.           | Неверный catalog ломается в проверке, а не в рантайме.                          | `content/content_pipeline.md`, Wargus metadata                 | 6-10    | Medium | R2  |
+| S02-D-001  | D           | Отрисовать HUD component kit по референсам: panels, slots, button states, tooltip frame.    | Экспортированы новые PNG/WebP UI-компоненты и спецификация размеров.            | `asset_reference_and_integration.md`, S01-D-001                | 6-10    | Medium | R1  |
+| S02-D-002  | D           | Подготовить command icon style sheet.                                                       | Есть 6-10 тестовых иконок states: normal/hover/pressed/disabled.                | Warcraft II button refs, Wargus button names                   | 3-5     | Low    | R1  |
+| S02-Q-001  | Q           | Проверить, что UI/Presentation не меняют runtime state напрямую, и описать negative cases.  | Есть QA notes по command flow и баги на нарушения архитектуры.                  | `architecture_details.md`, `testing/test_strategy.md`          | 3-5     | Medium | R1  |
+| S02-M-001  | M           | Принять контракт UI/runtime и решить, что входит в обязательный demo path S03.              | Зафиксированы must-have команды и отложенные UI состояния.                      | sprint report S02, `user_story_map.md`                         | 1-2     | Medium | R1  |
+
 
 Definition of Done:
 
@@ -148,14 +197,18 @@ Definition of Done:
 
 Цель недели: первый интерактивный gameplay loop - карта, выделение юнита, команда move, визуальное движение.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S03-P1-001 | P1 | Реализовать `OrderMove`, простую grid/path service и movement tick. | Юнит детерминированно перемещается по карте, есть runtime tests. | `mechanics_matrix.md` MOVE/PATH rows, Wargus movement refs | 8-12 | High | R2 |
-| S03-P2-001 | P2 | Подключить map renderer, selection ring, movement interpolation и camera bounds. | На экране виден движущийся юнит-заглушка, камера не выходит за карту. | `visual_integration.md` | 8-12 | Medium | R1 |
-| S03-P3-001 | P3 | Связать command panel с move command, hotkey/click states и error feedback. | UI показывает доступность команды и ошибку при невозможной цели. | `mechanics_matrix.md` CMD rows | 6-10 | Medium | R1 |
-| S03-P4-001 | P4 | Подготовить map/content import report: tiles, passability, start positions, resources. | Есть report по первой карте и тест passability. | Wargus map/script refs, `content_pipeline.md` | 6-10 | Medium | R2 |
-| S03-D-001 | D | Сделать terrain reference board и первый tileset package. | Есть новые terrain tiles, transitions и спецификация TileSet. | Original terrain screenshots, Wargus tileset names | 8-12 | Medium | R1 |
-| S03-D-002 | D | Подготовить unit placeholder spritesheet spec для Peasant/Footman scale. | Согласованы frame size, pivot, directions и states. | `data_driven_animation_system.md` | 3-5 | Low | R1 |
+
+| ID         | Исполнитель | Задача                                                                                 | Результат                                                             | Источник                                                   | Промпты | Риск   | TL  |
+| ---------- | ----------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------- | ------- | ------ | --- |
+| S03-P1-001 | P1          | Реализовать `OrderMove`, простую grid/path service и movement tick.                    | Юнит детерминированно перемещается по карте, есть runtime tests.      | `mechanics_matrix.md` MOVE/PATH rows, Wargus movement refs | 8-12    | High   | R2  |
+| S03-P2-001 | P2          | Подключить map renderer, selection ring, movement interpolation и camera bounds.       | На экране виден движущийся юнит-заглушка, камера не выходит за карту. | `visual_integration.md`                                    | 8-12    | Medium | R1  |
+| S03-P3-001 | P3          | Связать command panel с move command, hotkey/click states и error feedback.            | UI показывает доступность команды и ошибку при невозможной цели.      | `mechanics_matrix.md` CMD rows                             | 6-10    | Medium | R1  |
+| S03-P4-001 | P4          | Подготовить map/content import report: tiles, passability, start positions, resources. | Есть report по первой карте и тест passability.                       | Wargus map/script refs, `content_pipeline.md`              | 6-10    | Medium | R2  |
+| S03-D-001  | D           | Сделать terrain reference board и первый tileset package.                              | Есть новые terrain tiles, transitions и спецификация TileSet.         | Original terrain screenshots, Wargus tileset names         | 8-12    | Medium | R1  |
+| S03-D-002  | D           | Подготовить unit placeholder spritesheet spec для Peasant/Footman scale.               | Согласованы frame size, pivot, directions и states.                   | `data_driven_animation_system.md`                          | 3-5     | Low    | R1  |
+| S03-Q-001  | Q           | Проверить selection -> move -> visual sync на ручных сценариях и завести баги по рассинхрону. | Есть список pass/fail по карте, камере, выбору и перемещению.    | `testing/test_strategy.md`, `mechanics_matrix.md` MOVE rows | 3-5     | Medium | R1  |
+| S03-M-001  | M           | Принять первый интерактивный loop и ограничить scope экономики S04.                   | Менеджер подтвердил, что движение достаточно для перехода к ресурсам. | sprint report S03                                      | 1-2     | Medium | R1  |
+
 
 Definition of Done:
 
@@ -169,14 +222,18 @@ Definition of Done:
 
 Цель недели: рабочий цикл Peasant -> Gold Mine/Forest -> Town Hall -> ресурсы в HUD.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S04-P1-001 | P1 | Реализовать `OrderHarvest`, carry resource state, return/drop-off и resource storage. | Worker собирает и возвращает ресурс, баланс проверяется тестами. | `mechanics_matrix.md` ECON rows, Wargus economy refs | 11-18 | High | R2 |
-| S04-P2-001 | P2 | Подключить визуальные states worker/resource node/drop-off и minimap resource markers. | Игрок видит добычу, перенос и возврат ресурса без logic в Presentation. | `visual_integration.md` | 6-10 | Medium | R1 |
-| S04-P3-001 | P3 | Сделать resource HUD, messages и disabled command reasons для economy. | HUD обновляет Gold/Lumber/Oil/Food, показывает ошибки команд. | Warcraft II HUD refs | 6-10 | Medium | R1 |
-| S04-P4-001 | P4 | Добавить catalogs для Peasant, Town Hall, Gold Mine, Forest и economy regression tests. | Data-driven параметры ресурсов не зашиты в UI. | Wargus unit/building/script refs | 8-12 | High | R2 |
-| S04-D-001 | D | Подготовить новые ассеты Peasant, Town Hall, Gold Mine, Forest по референсам. | Экспортированы spritesheets/tiles с pivots и state sheet для sprite banks. | `asset_reference_and_integration.md`, original/Wargus refs | 11-18 | Medium | R1 |
-| S04-D-002 | D | Подготовить audio brief для resource feedback. | Описаны нужные UI click, acknowledgement, deposit feedback sounds. | Warcraft II audio refs, no original audio commit | 3-5 | Low | R1 |
+
+| ID         | Исполнитель | Задача                                                                                  | Результат                                                                  | Источник                                                   | Промпты | Риск   | TL  |
+| ---------- | ----------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------- | ------- | ------ | --- |
+| S04-P1-001 | P1          | Реализовать `OrderHarvest`, carry resource state, return/drop-off и resource storage.   | Worker собирает и возвращает ресурс, баланс проверяется тестами.           | `mechanics_matrix.md` ECON rows, Wargus economy refs       | 11-18   | High   | R2  |
+| S04-P2-001 | P2          | Подключить визуальные states worker/resource node/drop-off и minimap resource markers.  | Игрок видит добычу, перенос и возврат ресурса без logic в Presentation.    | `visual_integration.md`                                    | 6-10    | Medium | R1  |
+| S04-P3-001 | P3          | Сделать resource HUD, messages и disabled command reasons для economy.                  | HUD обновляет Gold/Lumber/Oil/Food, показывает ошибки команд.              | Warcraft II HUD refs                                       | 6-10    | Medium | R1  |
+| S04-P4-001 | P4          | Добавить catalogs для Peasant, Town Hall, Gold Mine, Forest и economy regression tests. | Data-driven параметры ресурсов не зашиты в UI.                             | Wargus unit/building/script refs                           | 8-12    | High   | R2  |
+| S04-D-001  | D           | Подготовить новые ассеты Peasant, Town Hall, Gold Mine, Forest по референсам.           | Экспортированы spritesheets/tiles с pivots и state sheet для sprite banks. | `asset_reference_and_integration.md`, original/Wargus refs | 11-18   | Medium | R1  |
+| S04-D-002  | D           | Подготовить audio brief для resource feedback.                                          | Описаны нужные UI click, acknowledgement, deposit feedback sounds.         | Warcraft II audio refs, no original audio commit           | 3-5     | Low    | R1  |
+| S04-Q-001  | Q           | Проверить полный цикл Peasant -> ресурс -> Town Hall -> HUD, включая отмены и edge cases. | QA report фиксирует доход ресурсов, ошибки маршрута и видимость в HUD. | `testing/test_strategy.md`, ECO rows                    | 6-10    | High   | R2  |
+| S04-M-001  | M           | Принять экономический loop и решить, какие build/train элементы обязательны в S05.       | Scope S05 не расширяет экономику сверх вертикального среза.            | sprint report S04, `user_story_map.md`                  | 1-2     | Medium | R1  |
+
 
 Definition of Done:
 
@@ -189,14 +246,18 @@ Definition of Done:
 
 Цель недели: игрок строит здание, после завершения тренирует боевого юнита.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S05-P1-001 | P1 | Реализовать `OrderBuild`: placement validation, cost, construction progress, cancel. | Здание строится детерминированно, ресурсы списываются корректно. | `mechanics_matrix.md` BUILD rows | 11-18 | High | R2 |
-| S05-P1-002 | P1 | Реализовать `OrderTrain` и production queue для Barracks. | Barracks производит Footman, tests фиксируют queue/progress. | `mechanics_matrix.md` TRAIN rows | 8-12 | High | R2 |
-| S05-P2-001 | P2 | Сделать placement ghost, construction visual states и rally/queue visual hooks. | Игрок видит valid/invalid placement и стадии строительства. | `visual_integration.md` | 8-12 | Medium | R1 |
-| S05-P3-001 | P3 | Собрать build/train UI flow: command panel, queue, progress, hotkeys. | HUD управляет build/train через команды, без прямого state mutation. | Warcraft II command panel refs | 8-12 | Medium | R1 |
-| S05-P4-001 | P4 | Расширить catalogs зданиями Farm/Barracks/Footman и добавить content validation. | Параметры cost/time/commands берутся из каталогов. | Wargus unit/button refs | 6-10 | Medium | R2 |
-| S05-D-001 | D | Подготовить ассеты Farm, Barracks, Footman, construction stages и icons. | Новый visual pack готов к подключению в catalogs/sprite bank. | Original/Wargus refs, `data_driven_animation_system.md` | 11-18 | Medium | R1 |
+
+| ID         | Исполнитель | Задача                                                                               | Результат                                                            | Источник                                                | Промпты | Риск   | TL  |
+| ---------- | ----------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------- | ------- | ------ | --- |
+| S05-P1-001 | P1          | Реализовать `OrderBuild`: placement validation, cost, construction progress, cancel. | Здание строится детерминированно, ресурсы списываются корректно.     | `mechanics_matrix.md` BUILD rows                        | 11-18   | High   | R2  |
+| S05-P1-002 | P1          | Реализовать `OrderTrain` и production queue для Barracks.                            | Barracks производит Footman, tests фиксируют queue/progress.         | `mechanics_matrix.md` TRAIN rows                        | 8-12    | High   | R2  |
+| S05-P2-001 | P2          | Сделать placement ghost, construction visual states и rally/queue visual hooks.      | Игрок видит valid/invalid placement и стадии строительства.          | `visual_integration.md`                                 | 8-12    | Medium | R1  |
+| S05-P3-001 | P3          | Собрать build/train UI flow: command panel, queue, progress, hotkeys.                | HUD управляет build/train через команды, без прямого state mutation. | Warcraft II command panel refs                          | 8-12    | Medium | R1  |
+| S05-P4-001 | P4          | Расширить catalogs зданиями Farm/Barracks/Footman и добавить content validation.     | Параметры cost/time/commands берутся из каталогов.                   | Wargus unit/button refs                                 | 6-10    | Medium | R2  |
+| S05-D-001  | D           | Подготовить ассеты Farm, Barracks, Footman, construction stages и icons.             | Новый visual pack готов к подключению в catalogs/sprite bank.        | Original/Wargus refs, `data_driven_animation_system.md` | 11-18   | Medium | R1  |
+| S05-Q-001  | Q           | Проверить build/train regression: placement, cost, progress, queue, cancel, HUD states. | Есть structured test cases и баги по build/train flow.             | `testing/test_strategy.md`, BUILD/TRAIN rows            | 6-10    | High   | R2  |
+| S05-M-001  | M           | Принять playable production loop и подтвердить scope combat/fog S06.                | Решено, какие combat/fog элементы входят в demo, а какие уходят в backlog. | sprint report S05                                 | 1-2     | Medium | R1  |
+
 
 Definition of Done:
 
@@ -210,14 +271,18 @@ Definition of Done:
 
 Цель недели: юниты атакуют, видимость ограничена fog of war, сценарий может завершиться победой или поражением.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S06-P1-001 | P1 | Реализовать `OrderAttack`, target acquisition, damage, death, corpse/removal policy. | Footman атакует цель, combat tests покрывают damage и death. | `mechanics_matrix.md` COMBAT rows | 11-18 | High | R2 |
-| S06-P1-002 | P1 | Добавить fog/visibility runtime model для игроков. | Snapshot отдает видимость без раскрытия скрытых сущностей. | `mechanics_matrix.md` FOG rows | 8-12 | High | R2 |
-| S06-P2-001 | P2 | Подключить fog renderer, combat effects, hit flashes, death animation hooks. | Игрок видит видимую область, удары и смерть сущностей. | `visual_integration.md` | 8-12 | Medium | R1 |
-| S06-P3-001 | P3 | Сделать objective tracker и result screen для victory/defeat. | Сценарий показывает победу/поражение и кнопку возврата. | `game/scenario/`, Warcraft II mission refs | 6-10 | Medium | R1 |
-| S06-P4-001 | P4 | Ввести combat/fog performance checks и regression scenario. | Есть сценарий с N entities, FPS/tick time фиксируются в отчете. | `performance/performance_budgets.md` | 8-12 | High | R2 |
-| S06-D-001 | D | Подготовить combat effects, selection feedback, hit/death audio brief и result screen refs. | Есть новые effects sheets, UI frames и sound list. | Original/Wargus refs, no original audio commit | 8-12 | Medium | R1 |
+
+| ID         | Исполнитель | Задача                                                                                      | Результат                                                       | Источник                                       | Промпты | Риск   | TL  |
+| ---------- | ----------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------- | ------- | ------ | --- |
+| S06-P1-001 | P1          | Реализовать `OrderAttack`, target acquisition, damage, death, corpse/removal policy.        | Footman атакует цель, combat tests покрывают damage и death.    | `mechanics_matrix.md` COMBAT rows              | 11-18   | High   | R2  |
+| S06-P1-002 | P1          | Добавить fog/visibility runtime model для игроков.                                          | Snapshot отдает видимость без раскрытия скрытых сущностей.      | `mechanics_matrix.md` FOG rows                 | 8-12    | High   | R2  |
+| S06-P2-001 | P2          | Подключить fog renderer, combat effects, hit flashes, death animation hooks.                | Игрок видит видимую область, удары и смерть сущностей.          | `visual_integration.md`                        | 8-12    | Medium | R1  |
+| S06-P3-001 | P3          | Сделать objective tracker и result screen для victory/defeat.                               | Сценарий показывает победу/поражение и кнопку возврата.         | `game/scenario/`, Warcraft II mission refs     | 6-10    | Medium | R1  |
+| S06-P4-001 | P4          | Ввести combat/fog performance checks и regression scenario.                                 | Есть сценарий с N entities, FPS/tick time фиксируются в отчете. | `performance/performance_budgets.md`           | 8-12    | High   | R2  |
+| S06-D-001  | D           | Подготовить combat effects, selection feedback, hit/death audio brief и result screen refs. | Есть новые effects sheets, UI frames и sound list.              | Original/Wargus refs, no original audio commit | 8-12    | Medium | R1  |
+| S06-Q-001  | Q           | Проверить combat/fog scenarios: видимость, target rules, death, victory/defeat.             | QA evidence показывает, что скрытые сущности не раскрываются в UI. | `testing/test_strategy.md`, COMBAT/FOG rows    | 6-10    | High   | R2  |
+| S06-M-001  | M           | Принять боевой demo path и решить, какой AI/mission минимум нужен в S07.                    | Менеджер утвердил критерий "миссия готова к демо" для следующей недели. | sprint report S06                         | 1-2     | High   | R1  |
+
 
 Definition of Done:
 
@@ -230,14 +295,18 @@ Definition of Done:
 
 Цель недели: вертикальный срез становится миссией: briefing, objectives, scripted AI, save/load базового состояния.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S07-P1-001 | P1 | Реализовать простые AI directives: gather, build/train subset или attack wave. | AI действует через те же `WarcraftCommand`, что игрок. | `mechanics_matrix.md` AI rows, Wargus AI refs | 11-18 | High | R2 |
-| S07-P2-001 | P2 | Проверить восстановление Presentation после load/snapshot reset. | После загрузки нет зависших selection/effects/camera states. | `visual_integration.md`, save docs | 6-10 | Medium | R1 |
-| S07-P3-001 | P3 | Собрать mission briefing, objectives, scripted triggers и campaign progress. | Demo mission имеет вход, цели, победу и переход назад в меню. | `game/scenario/`, `game/campaign/` | 11-18 | High | R2 |
-| S07-P4-001 | P4 | Реализовать `RuntimeSnapshot` save/load subset и content compatibility checks. | Можно сохранить и загрузить состояние demo mission. | `persistence/save_format.md` | 11-18 | High | R2 |
-| S07-D-001 | D | Подготовить briefing screen, objective icons, AI/enemy visual placeholders и audio mix list. | Есть briefing assets и список звуков для событий миссии. | Original mission refs, Wargus script names | 8-12 | Medium | R1 |
-| S07-D-002 | D | Провести визуальный review всех ассетов vertical slice. | Список polish-задач S08 с приоритетом: gameplay clarity -> UI -> effects. | `asset_reference_and_integration.md` | 3-5 | Low | R1 |
+
+| ID         | Исполнитель | Задача                                                                                       | Результат                                                                 | Источник                                      | Промпты | Риск   | TL  |
+| ---------- | ----------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------- | ------- | ------ | --- |
+| S07-P1-001 | P1          | Реализовать простые AI directives: gather, build/train subset или attack wave.               | AI действует через те же `WarcraftCommand`, что игрок.                    | `mechanics_matrix.md` AI rows, Wargus AI refs | 11-18   | High   | R2  |
+| S07-P2-001 | P2          | Проверить восстановление Presentation после load/snapshot reset.                             | После загрузки нет зависших selection/effects/camera states.              | `visual_integration.md`, save docs            | 6-10    | Medium | R1  |
+| S07-P3-001 | P3          | Собрать mission briefing, objectives, scripted triggers и campaign progress.                 | Demo mission имеет вход, цели, победу и переход назад в меню.             | `game/scenario/`, `game/campaign/`            | 11-18   | High   | R2  |
+| S07-P4-001 | P4          | Реализовать `RuntimeSnapshot` save/load subset и content compatibility checks.               | Можно сохранить и загрузить состояние demo mission.                       | `persistence/save_format.md`                  | 11-18   | High   | R2  |
+| S07-D-001  | D           | Подготовить briefing screen, objective icons, AI/enemy visual placeholders и audio mix list. | Есть briefing assets и список звуков для событий миссии.                  | Original mission refs, Wargus script names    | 8-12    | Medium | R1  |
+| S07-D-002  | D           | Провести визуальный review всех ассетов vertical slice.                                      | Список polish-задач S08 с приоритетом: gameplay clarity -> UI -> effects. | `asset_reference_and_integration.md`          | 3-5     | Low    | R1  |
+| S07-Q-001  | Q           | Провести end-to-end mission test: menu -> briefing -> objectives -> gameplay -> result -> save/load. | Есть regression list для S08 и подтвержденные blockers.          | `testing/test_strategy.md`, sprint report S07 | 8-12    | High   | R2  |
+| S07-M-001  | M           | Провести scope freeze финального демо и запретить новые механики без замены старых задач.    | S08 становится стабилизацией, а не расширением игры.                       | `season_2026_alignment.md`, sprint report S07 | 1-2     | High   | R2  |
+
 
 Definition of Done:
 
@@ -251,14 +320,18 @@ Definition of Done:
 
 Цель недели: убрать расхождения vertical slice, стабилизировать производительность, подготовить финальное демо и документацию.
 
-| ID | Исполнитель | Задача | Результат | Источник | Промпты | Риск | TL |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| S08-P1-001 | P1 | Закрыть runtime parity gaps по matrix rows vertical slice. | Для каждой перенесенной механики есть статус, тест или limitation. | `mechanics_matrix.md` | 8-12 | High | R2 |
-| S08-P2-001 | P2 | Оптимизировать render sync, fog, effects и camera/mobile profile. | FPS/tick budget попадает в целевые рамки или ограничения описаны. | `performance/performance_budgets.md` | 8-12 | High | R2 |
-| S08-P3-001 | P3 | Полировать UX финального demo: menu, HUD, result, error states, accessibility basics. | Demo можно показать без debug-ручек и непонятных экранов. | UI refs, test strategy | 6-10 | Medium | R1 |
-| S08-P4-001 | P4 | Собрать regression pack, финальный sprint report, build notes и GitVerse links. | Есть список проверок, сборочных шагов, известных ограничений и материалов. | `testing/test_strategy.md`, `season_2026_alignment.md` | 8-12 | High | R2 |
-| S08-D-001 | D | Финальный polish ассетов: атласы, контраст, читаемость, audio levels, missing icons. | Все ассеты vertical slice лежат в правильных папках и каталогах. | `asset_reference_and_integration.md` | 8-12 | Medium | R1 |
-| S08-ALL-001 | All | Финальный smoke test и запись демо. | Команда подтверждает, что демо запускается из чистого состояния. | `testing/test_strategy.md` | 3-5 на человека | High | R2 |
+
+| ID          | Исполнитель | Задача                                                                                | Результат                                                                  | Источник                                               | Промпты         | Риск   | TL  |
+| ----------- | ----------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------ | --------------- | ------ | --- |
+| S08-P1-001  | P1          | Закрыть runtime parity gaps по matrix rows vertical slice.                            | Для каждой перенесенной механики есть статус, тест или limitation.         | `mechanics_matrix.md`                                  | 8-12            | High   | R2  |
+| S08-P2-001  | P2          | Оптимизировать render sync, fog, effects и camera/mobile profile.                     | FPS/tick budget попадает в целевые рамки или ограничения описаны.          | `performance/performance_budgets.md`                   | 8-12            | High   | R2  |
+| S08-P3-001  | P3          | Полировать UX финального demo: menu, HUD, result, error states, accessibility basics. | Demo можно показать без debug-ручек и непонятных экранов.                  | UI refs, test strategy                                 | 6-10            | Medium | R1  |
+| S08-P4-001  | P4          | Собрать regression pack, финальный sprint report, build notes и GitVerse links.       | Есть список проверок, сборочных шагов, известных ограничений и материалов. | `testing/test_strategy.md`, `season_2026_alignment.md` | 8-12            | High   | R2  |
+| S08-D-001   | D           | Финальный polish ассетов: атласы, контраст, читаемость, audio levels, missing icons.  | Все ассеты vertical slice лежат в правильных папках и каталогах.           | `asset_reference_and_integration.md`                   | 8-12            | Medium | R1  |
+| S08-Q-001   | Q           | Выполнить финальный regression pack и проверить build notes на чистом checkout.       | В отчете указано, какие тесты реально запускались и что не проверялось.    | `testing/test_strategy.md`, `markdown_link_check.md`   | 8-12            | High   | R2  |
+| S08-M-001   | M           | Принять финальный demo package: build, README, links, видео, known limitations.       | Менеджер видит, что можно показывать на оценке и что честно ограничено.    | `season_2026_alignment.md`, sprint report S08          | 3-5             | High   | R2  |
+| S08-ALL-001 | All         | Финальный smoke test и запись демо.                                                   | Команда подтверждает, что демо запускается из чистого состояния.           | `testing/test_strategy.md`                             | 3-5 на человека | High   | R2  |
+
 
 Definition of Done:
 
@@ -280,14 +353,37 @@ Definition of Done:
 - кто из программистов подключает ассет;
 - какой manual check подтверждает, что ассет внедрен.
 
+Перед первой дизайнерской задачей менеджер должен убедиться, что у дизайнера
+есть reference-only материалы. Рекомендуемый порядок:
+
+1. Скачать или получить от команды reference docs и extracted reference pack в
+   локальную папку `external/` внутри репозитория. Эта папка исключена из Git.
+2. Проверить `docs/design/reference_packs/`,
+   `docs/design/designer_handoff/` и `docs/design/tasks/`: там лежат публичные
+   briefs, которые можно коммитить.
+3. Для каждого ассета сделать board: original full screenshot, crop элемента,
+   список состояний, размеры, pivot/anchor, target path в нашем `content/assets/`.
+4. Не класть оригинальные Warcraft II/Wargus изображения, звуки, видео или
+   extracted assets в tracked folders. В Git попадает только brief, таблица,
+   новая авторская графика или разрешенный placeholder.
+5. Если референса нет, дизайнер не рисует "на глаз", а заводит вопрос в sprint
+   report или designer handoff.
+
 Источники задач дизайнера:
 
 1. Таблицы sprint plan выше.
 2. `warcraft-ii/docs/gameplay/mechanics_matrix.md` - какие механики и состояния нужно показать.
 3. `warcraft-ii/docs/design/asset_reference_and_integration.md` - как оформлять brief, куда класть результат и как программист подключает ассет.
 4. `warcraft-ii/docs/design/reference_packs/` - подготовленные reference-only материалы.
-5. Локальная установка Warcraft II и Wargus - только как reference-only источник, без коммита оригинальных ассетов.
-6. `warcraft-ii/content/imported/*_reference_report.md` - отчеты импорта, если они уже подготовлены P4.
+5. `warcraft-ii/docs/porting/local_reference_setup.md` - что нужно скачать
+   локально и кому это действительно требуется.
+6. Локальная установка Warcraft II и Wargus - только как reference-only
+   источник, без коммита оригинальных ассетов.
+7. `warcraft-ii/content/imported/*_reference_report.md` - отчеты импорта, если
+   они уже подготовлены P4.
+8. Локальный приватный файл `warcraft-ii/docs/local_reference_paths.local.md`,
+   если он есть на машине. Он содержит абсолютные пути конкретного участника и
+   не отправляется в удаленный репозиторий.
 
 Минимальный набор дизайнерских выдач каждую неделю:
 
@@ -301,16 +397,18 @@ Definition of Done:
 
 Базовое правило: новая графика, звук и видео подключаются через каталоги, `.tres`, sprite banks, audio banks, UI scenes и presentation definitions. Нельзя вручную создавать отдельную gameplay scene на каждый юнит или здание, если достаточно data-driven ресурса.
 
-| Тип | Куда класть | Как подключать |
-| --- | --- | --- |
-| UI panels/buttons/icons | `content/assets/textures/ui/` | Через UI scenes/components, UI atlas и button/icon ids в каталогах. |
-| Unit spritesheets | `content/assets/textures/units/` | Через `content/assets/animations/*_sprite_bank.tres`, `content/catalogs/sprite_banks.tres` и `unit_visuals.tres`; entity view читает visual id. |
-| Building spritesheets | `content/assets/textures/buildings/` | Через `building_sprite_bank.tres`, `building_visuals.tres` и construction states. |
-| Effects/projectiles | `content/assets/textures/effects/` | Через effect catalog и presentation event. |
-| Terrain tiles | `content/assets/textures/terrain/`, `content/assets/tilesets/` | Через TileSet/TileMapLayer, passability отдельно в map data. |
-| Audio | `content/assets/audio/sfx/`, `content/assets/audio/voice/`, `content/assets/audio/music/` | Через `content/catalogs/audio_banks.tres` и event mapping. |
-| Briefing/video | `content/assets/textures/ui/`, `content/assets/textures/portraits/`, при необходимости `content/assets/video/` | Через scenario/campaign data и UI screen. |
-| Catalogs | `content/catalogs/` | `.tres`/data resources, валидируются P4. |
+
+| Тип                     | Куда класть                                                                                                    | Как подключать                                                                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| UI panels/buttons/icons | `content/assets/textures/ui/`                                                                                  | Через UI scenes/components, UI atlas и button/icon ids в каталогах.                                                                             |
+| Unit spritesheets       | `content/assets/textures/units/`                                                                               | Через `content/assets/animations/*_sprite_bank.tres`, `content/catalogs/sprite_banks.tres` и `unit_visuals.tres`; entity view читает visual id. |
+| Building spritesheets   | `content/assets/textures/buildings/`                                                                           | Через `building_sprite_bank.tres`, `building_visuals.tres` и construction states.                                                               |
+| Effects/projectiles     | `content/assets/textures/effects/`                                                                             | Через effect catalog и presentation event.                                                                                                      |
+| Terrain tiles           | `content/assets/textures/terrain/`, `content/assets/tilesets/`                                                 | Через TileSet/TileMapLayer, passability отдельно в map data.                                                                                    |
+| Audio                   | `content/assets/audio/sfx/`, `content/assets/audio/voice/`, `content/assets/audio/music/`                      | Через `content/catalogs/audio_banks.tres` и event mapping.                                                                                      |
+| Briefing/video          | `content/assets/textures/ui/`, `content/assets/textures/portraits/`, при необходимости `content/assets/video/` | Через scenario/campaign data и UI screen.                                                                                                       |
+| Catalogs                | `content/catalogs/`                                                                                            | `.tres`/data resources, валидируются P4.                                                                                                        |
+
 
 Подробный контракт хранится в `warcraft-ii/docs/design/asset_reference_and_integration.md`.
 
@@ -318,15 +416,28 @@ Definition of Done:
 
 Перед тем как команда начнет sprint 01, нужно сделать следующее:
 
-1. Назначить реальные имена на роли P1-P4 и D.
+1. Назначить реальные имена на роли P1-P4, D, Q и M.
 2. Проверить, что у всех открывается Godot 4.4 и проект стартует.
-3. Убедиться, что у всех есть локальный reference-only доступ к Wargus и/или установленной Warcraft II, но оригинальные ассеты не попадают в Git.
-4. Создать или актуализировать `content/imported/*_reference_report.md` для UI, units, buildings, tilesets, sounds.
-5. Подготовить первый дизайнерский handoff по HUD и asset inventory.
-6. Согласовать, где ведется task log: sprint report, issue tracker или оба. В любом случае ID задач должны совпадать с этим планом.
-7. Пройти smoke test из `docs/testing/test_strategy.md` на чистом checkout.
-8. Зафиксировать performance baseline: пустая карта, N placeholder entities, tick time, FPS.
-9. Подготовить шаблон review checklist для R1/R2/R3 задач.
+3. Дизайнеру и P4 скачать или получить reference docs/extracted reference pack
+   в локальную папку `external/`. Если материалов нет, первая задача дизайнера -
+   не рисование, а сбор reference board.
+4. Разработчикам, которые переносят механику, скачать Wargus source checkout и
+   иметь доступ к локальной установленной Warcraft II Battle.net Edition или
+   другому легальному источнику для ручной проверки. Обычный запуск проекта не
+   должен зависеть от этих путей.
+5. Тестировщику подготовить локальную игру/Wargus только если он проверяет
+   reference parity; для smoke/regression достаточно Godot-проекта.
+6. Создать у каждого участника приватный
+   `warcraft-ii/docs/local_reference_paths.local.md` по примеру из
+   `docs/porting/local_reference_setup.md`, если абсолютные пути нужны ИИ или
+   локальным скриптам. Этот файл не коммитится.
+7. Создать или актуализировать `content/imported/*_reference_report.md` для UI,
+   units, buildings, tilesets, sounds.
+8. Подготовить первый дизайнерский handoff по HUD и asset inventory.
+9. Согласовать, где ведется task log: sprint report, issue tracker или оба. В любом случае ID задач должны совпадать с этим планом.
+10. Пройти smoke test из `docs/testing/test_strategy.md` на чистом checkout.
+11. Зафиксировать performance baseline: пустая карта, N placeholder entities, tick time, FPS.
+12. Подготовить шаблон review checklist для R1/R2/R3 задач.
 
 ## Признаки, что план начал расходиться с архитектурой
 

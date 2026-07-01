@@ -1,4 +1,4 @@
-﻿# Data-driven animation system
+# Data-driven animation system
 
 Документ фиксирует, как переносить подход Warcraft II/Wargus к анимациям в этот
 Godot-проект. Цель: сохранить производительность RTS и не превращать каждого
@@ -39,11 +39,11 @@ Godot-сцена `unit_view`, `building_view`, `projectile_view` или `effect_
 Пример источников:
 
 ```text
-C:\Users\UZER\Coding\Projects\wargus\scripts\human\units.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\human\anim.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\orc\units.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\orc\anim.lua
-C:\Users\UZER\Coding\Projects\wargus\scripts\anim.lua
+<local Wargus checkout>\scripts\human\units.lua
+<local Wargus checkout>\scripts\human\anim.lua
+<local Wargus checkout>\scripts\orc\units.lua
+<local Wargus checkout>\scripts\orc\anim.lua
+<local Wargus checkout>\scripts\anim.lua
 ```
 
 Пример структуры:

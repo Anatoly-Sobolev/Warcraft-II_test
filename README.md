@@ -16,10 +16,12 @@
 ## Быстрый старт
 
 1. Установить Godot 4.4.
-2. Открыть проект: [`warcraft-ii/project.godot`](warcraft-ii/project.godot).
-3. Запустить основную сцену проекта. Если main scene еще не назначена, открыть и
+2. Прочитать [`warcraft-ii/docs/development/onboarding.md`](warcraft-ii/docs/development/onboarding.md) -
+   маршрут первого дня по ролям.
+3. Открыть проект: [`warcraft-ii/project.godot`](warcraft-ii/project.godot).
+4. Запустить основную сцену проекта. Если main scene еще не назначена, открыть и
    запустить `res://app/app.tscn`.
-4. Перед сдачей пройти smoke test из
+5. Перед сдачей пройти smoke test из
    [`warcraft-ii/docs/testing/test_strategy.md`](warcraft-ii/docs/testing/test_strategy.md).
 
 ## Главные документы
@@ -27,6 +29,7 @@
 | Документ | Зачем нужен |
 | --- | --- |
 | [`AGENTS.md`](AGENTS.md) | Обязательные правила для ИИ-агентов и разработчиков. |
+| [`warcraft-ii/docs/development/onboarding.md`](warcraft-ii/docs/development/onboarding.md) | Маршрут первого дня: что читать всем, что читать по ролям и что скачать для reference-задач. |
 | [`warcraft-ii/docs/architecture/architecture.md`](warcraft-ii/docs/architecture/architecture.md) | Короткое объяснение архитектуры порта. |
 | [`warcraft-ii/docs/architecture/architecture_details.md`](warcraft-ii/docs/architecture/architecture_details.md) | Рабочая структура модулей и правила размещения кода. |
 | [`warcraft-ii/docs/porting/warcraft2_logic_porting_plan.md`](warcraft-ii/docs/porting/warcraft2_logic_porting_plan.md) | Как переносить механику из Warcraft II/Wargus. |
