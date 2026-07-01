@@ -324,6 +324,12 @@ dialogue, UI-facing mission state.
 `presentation_controller.gd`, `render_sync.gd`, `camera_control_port.gd`,
 `camera_snapshot.gd`.
 
+Presentation получает visual/audio ids из runtime ports и content catalogs, но не
+вызывает прямую загрузку тяжелых ресурсов во время hot path. Для текстур, атласов,
+TileSet, сцен эффектов и звука он обращается к `services/assets` и умеет работать
+с placeholder/fallback, пока async preload не завершен. Замена fallback на готовый
+ресурс является только визуальным событием и не меняет Warcraft Runtime.
+
 **Нельзя:** считать урон, путь, экономику, видимость или доступность команд.
 
 ### `ui/`
@@ -365,6 +371,43 @@ Services не принимают игровых решений.
 - `persistence/` — save/load, headers, migrations, autosave policy.
 - `platform/` — platform abstraction, including Aurora-specific service.
 - `settings/` — пользовательские настройки.
+
+#### `services/assets/`
+
+**Роль:** единая точка загрузки и кеширования runtime-ассетов. Цель системы —
+повысить плавность запуска и матча за счет асинхронной подготовки тяжелых
+ресурсов, не смешивая загрузку файлов с gameplay state.
+
+Минимальный контракт:
+
+- asset manifest описывает пакеты ресурсов: app shell, common UI, campaign/mission,
+  race, tileset, sprite banks, audio banks;
+- публичный API работает с ids/paths из content catalogs, а не с прямыми ссылками
+  из Warcraft Runtime;
+- тяжелые ресурсы загружаются через Godot threaded loading (`ResourceLoader`
+  threaded request/status/get) или совместимый wrapper;
+- `load_threaded_get` не вызывается до статуса loaded, чтобы случайно не
+  заблокировать главный поток;
+- готовые ресурсы кладутся в `resource_cache`, повторные запросы не создают
+  дублирующих загрузок;
+- потребители получают явный результат: ready, loading, failed или fallback;
+- fallback/placeholder допустим для Presentation/UI, но не должен менять правила
+  матча, save snapshot или результат команд;
+- ошибки ассетов логируются через diagnostics и попадают в smoke/performance
+  отчеты, а не маскируются синхронной загрузкой.
+
+Что не входит в `services/assets`:
+
+- gameplay validation и доступность команд;
+- изменение `warcraft_runtime/state`;
+- выбор анимационного состояния юнита;
+- импорт оригинальных Warcraft II ассетов без прав;
+- ad-hoc загрузка ресурсов прямо из UI-кнопок, orders или runtime rules.
+
+Первый практический шаг — реализовать preload пакета первого вертикального среза:
+common UI atlas, выбранный terrain tileset, unit/building/effect sprite banks,
+visual catalogs и нужные audio banks. Более сложный streaming по области экрана
+добавляется только после измерений и конкретного performance need.
 
 ### `content/`
 
@@ -448,6 +491,7 @@ content.
 | AI build orders/waves | `ai/`, `model/warcraft_command.gd` |
 | Save/load | `runtime_snapshot.gd`, `services/persistence/` |
 | Hot path optimization | `warcraft_runtime/native/` after benchmark |
+| Asset preload/cache | `services/assets/`, `content/catalogs/`, `game/presentation/` |
 
 ---
 
@@ -469,6 +513,7 @@ content.
 | HUD/menu/overlay | `ui/` |
 | Новый visual/audio mapping | `content/schema/presentation/`, `content/catalogs/` |
 | Новый runtime asset | `content/assets/` |
+| Загрузка/cache runtime asset | `services/assets/` |
 | Reference report/importer | `tools/import/`, `content/imported/` |
 | Unit/reference test | `tests/unit/` или `tests/integration/` |
 | Performance benchmark | `tests/performance/` |
@@ -488,6 +533,9 @@ content.
 4. **Расширение orders:** repair, patrol, attack-ground, transport, oil, spells.
 5. **Campaign/AI:** mission scripts, AI build orders, attack waves, difficulty.
 6. **Performance pass:** benchmark, native candidates, memory/FPS budget.
+   Asset loading входит в этот этап как измеряемая инфраструктурная задача:
+   сначала manifest/cache/async preload для вертикального среза, затем расширение
+   только по данным профилирования.
 
 Дальше следующего этапа не идем, пока текущий не запускается, не имеет test/reference
 case и не описан в sprint/report docs.

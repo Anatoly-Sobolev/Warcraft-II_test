@@ -90,6 +90,9 @@ runtime concept это повторяет».
 - состояние хранится в плотных массивах или native-структурах там, где это нужно;
 - `UnitHandle`/индекс используется для быстрых ссылок, но наружу не отдается как
 изменяемая структура;
+- загрузка тяжелых runtime-ассетов должна идти через `services/assets`: manifest,
+  cache и асинхронный preload пакетов миссии/расы/tileset, чтобы Presentation/UI
+  не блокировали кадр прямыми `load()` во время матча;
 - pathfinding, fog, массовое движение и бой являются первыми кандидатами на
 C++/GDExtension после измерений;
 - Lua допустим для загрузки данных, миссий и AI-директив, но не для тысяч
@@ -110,7 +113,7 @@ per-unit операций в горячем цикле без отдельног
 | **Scenario**         | Оболочка для целей, briefing, tutorial и адаптации mission scripts.                              |
 | **Presentation**     | Отображение мира, камера, миникарта, эффекты, игровой звук.                                      |
 | **UI**               | HUD, command panel, selection panel, меню и оверлеи.                                             |
-| **Services**         | Сохранения, настройки, ресурсы, платформа, локализация, общий audio/cache.                       |
+| **Services**         | Сохранения, настройки, ресурсы, async asset loading/cache, платформа, локализация, общий audio/cache. |
 | **Tools**            | Import/reference pipeline из Wargus и установленной игры.                                        |
 
 
@@ -156,6 +159,12 @@ runtime AI ──────────┘                         ├── e
 - original game installation and Wargus checkout are local references, not
 обязательные runtime-зависимости релизной сборки.
 
+Runtime не загружает PNG/WAV/сцены напрямую. Он отдает ids, events и snapshots, а
+`services/assets` готовит нужные ресурсы по manifest до или во время перехода в
+матч. `Presentation` и `UI` используют готовый ресурс, placeholder или явно
+зафиксированный fallback; отсутствие ассета не должно менять состояние Warcraft
+Runtime и не должно приводить к скрытой синхронной загрузке в горячем кадре.
+
 ---
 
 ## Минимальная карта проекта
@@ -190,4 +199,6 @@ warcraft-ii/
 - **Godot Node, UI и Presentation не меняют состояние матча напрямую.**
 - **Runtime не зависит от сцен и должен тестироваться без запущенного матча.**
 - **Производительность проверяется тестом или бенчмарком до “красивой” оптимизации.**
+- **Асинхронная загрузка ассетов живет в `services/assets` и не проникает в
+  Warcraft Runtime, orders, UI-команды или gameplay state.**
 - **Новые ассеты отделены от reference-only Warcraft II/Wargus материалов.**
