@@ -71,7 +71,9 @@
 6. Проверить, что README и отчет спринта описывают тот же путь.
 7. Если спринт затрагивает визуальные ассеты, проверить, что нет скрытой
    синхронной загрузки тяжелых ресурсов во время матча и fallback не ломает UI.
-8. Зафиксировать результат в отчете спринта.
+8. Если используются `original_placeholder`, проверить manifest entry,
+   replacement target и отсутствие прямых ссылок из Warcraft Runtime.
+9. Зафиксировать результат в отчете спринта.
 
 ## Проверки async asset loading
 
@@ -85,6 +87,10 @@
   заменяют его после ready без изменения Warcraft Runtime;
 - performance/manual: запуск демо фиксирует время preload, отсутствие заметных
   фризов и список failed/missing assets.
+- content/manual: каждый `original_placeholder` имеет запись в
+  `content/assets/placeholder_manifest.json` и план замены;
+- integration/manual: замена placeholder на `replacement_ready` меняет только
+  visual/audio resource, но не save snapshot и не Warcraft Runtime state.
 
 ## Формат тест-кейса
 

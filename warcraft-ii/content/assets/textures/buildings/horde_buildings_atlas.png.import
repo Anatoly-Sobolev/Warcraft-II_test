@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h8htv46o6on"
-valid=false
+uid="uid://bvilmixeetb0v"
+path="res://.godot/imported/horde_buildings_atlas.png-45301ce25ad6e94a4ccaa9a92df1af0c.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/buildings/horde_buildings_atlas.png"
+dest_files=["res://.godot/imported/horde_buildings_atlas.png-45301ce25ad6e94a4ccaa9a92df1af0c.ctex"]
 
 [params]
 

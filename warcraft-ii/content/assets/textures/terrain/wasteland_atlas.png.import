@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b72t44s3dkhh5"
-valid=false
+uid="uid://cdtk710nn61sk"
+path="res://.godot/imported/wasteland_atlas.png-c46b1e56f83d1402936632e635ca861d.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/terrain/wasteland_atlas.png"
+dest_files=["res://.godot/imported/wasteland_atlas.png-c46b1e56f83d1402936632e635ca861d.ctex"]
 
 [params]
 

@@ -63,7 +63,7 @@
 | [`design/tasks/designer_task_01_hud_restyle.md`](design/tasks/designer_task_01_hud_restyle.md) | Первое задание дизайнеру по HUD первого вертикального среза. |
 | [`content/content_pipeline.md`](content/content_pipeline.md) | Процесс подготовки контента, runtime-ассетов и reference-only материалов. |
 | [`input/touch_ux_spec.md`](input/touch_ux_spec.md) | Будущая спецификация сенсорного управления. |
-| [`performance/target_device.md`](performance/target_device.md) | Будущее описание целевого слабого устройства. |
+| [`performance/target_device.md`](performance/target_device.md) | Будущее описание целевого мобильного устройства ОС Аврора. |
 | [`performance/performance_budgets.md`](performance/performance_budgets.md) | Будущие бюджеты FPS, памяти и количества сущностей. |
 | [`persistence/save_format.md`](persistence/save_format.md) | Будущая спецификация сохранений. |
 | [`platform/aurora_build.md`](platform/aurora_build.md) | Будущая инструкция сборки под ОС Аврора. |

@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg40ufsnhjr5y"
-valid=false
+uid="uid://dq5qkdn3uoagk"
+path="res://.godot/imported/alliance_buildings_atlas.png-536357b579abbecda33ff08e233b0d6b.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/buildings/alliance_buildings_atlas.png"
+dest_files=["res://.godot/imported/alliance_buildings_atlas.png-536357b579abbecda33ff08e233b0d6b.ctex"]
 
 [params]
 

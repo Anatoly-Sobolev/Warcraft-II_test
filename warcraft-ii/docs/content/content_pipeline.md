@@ -9,27 +9,61 @@
 | --- | --- | --- | --- |
 | Gameplay data | `content/schema/gameplay/`, `content/catalogs/`, `content/balance/` | Да | Данные должны ссылаться на `mechanics_matrix.md`. |
 | Presentation data | `content/schema/presentation/`, `content/catalogs/` | Да | Хранит visual ids, sprite/icon/audio banks, но не правила Warcraft Runtime. |
-| Project visuals/placeholders | `content/assets/` | Да | Только разрешенные к коммиту материалы. |
+| Project visuals/placeholders | `content/assets/` | Да | Материалы проекта с записью в `content/assets/placeholder_manifest.json`. |
+| Original runtime placeholders | `content/assets/` | Да, временно | Оригинальные Warcraft II заглушки со статусом `original_placeholder` в manifest и планом замены. |
 | Imported reference reports | `content/imported/` | Нет напрямую | Наши Markdown/CSV/JSON отчеты без оригинальных ассетов; используются для переноса в schemas/catalogs. |
 | Original Warcraft II references | `docs/design/reference_packs/` manifest или внешний носитель | Нет | Reference-only, если нет отдельного права и asset pipeline. |
-| Wargus metadata | Внешний source checkout, ссылки в docs | Нет напрямую | Использовать как справочник; GPL-код не переносить в Godot без решения по лицензии. |
+| Wargus metadata | Внешний source checkout, ссылки в docs | Нет напрямую | Использовать как справочник для ids, states, mappings и reference reports. |
 
 ## Оригинальные материалы Warcraft II
 
-Оригинальные скриншоты и crop-изображения можно показывать дизайнеру как
-reference-only материалы, чтобы он видел, что именно перерабатывается. Они не
-становятся ассетами проекта автоматически.
+Оригинальные материалы Warcraft II используются в двух режимах:
 
-До отдельного решения по правам запрещено:
+- reference materials для дизайнера, отчетов и сверки;
+- runtime placeholders в `content/assets/`, пока дизайнер готовит новые ассеты.
 
-- коммитить оригинальные изображения, аудио, видео и extracted sprites;
-- класть оригинальные файлы в `content/assets/`;
-- использовать оригинальные изображения как финальные runtime-текстуры;
-- смешивать reference-only материалы с project visuals/placeholders.
+Оригинальные файлы не считаются финальными ассетами проекта. Если файл нужен
+игре сейчас, он добавляется как `original_placeholder` через
+`content/assets/placeholder_manifest.json`, подключается через catalogs и
+получает replacement target.
 
-Если права на хранение и использование есть, в этот документ нужно добавить
-отдельный раздел с источником, владельцем проверки прав, разрешенными форматами,
-папкой хранения и процедурой импорта.
+## Временные оригинальные placeholder-ассеты
+
+Оригинальные Warcraft II материалы можно использовать как временные
+runtime-заглушки. Это нужно не для финального визуального стиля, а чтобы UI,
+Presentation, sprite/audio banks, TileSet и `services/assets` можно было
+интегрировать до готовности новых ассетов.
+
+Для каждого такого файла обязательны:
+
+- запись в `content/assets/placeholder_manifest.json`;
+- `origin: "original_placeholder"` и `status: "original_placeholder"`;
+- `source_ref`: откуда ассет получен, без личных абсолютных путей;
+- `mechanics_refs`: строки `mechanics_matrix.md`, для которых ассет нужен как
+  отображение, например `PRES-001`, `PRES-002`, `UI-001`, `MAP-002`;
+- `replacement_target` и `replacement_owner`;
+- ручная проверка, где видно, что ассет подключен через manifest/catalog, а не
+  прямой `load()` из UI/Presentation hot path.
+
+Процедура добавления:
+
+1. Положить файл в обычную runtime-папку `content/assets/...`, чтобы проект
+   запускался без `external/`.
+2. Добавить или обновить запись в `placeholder_manifest.json`.
+3. Подключить файл через `content/catalogs/`, sprite/audio bank или TileSet.
+4. Добавить manual/content-validation check в тестовый план или sprint report.
+
+Процедура замены:
+
+1. Дизайнер кладет новый ассет в тот же класс runtime-папки.
+2. Каталог или manifest переключается на новый путь для того же `asset_id` либо
+   создается новый `asset_id` с явной миграцией.
+3. Старый `original_placeholder` переводится в `deprecated_placeholder`.
+4. После проверки демо placeholder удаляется из preload-пакетов и больше не
+   используется новыми задачами.
+
+`original_placeholder` не должен попадать в save snapshot, runtime state,
+баланс, миссионные условия или mechanics matrix как источник правил.
 
 ## Reference pack для дизайнера
 
@@ -45,7 +79,8 @@ reference-only материалы, чтобы он видел, что именн
 
 ## Runtime-ассеты проекта
 
-Разрешенные ассеты и placeholders лежат в `content/assets/`:
+Ассеты, placeholders и временные оригинальные placeholders лежат в
+`content/assets/`:
 
 ```text
 content/assets/textures/

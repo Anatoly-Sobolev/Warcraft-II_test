@@ -19,14 +19,28 @@
 | `animation_reference_report.gd` | Reports for spritesheet sizes, states, frames and markers. |
 | `sound_reference_report.gd` | Reports for sound groups and source ids. |
 | `wargus_reference_reader.gd` | Общий helper для локальных reference paths. |
+| `original_placeholder_builder.gd` | Собирает runtime `original_placeholder` атласы из `external/wargus_extracted` в `content/assets/textures/*`. |
 
 ## Правила
 
-- Не копировать оригинальные assets в `content/assets/`.
-- Если переносится GPL Wargus logic, фиксировать source metadata and license note.
+- Оригинальные assets, нужные для текущей визуальной системы, добавлять в
+  `content/assets/` только как manifest-tracked `original_placeholder`.
+- Если переносится Wargus logic concept, фиксировать source metadata и слой проекта,
+  куда попадает собственная реализация.
 - Вывод инструментов должен быть нашим report/data format или adapter, а не
   случайной копией source без структуры.
 - Absolute paths допускаются только как локальные параметры запуска.
 - Коммитируемые результаты складывать в `content/imported/`.
 
 Подробные правила: [`../../docs/porting/local_reference_setup.md`](../../docs/porting/local_reference_setup.md).
+
+## Пересобрать placeholder-атласы
+
+```powershell
+godot --headless --path warcraft-ii --script res://tools/import/original_placeholder_builder.gd
+godot --headless --editor --path warcraft-ii --quit
+```
+
+Первый шаг перезаписывает PNG в `content/assets/textures/*` из extracted sources.
+Второй шаг обновляет Godot import metadata, чтобы `ResourceLoader` видел новые
+текстуры как `CompressedTexture2D`.

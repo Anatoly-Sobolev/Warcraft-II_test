@@ -30,17 +30,17 @@ Wargus/Warcraft source -> reference report/converter -> content data -> runtime
 - `schema/presentation/` — visual ids, sprite banks, icon banks, animation banks,
   audio banks;
 - `catalogs/` — `.tres` каталоги визуальных ресурсов;
-- `assets/` — разрешенные ассеты, placeholders, шрифты, текстуры, атласы, иконки,
-  звуки;
+- `assets/` — ассеты, placeholders, шрифты, текстуры, атласы, иконки, звуки и
+  временные `original_placeholder`;
 - `localization/` — tooltip, меню, dialogue/tutorial text.
 
 `warcraft_runtime` не должен ссылаться на конкретные PNG/WAV как на gameplay
 правила. Он отдает ids/events/state, а Presentation/UI сопоставляют ids с
 visual/audio catalogs.
 
-Оригинальные ассеты Warcraft II нельзя коммитить без прав и отдельного asset
-pipeline. До появления легального pipeline используются placeholders или
-собственные ассеты.
+Оригинальные ассеты Warcraft II используются в проекте только как временные
+`original_placeholder`: запись в [`assets/placeholder_manifest.json`](assets/placeholder_manifest.json),
+подключение через catalogs/`services/assets` и план замены на новый ассет.
 
 Правила локальных Wargus/Warcraft II материалов:
 [`../docs/porting/local_reference_setup.md`](../docs/porting/local_reference_setup.md).

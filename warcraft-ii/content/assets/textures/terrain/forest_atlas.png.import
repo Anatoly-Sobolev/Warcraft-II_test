@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bh3010xb2foqd"
-valid=false
+uid="uid://phkgvx6qpo0i"
+path="res://.godot/imported/forest_atlas.png-91592238556634262b5019c4aff82bbb.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/terrain/forest_atlas.png"
+dest_files=["res://.godot/imported/forest_atlas.png-91592238556634262b5019c4aff82bbb.ctex"]
 
 [params]
 

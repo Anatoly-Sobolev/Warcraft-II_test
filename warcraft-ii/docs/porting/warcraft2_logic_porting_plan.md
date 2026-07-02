@@ -2,7 +2,7 @@
 
 Документ фиксирует, как переносить логику Warcraft II/Wargus в текущий проект.
 Цель - gameplay-equivalent порт с новыми ассетами, простой для студентов и
-достаточно быстрый для ОС «Аврора».
+достаточно быстрый для мобильных устройств на ОС «Аврора».
 
 ## Главный принцип
 
@@ -21,9 +21,8 @@ reference source -> runtime concept -> order/rule/adapter -> test/reference case
 - **order/rule/adapter** — код в `game/warcraft_runtime/`;
 - **test/reference case** — unit/integration/performance/manual проверка.
 
-Если GPL-перенос допустим для проекта, Wargus-код может использоваться прямее, но
-его нужно помещать в понятный compatibility слой, указывать source metadata и не
-смешивать с оригинальными proprietary assets.
+Wargus source используется как технический reference. В проект попадает
+собственная реализация в понятном runtime/adapter слое с source metadata.
 
 ## Где лежит runtime-логика
 
@@ -94,8 +93,9 @@ game/warcraft_runtime/native/
 
 ## Запрещено
 
-- Коммитить оригинальные Warcraft II PNG/WAV/SMK/SMS/PUD/extracted assets без
-  отдельного права.
+- Добавлять оригинальные Warcraft II PNG/WAV/SMK/SMS/PUD/extracted assets как
+  финальные ассеты проекта; они допускаются только как временные placeholders
+  через manifest/catalog.
 - Встраивать gameplay rules в UI, Presentation или Godot Node.
 - Делать импорт так, чтобы release-сборке требовался локальный путь к купленной игре.
 - Придумывать behavior без source/reference, если source существует.

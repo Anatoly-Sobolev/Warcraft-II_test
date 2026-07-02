@@ -1,0 +1,315 @@
+{
+    "schema_version":  1,
+    "policy":  "Original Warcraft II assets are temporary original_placeholder entries and must be replaced by new project assets through manifest/catalog migration.",
+    "packages":  {
+                     "app_shell":  [
+
+                                   ],
+                     "common_ui":  [
+                                       "ui_atlas"
+                                   ],
+                     "human_first_slice":  [
+                                               "alliance_units_atlas",
+                                               "alliance_buildings_atlas",
+                                               "portraits_atlas",
+                                               "forest_atlas"
+                                           ],
+                     "orc_reference_slice":  [
+                                                 "horde_units_atlas",
+                                                 "horde_buildings_atlas"
+                                             ],
+                     "effects_first_slice":  [
+                                                 "effects_atlas",
+                                                 "projectiles_atlas"
+                                             ]
+                 },
+    "assets":  [
+                   {
+                       "asset_id":  "ui_atlas",
+                       "runtime_path":  "res://content/assets/textures/ui/ui_atlas.png",
+                       "type":  "texture_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "docs/design/visual_integration.md",
+                       "mechanics_refs":  [
+                                              "UI-001",
+                                              "UI-002",
+                                              "UI-003",
+                                              "UI-004",
+                                              "UI-006",
+                                              "UI-008"
+                                          ],
+                       "replacement_target":  "new_hud_ui_atlas",
+                       "replacement_owner":  "D/P3",
+                       "manual_check":  "HUD loads command panel, resource bar, tooltip and menu surfaces without direct runtime asset loads.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/ui/buttons_1.png",
+                                            "external/wargus_extracted/graphics/ui/buttons_2.png",
+                                            "external/wargus_extracted/graphics/ui/gold,wood,oil,mana.png",
+                                            "external/wargus_extracted/graphics/ui/human/panel_1.png",
+                                            "external/wargus_extracted/graphics/ui/human/buttonpanel.png",
+                                            "external/wargus_extracted/graphics/ui/human/infopanel.png",
+                                            "external/wargus_extracted/graphics/ui/human/menubutton.png",
+                                            "external/wargus_extracted/graphics/ui/human/statusline.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "portraits_atlas",
+                       "runtime_path":  "res://content/assets/textures/portraits/portraits_atlas.png",
+                       "type":  "texture_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "docs/design/reference_packs/original_ui_reference_pack.md",
+                       "mechanics_refs":  [
+                                              "UI-003",
+                                              "UI-008",
+                                              "PRES-005"
+                                          ],
+                       "replacement_target":  "new_portraits_atlas",
+                       "replacement_owner":  "D/P3/P4",
+                       "manual_check":  "Selection panel and briefing screens show portrait fallback or replacement without changing runtime state.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/campaigns/human/interface/introscreen1.png",
+                                            "external/wargus_extracted/campaigns/human/interface/introscreen2.png",
+                                            "external/wargus_extracted/campaigns/orc/interface/introscreen1.png",
+                                            "external/wargus_extracted/campaigns/orc/interface/introscreen2.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "alliance_units_atlas",
+                       "runtime_path":  "res://content/assets/textures/units/alliance_units_atlas.png",
+                       "type":  "unit_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/human/units.lua; scripts/human/anim.lua",
+                       "mechanics_refs":  [
+                                              "PRES-001",
+                                              "PRES-002"
+                                          ],
+                       "replacement_target":  "new_alliance_units_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Peasant and Footman views can resolve idle/move/attack/death visual ids from sprite banks.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/human/units/peasant.png",
+                                            "external/wargus_extracted/graphics/human/units/peasant_with_gold.png",
+                                            "external/wargus_extracted/graphics/human/units/peasant_with_wood.png",
+                                            "external/wargus_extracted/graphics/human/units/footman.png",
+                                            "external/wargus_extracted/graphics/human/units/elven_archer.png",
+                                            "external/wargus_extracted/graphics/human/units/knight.png",
+                                            "external/wargus_extracted/graphics/human/units/mage.png",
+                                            "external/wargus_extracted/graphics/human/units/ballista.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "horde_units_atlas",
+                       "runtime_path":  "res://content/assets/textures/units/horde_units_atlas.png",
+                       "type":  "unit_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/orc/units.lua; scripts/orc/anim.lua",
+                       "mechanics_refs":  [
+                                              "PRES-001",
+                                              "PRES-002"
+                                          ],
+                       "replacement_target":  "new_horde_units_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Orc visual ids resolve through the same sprite bank contract as Human ids.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/orc/units/peon.png",
+                                            "external/wargus_extracted/graphics/orc/units/peon_with_gold.png",
+                                            "external/wargus_extracted/graphics/orc/units/peon_with_wood.png",
+                                            "external/wargus_extracted/graphics/orc/units/grunt.png",
+                                            "external/wargus_extracted/graphics/orc/units/troll_axethrower.png",
+                                            "external/wargus_extracted/graphics/orc/units/ogre.png",
+                                            "external/wargus_extracted/graphics/orc/units/death_knight.png",
+                                            "external/wargus_extracted/graphics/orc/units/catapult.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "alliance_buildings_atlas",
+                       "runtime_path":  "res://content/assets/textures/buildings/alliance_buildings_atlas.png",
+                       "type":  "building_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/human/units.lua; scripts/human/anim.lua",
+                       "mechanics_refs":  [
+                                              "PRES-001",
+                                              "PRES-002"
+                                          ],
+                       "replacement_target":  "new_alliance_buildings_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Town Hall, Farm and Barracks visual ids resolve through building_visuals and sprite banks.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/town_hall.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/farm.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/barracks.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/elven_lumber_mill.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/blacksmith.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/human/buildings/guard_tower.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/neutral/buildings/gold_mine.png",
+                                            "external/wargus_extracted/graphics/neutral/buildings/land_construction_site.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "horde_buildings_atlas",
+                       "runtime_path":  "res://content/assets/textures/buildings/horde_buildings_atlas.png",
+                       "type":  "building_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/orc/units.lua; scripts/orc/anim.lua",
+                       "mechanics_refs":  [
+                                              "PRES-001",
+                                              "PRES-002"
+                                          ],
+                       "replacement_target":  "new_horde_buildings_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Orc building visual ids resolve through the same catalog contract as Human ids.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/great_hall.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/pig_farm.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/barracks.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/troll_lumber_mill.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/blacksmith.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/orc/buildings/watch_tower.png",
+                                            "external/wargus_extracted/graphics/tilesets/summer/neutral/buildings/gold_mine.png",
+                                            "external/wargus_extracted/graphics/neutral/buildings/land_construction_site.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "forest_atlas",
+                       "runtime_path":  "res://content/assets/textures/terrain/forest_atlas.png",
+                       "type":  "terrain_tileset_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/tilesets/*.lua",
+                       "mechanics_refs":  [
+                                              "MAP-001",
+                                              "MAP-002",
+                                              "UI-005"
+                                          ],
+                       "replacement_target":  "new_forest_tileset_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Human mission 01 terrain and minimap resolve terrain visual ids through map visual data.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/summer/terrain/summer.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "winter_atlas",
+                       "runtime_path":  "res://content/assets/textures/terrain/winter_atlas.png",
+                       "type":  "terrain_tileset_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/tilesets/*.lua",
+                       "mechanics_refs":  [
+                                              "MAP-001",
+                                              "MAP-002",
+                                              "UI-005"
+                                          ],
+                       "replacement_target":  "new_winter_tileset_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Winter terrain package resolves through the same map visual contract as forest.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/winter/terrain/winter.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "wasteland_atlas",
+                       "runtime_path":  "res://content/assets/textures/terrain/wasteland_atlas.png",
+                       "type":  "terrain_tileset_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/tilesets/*.lua",
+                       "mechanics_refs":  [
+                                              "MAP-001",
+                                              "MAP-002",
+                                              "UI-005"
+                                          ],
+                       "replacement_target":  "new_wasteland_tileset_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Wasteland terrain package resolves through the same map visual contract as forest.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/wasteland/terrain/wasteland.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "other_world_atlas",
+                       "runtime_path":  "res://content/assets/textures/terrain/other_world_atlas.png",
+                       "type":  "terrain_tileset_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/tilesets/*.lua",
+                       "mechanics_refs":  [
+                                              "MAP-001",
+                                              "MAP-002",
+                                              "UI-005"
+                                          ],
+                       "replacement_target":  "new_other_world_tileset_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Other World terrain package resolves through the same map visual contract as forest.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/tilesets/swamp/terrain/swamp.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "effects_atlas",
+                       "runtime_path":  "res://content/assets/textures/effects/effects_atlas.png",
+                       "type":  "effect_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/missiles.lua; scripts/spells.lua",
+                       "mechanics_refs":  [
+                                              "PRES-003"
+                                          ],
+                       "replacement_target":  "new_effects_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Effect visual ids resolve from projectile/effect catalogs and do not affect combat resolution.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/missiles/explosion.png",
+                                            "external/wargus_extracted/graphics/missiles/ballista-catapult_impact.png",
+                                            "external/wargus_extracted/graphics/missiles/heal_effect.png",
+                                            "external/wargus_extracted/graphics/missiles/blizzard.png",
+                                            "external/wargus_extracted/graphics/missiles/rune.png",
+                                            "external/wargus_extracted/graphics/missiles/flame_shield.png",
+                                            "external/wargus_extracted/graphics/missiles/death_and_decay.png",
+                                            "external/wargus_extracted/graphics/missiles/tornado.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   },
+                   {
+                       "asset_id":  "projectiles_atlas",
+                       "runtime_path":  "res://content/assets/textures/effects/projectiles_atlas.png",
+                       "type":  "projectile_spritesheet_atlas",
+                       "origin":  "original_placeholder",
+                       "status":  "original_placeholder",
+                       "source_ref":  "scripts/missiles.lua",
+                       "mechanics_refs":  [
+                                              "PRES-003"
+                                          ],
+                       "replacement_target":  "new_projectiles_atlas",
+                       "replacement_owner":  "D/P2/P4",
+                       "manual_check":  "Projectile views resolve visual ids from runtime missile events/state only.",
+                       "source_paths":  [
+                                            "external/wargus_extracted/graphics/missiles/arrow.png",
+                                            "external/wargus_extracted/graphics/missiles/axe.png",
+                                            "external/wargus_extracted/graphics/missiles/ballista_bolt.png",
+                                            "external/wargus_extracted/graphics/missiles/catapult_rock.png",
+                                            "external/wargus_extracted/graphics/missiles/fireball.png",
+                                            "external/wargus_extracted/graphics/missiles/cannon.png",
+                                            "external/wargus_extracted/graphics/missiles/dragon_breath.png",
+                                            "external/wargus_extracted/graphics/missiles/gryphon_hammer.png"
+                                        ],
+                       "replacement_strategy":  "Overwrite runtime_path with the new asset or change runtime_path to a new project_final file, then mark this entry replacement_ready/project_final."
+                   }
+               ]
+}

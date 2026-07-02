@@ -21,10 +21,9 @@ warcraft-ii/docs/design/designer_handoff/task_01_hud_restyle/
 <local Wargus checkout>
 ```
 
-Важно: Wargus распространяется под GPL. Этот документ не переносит GPL-код в
-Godot-проект. Он содержит только справочную выжимку: какие файлы смотреть, какие
-UI-зоны и состояния подтверждены, какие поля данных важны для дизайна и будущей
-реализации.
+Важно: этот документ не является готовой реализацией HUD. Он содержит справочную
+выжимку: какие файлы смотреть, какие UI-зоны и состояния подтверждены, какие
+поля данных важны для дизайна и будущей реализации.
 
 ## Что дизайнеру смотреть в первую очередь
 
@@ -63,8 +62,8 @@ II ассетов для коммита в наш проект. Есть:
 - Wargus scripts используются как source of structure.
 - Скриншоты оригинального UI нужно готовить отдельно из легального запуска
   оригинала/Wargus, не коммитя оригинальные изображения без прав.
-- В задачу дизайнеру передаются paths и manifest, а не копии GPL-кода или
-  proprietary assets.
+- В задачу дизайнеру передаются paths, manifest и выжимка по структуре, а не
+  готовая реализация UI.
 
 ## Human HUD layout summary
 
@@ -223,9 +222,9 @@ reference, even if implementation starts from HUD.
 
 ## Source limitations
 
-- Do not copy Wargus Lua code into Godot scripts.
-- Do not copy original Warcraft II extracted assets into `content/assets/`
-  without rights.
+- Do not treat Wargus Lua snippets as the final Godot UI implementation.
+- Original Warcraft II extracted assets go into `content/assets/` only as
+  manifest-tracked `original_placeholder` files until replaced.
 - Wargus paths in this document are source references for analysis and review.
 - Designer deliverables must be new visual work or clearly labeled reference
   screenshots/crops.

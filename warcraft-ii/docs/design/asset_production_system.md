@@ -60,7 +60,7 @@ TileMapLayer, catalogs и scenario data.
 | Animation spritesheet board | Сделано локально | `generated_boards/animation_spritesheets_board.md` | Добавить таблицу unit -> frame size -> animation states для задач по юнитам. |
 | HUD task 01 | Документировано | `docs/design/tasks/designer_task_01_hud_restyle.md` | Дать дизайнеру вместе с референсами. |
 | Asset structure map | Документировано | `designer_handoff/task_01_hud_restyle/asset_structure.md` | Расширять при новых типах ассетов. |
-| Runtime new art | Не начато | `content/assets/` | Рисовать новые легальные ассеты после утверждения style direction. |
+| Runtime new art | Не начато | `content/assets/` | Рисовать новые легальные ассеты после утверждения style direction; до этого допустимы manifest-tracked placeholders. |
 | Terrain tileset | Не начато | `content/assets/tilesets/` | Создать отдельное задание на tileset и карту первого сценария. |
 | Unit/building spritesheets | Не начато | `content/assets/textures/units/`, `.../buildings/` | Начинать после утверждения gameplay scale и camera zoom. |
 | Audio replacement | Не начато | `content/assets/audio/` | Создать audio brief и список событий. |
@@ -82,6 +82,12 @@ TileMapLayer, catalogs и scenario data.
 | Sounds | UI, combat, selected, ready, alerts | WAV/OGG | Services/audio | `sounds/*`, `scripts/sound.lua` |
 | Music | Themes and loops | OGG | Services/audio | `music/*` |
 | Video | Intro/briefing/cinematic | WebM/MP4 or image sequence | App/scenario | `videos/*`, campaign screens |
+
+Разработчик может положить оригинальные Warcraft II файлы в соответствующий
+runtime path как `original_placeholder`. Дизайнер после этого работает не с
+пустым местом, а с полной визуальной сеткой проекта: атласы, frame sizes,
+TileSet, icon ids и audio groups уже подключены. Замена на новый стиль должна
+менять manifest/catalog mapping, а не состав gameplay rules.
 
 ## Карты и TileMapLayer
 
@@ -245,6 +251,7 @@ Footman, Town Hall/Barracks feedback, combat hit и construction complete.
 - Animated units используют spritesheets с ограниченным frame count.
 - Effects должны быть короткими и pooled.
 - Не добавлять уникальную текстуру там, где достаточно tile/prop reuse.
+- Не оставлять `original_placeholder` без owner и replacement target.
 - Размеры ассетов фиксируются до production: tile size, unit frame size,
   UI scale, camera zoom.
 - Каждый новый визуальный набор получает memory/FPS smoke check.

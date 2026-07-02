@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buwhuavo5tymo"
-valid=false
+uid="uid://dh10f5keuukup"
+path="res://.godot/imported/portraits_atlas.png-327d92f4c132b084e69a7e34c585906a.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/portraits/portraits_atlas.png"
+dest_files=["res://.godot/imported/portraits_atlas.png-327d92f4c132b084e69a7e34c585906a.ctex"]
 
 [params]
 

@@ -170,7 +170,7 @@ warcraft-ii/docs/design/designer_handoff/task_01_hud_restyle/reference_assets/
 - Не удалять существующие Wargus/Warcraft II UI-состояния без согласования.
 - Не использовать оригинальные Warcraft II изображения как финальные runtime
   assets.
-- Не копировать Wargus GPL-код в дизайн-спеку или Godot.
+- Не переносить Wargus scripts в дизайн-спеку как готовую реализацию; фиксировать только нужные ids, размеры, states и mapping.
 - Не менять игровые правила и command availability в дизайне.
 - Не делать HUD как один монолитный экран без компонентной структуры.
 

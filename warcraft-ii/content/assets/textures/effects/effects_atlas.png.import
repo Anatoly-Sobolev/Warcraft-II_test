@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d272nmjld6jbr"
-valid=false
+uid="uid://dpj8ei3ob604u"
+path="res://.godot/imported/effects_atlas.png-2721dae26081ef7eac6063e6ac7b797e.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://content/assets/textures/effects/effects_atlas.png"
+dest_files=["res://.godot/imported/effects_atlas.png-2721dae26081ef7eac6063e6ac7b797e.ctex"]
 
 [params]
 

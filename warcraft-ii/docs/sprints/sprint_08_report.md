@@ -57,7 +57,7 @@
 | --- | --- | --- | --- | --- |
 | S8-SMOKE-001 | manual | Чистый запуск и прохождение демо | not run | P0 перед сдачей. |
 | S8-REGRESSION-001 | manual/integration | Основные user stories спринтов 02-07 | not run | Минимальный регресс. |
-| S8-PERF-001 | performance/manual | FPS/стабильность на доступном слабом профиле | not run | Записать результат честно. |
+| S8-PERF-001 | performance/manual | FPS/стабильность на доступном мобильном профиле ОС Аврора | not run | Записать результат честно. |
 
 ## Результат smoke test
 
